@@ -1,0 +1,104 @@
+# flowd: Supabase CLI configuration (supabase/README.md explains every step).
+#   supabase start            local Postgres 17 + Auth + Realtime + Storage + Edge runtime + Studio
+#   supabase db reset         applies migrations/0001..0006, then seed.sql
+#   supabase functions serve  runs supabase/functions/* locally (reads supabase/functions/.env)
+
+project_id = "flowd"
+
+[api]
+enabled = true
+port = 54321
+# `private` (trigger functions, helpers) is deliberately NOT exposed: PostgREST can only reach public. Money functions in public are
+# executable by service_role only (migration 0002 revokes them from anon and authenticated).
+schemas = ["public", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+shadow_port = 54320
+# 17 matches Supabase's current default; the migrations are also verified on Postgres 18 (supabase/tools/verify-pglite.mjs).
+major_version = 17
+
+[db.pooler]
+enabled = false
+
+[db.migrations]
+enabled = true
+
+[db.seed]
+enabled = true
+sql_paths = ["./seed.sql"]
+
+[realtime]
+enabled = true
+
+[studio]
+enabled = true
+port = 54323
+
+[inbucket]
+enabled = true
+port = 54324
+
+[storage]
+enabled = true
+file_size_limit = "50MiB"
+
+[auth]
+enabled = true
+site_url = "http://localhost:3000"
+additional_redirect_urls = ["https://app.joinflowd.io", "flowd://auth/callback"]
+jwt_expiry = 3600
+enable_refresh_token_rotation = true
+refresh_token_reuse_interval = 10
+enable_signup = true
+enable_anonymous_sign_ins = false
+
+[auth.email]
+enable_signup = true
+double_confirm_changes = true
+enable_confirmations = false
+
+# Sign in with Apple and Google are how creators join (docs/ARCHITECTURE.md). Keys come from the environment, never from this file.
+[auth.external.apple]
+enabled = false
+client_id = "env(SUPABASE_AUTH_EXTERNAL_APPLE_CLIENT_ID)"
+secret = "env(SUPABASE_AUTH_EXTERNAL_APPLE_SECRET)"
+
+[auth.external.google]
+enabled = false
+client_id = "env(SUPABASE_AUTH_EXTERNAL_GOOGLE_CLIENT_ID)"
+secret = "env(SUPABASE_AUTH_EXTERNAL_GOOGLE_SECRET)"
+
+[edge_runtime]
+enabled = true
+policy = "per_worker"
+inspector_port = 8083
+
+# Every function authenticates its own caller, so the platform's JWT check is switched off for all of them:
+#   scheduled jobs  x-cron-secret (pg_cron through pg_net, migration 0006) or the service-role key as a bearer token
+#   webhooks        the provider's signature (Stripe) or shared secret (RevenueCat)
+[functions.webhook-revenuecat]
+verify_jwt = false
+
+[functions.webhook-stripe]
+verify_jwt = false
+
+[functions.sync-views]
+verify_jwt = false
+
+[functions.settle-window]
+verify_jwt = false
+
+[functions.weekly-payouts]
+verify_jwt = false
+
+[functions.expiry-alerts]
+verify_jwt = false
+
+[functions.daily-drop]
+verify_jwt = false
+
+[functions.housekeeping]
+verify_jwt = false

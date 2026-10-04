@@ -1,0 +1,37 @@
+node_modules/
+.next/
+out/
+dist/
+.turbo/
+.data/
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+Thumbs.db
+# Xcode
+*.xcodeproj/
+xcuserdata/
+DerivedData/
+.build/
+*.xcworkspace/xcuserdata/
+# Python
+__pycache__/
+.venv/
+.pytest_cache/
+# screenshots / scratch
+.shots/
+# generated design tokens are the sync source for the apps: keep them in the repo
+!packages/tokens/dist/
+
+# --- Strategy docs kept LOCAL (competitive playbook; a public repo cannot be un-published). Remove these lines to publish them.
+docs/BLUEPRINT.md
+docs/PRODUCT_SPEC.md
+docs/DECISIONS.md
+docs/DOMAIN_CHECK.md
+docs/research/
+docs/qa/
+# --- local tooling
+.claude/settings.local.json
+apps/ios/build/

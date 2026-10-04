@@ -1,0 +1,388 @@
+{
+  "schema": "flowd.testvectors/1",
+  "suite": "rounding",
+  "description": "Rounding as the contract does it: Math.round (half toward +infinity), toFixed (half away from zero on the exact binary value), basis-point math for rates. Banker's rounding (Python round, Swift .toNearestOrEven) is WRONG here.",
+  "contract_version": "1.0.0",
+  "parity": "required",
+  "compare": {
+    "objects": "subset",
+    "arrays": "same length, element-wise subset",
+    "numbers": "exact",
+    "null": "must be null"
+  },
+  "reference": "packages/contract/schema/formulas.mjs: mulRate, round2; Math.round; Number.prototype.toFixed",
+  "generated_by": "services/ml/scripts/export_vectors.py (do not edit by hand)",
+  "function": "fn(args...)",
+  "cases": [
+    {
+      "id": "01_mul_rate_half_up_.5",
+      "description": "mul_rate half up .5",
+      "in": {
+        "fn": "mul_rate",
+        "args": [
+          5,
+          0.1
+        ]
+      },
+      "out": 1
+    },
+    {
+      "id": "02_mul_rate_2.5_->_3",
+      "description": "mul_rate 2.5 -> 3",
+      "in": {
+        "fn": "mul_rate",
+        "args": [
+          25,
+          0.1
+        ]
+      },
+      "out": 3
+    },
+    {
+      "id": "03_mul_rate_1.5_->_2",
+      "description": "mul_rate 1.5 -> 2",
+      "in": {
+        "fn": "mul_rate",
+        "args": [
+          15,
+          0.1
+        ]
+      },
+      "out": 2
+    },
+    {
+      "id": "04_mul_rate_0.4_->_0",
+      "description": "mul_rate 0.4 -> 0",
+      "in": {
+        "fn": "mul_rate",
+        "args": [
+          4,
+          0.1
+        ]
+      },
+      "out": 0
+    },
+    {
+      "id": "05_mul_rate_typical_fee",
+      "description": "mul_rate typical fee",
+      "in": {
+        "fn": "mul_rate",
+        "args": [
+          9640,
+          0.1
+        ]
+      },
+      "out": 964
+    },
+    {
+      "id": "06_mul_rate_12_percent",
+      "description": "mul_rate 12 percent",
+      "in": {
+        "fn": "mul_rate",
+        "args": [
+          500000,
+          0.12
+        ]
+      },
+      "out": 60000
+    },
+    {
+      "id": "07_mul_rate_card_rate",
+      "description": "mul_rate card rate",
+      "in": {
+        "fn": "mul_rate",
+        "args": [
+          560000,
+          0.029
+        ]
+      },
+      "out": 16240
+    },
+    {
+      "id": "08_mul_rate_one_cent_at_50_percent",
+      "description": "mul_rate one cent at 50 percent",
+      "in": {
+        "fn": "mul_rate",
+        "args": [
+          1,
+          0.5
+        ]
+      },
+      "out": 1
+    },
+    {
+      "id": "09_mul_rate_zero",
+      "description": "mul_rate zero",
+      "in": {
+        "fn": "mul_rate",
+        "args": [
+          0,
+          0.12
+        ]
+      },
+      "out": 0
+    },
+    {
+      "id": "10_mul_rate_6_percent",
+      "description": "mul_rate 6 percent",
+      "in": {
+        "fn": "mul_rate",
+        "args": [
+          127200,
+          0.06
+        ]
+      },
+      "out": 7632
+    },
+    {
+      "id": "11_js_round_0.5",
+      "description": "js_round 0.5",
+      "in": {
+        "fn": "js_round",
+        "args": [
+          0.5
+        ]
+      },
+      "out": 1
+    },
+    {
+      "id": "12_js_round_1.5",
+      "description": "js_round 1.5",
+      "in": {
+        "fn": "js_round",
+        "args": [
+          1.5
+        ]
+      },
+      "out": 2
+    },
+    {
+      "id": "13_js_round_2.5",
+      "description": "js_round 2.5",
+      "in": {
+        "fn": "js_round",
+        "args": [
+          2.5
+        ]
+      },
+      "out": 3
+    },
+    {
+      "id": "14_js_round_2.4999",
+      "description": "js_round 2.4999",
+      "in": {
+        "fn": "js_round",
+        "args": [
+          2.4999
+        ]
+      },
+      "out": 2
+    },
+    {
+      "id": "15_js_round_negative_half",
+      "description": "js_round negative half",
+      "in": {
+        "fn": "js_round",
+        "args": [
+          -0.5
+        ]
+      },
+      "out": 0
+    },
+    {
+      "id": "16_js_round_negative_1.5",
+      "description": "js_round negative 1.5",
+      "in": {
+        "fn": "js_round",
+        "args": [
+          -1.5
+        ]
+      },
+      "out": -1
+    },
+    {
+      "id": "17_js_round_7.5",
+      "description": "js_round 7.5",
+      "in": {
+        "fn": "js_round",
+        "args": [
+          7.5
+        ]
+      },
+      "out": 8
+    },
+    {
+      "id": "18_js_round_12.5",
+      "description": "js_round 12.5",
+      "in": {
+        "fn": "js_round",
+        "args": [
+          12.5
+        ]
+      },
+      "out": 13
+    },
+    {
+      "id": "19_round2_.005",
+      "description": "round2 .005",
+      "in": {
+        "fn": "round2",
+        "args": [
+          0.005
+        ]
+      },
+      "out": 0.01
+    },
+    {
+      "id": "20_round2_1.005_(binary_1.00499..)",
+      "description": "round2 1.005 (binary 1.00499..)",
+      "in": {
+        "fn": "round2",
+        "args": [
+          1.005
+        ]
+      },
+      "out": 1.0
+    },
+    {
+      "id": "21_round2_2.675",
+      "description": "round2 2.675",
+      "in": {
+        "fn": "round2",
+        "args": [
+          2.675
+        ]
+      },
+      "out": 2.68
+    },
+    {
+      "id": "22_round2_0.125",
+      "description": "round2 0.125",
+      "in": {
+        "fn": "round2",
+        "args": [
+          0.125
+        ]
+      },
+      "out": 0.13
+    },
+    {
+      "id": "23_round2_0.335",
+      "description": "round2 0.335",
+      "in": {
+        "fn": "round2",
+        "args": [
+          0.335
+        ]
+      },
+      "out": 0.34
+    },
+    {
+      "id": "24_round2_plain",
+      "description": "round2 plain",
+      "in": {
+        "fn": "round2",
+        "args": [
+          0.4949
+        ]
+      },
+      "out": 0.49
+    },
+    {
+      "id": "25_to_fixed_2.25_->_2.3",
+      "description": "to_fixed 2.25 -> 2.3",
+      "in": {
+        "fn": "to_fixed",
+        "args": [
+          2.25,
+          1
+        ]
+      },
+      "out": "2.3"
+    },
+    {
+      "id": "26_to_fixed_0.25_->_0.3",
+      "description": "to_fixed 0.25 -> 0.3",
+      "in": {
+        "fn": "to_fixed",
+        "args": [
+          0.25,
+          1
+        ]
+      },
+      "out": "0.3"
+    },
+    {
+      "id": "27_to_fixed_24.5_->_25",
+      "description": "to_fixed 24.5 -> 25",
+      "in": {
+        "fn": "to_fixed",
+        "args": [
+          24.5,
+          0
+        ]
+      },
+      "out": "25"
+    },
+    {
+      "id": "28_to_fixed_11.5_->_12",
+      "description": "to_fixed 11.5 -> 12",
+      "in": {
+        "fn": "to_fixed",
+        "args": [
+          11.5,
+          0
+        ]
+      },
+      "out": "12"
+    },
+    {
+      "id": "29_to_fixed_2.4",
+      "description": "to_fixed 2.4",
+      "in": {
+        "fn": "to_fixed",
+        "args": [
+          2.4,
+          1
+        ]
+      },
+      "out": "2.4"
+    },
+    {
+      "id": "30_to_fixed_1.005_->_1.00",
+      "description": "to_fixed 1.005 -> 1.00",
+      "in": {
+        "fn": "to_fixed",
+        "args": [
+          1.005,
+          2
+        ]
+      },
+      "out": "1.00"
+    },
+    {
+      "id": "31_to_fixed_0",
+      "description": "to_fixed 0",
+      "in": {
+        "fn": "to_fixed",
+        "args": [
+          0,
+          1
+        ]
+      },
+      "out": "0.0"
+    },
+    {
+      "id": "32_to_fixed_3.6",
+      "description": "to_fixed 3.6",
+      "in": {
+        "fn": "to_fixed",
+        "args": [
+          3.6,
+          1
+        ]
+      },
+      "out": "3.6"
+    }
+  ]
+}

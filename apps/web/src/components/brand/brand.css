@@ -1,0 +1,96 @@
+/*
+ * Motion for the brand pieces (tier medallions, the logo mark). Namespaced fd-br-* so it never collides with the glass
+ * recipes in src/styles. Every animation has a reduced-motion equivalent: a short fade, never movement.
+ */
+
+/* The Elite ring: a conic gradient turning once per 14 seconds. */
+@keyframes fd-br-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Rank-up: the medallion springs in (one overshoot), then a specular sweep crosses it once. */
+@keyframes fd-br-pop {
+  0% {
+    transform: scale(0.55);
+    opacity: 0;
+  }
+  55% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fd-br-sweep {
+  from {
+    background-position: 190% 0;
+  }
+  to {
+    background-position: -90% 0;
+  }
+}
+
+@keyframes fd-br-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* The approved logo draw-on: the ribbon draws along its path in 600 ms (stroke-dashoffset, `emphasized`). */
+@keyframes fd-br-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.fd-br-elite-ring {
+  animation: fd-br-spin 14s linear infinite;
+}
+
+.fd-br-pop {
+  animation: fd-br-pop 640ms cubic-bezier(0.2, 0.9, 0.3, 1.15) both;
+}
+
+.fd-br-sweep {
+  background-image: linear-gradient(115deg, transparent 38%, rgb(255 255 255 / 0.65) 50%, transparent 62%);
+  background-size: 260% 100%;
+  animation: fd-br-sweep 900ms var(--fd-ease-emphasized) 380ms both;
+}
+
+.fd-br-draw {
+  stroke-dasharray: 1;
+  animation: fd-br-draw 600ms var(--fd-ease-emphasized) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fd-br-elite-ring {
+    animation: none;
+  }
+  .fd-br-pop {
+    animation: fd-br-fade 200ms ease both;
+  }
+  .fd-br-sweep {
+    animation: none;
+    opacity: 0;
+  }
+  .fd-br-draw {
+    stroke-dasharray: none;
+    animation: fd-br-fade 200ms ease both;
+  }
+}
+
+/* Logo: in the stacked lockup the tile is fg-coloured, so its mint bar must be the theme-INVERSE mint
+   (bright mint on the ink tile in light theme, deep mint on the ice tile in dark theme). */
+.fd-logo-tilebar { stroke: var(--fd-mint-600); }
+:root[data-theme="light"] .fd-logo-tilebar { stroke: var(--fd-mint-500); }

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-labelledby="t d">
+<title id="t">flowd</title>
+<desc id="d">The flowd mark: a lowercase f formed by one continuous ribbon, with a mint crossbar. Flat colour; adapts to light and dark colour schemes.</desc>
+<defs><style>.ink{stroke:#08112A}.bar{stroke:#20B27C}.tilebg{fill:#08112A}.tilef{stroke:#F3F7FF}.tilebar{stroke:#18DF9B}@media (prefers-color-scheme:dark){.ink{stroke:#F3F7FF}.bar{stroke:#18DF9B}.tilebg{fill:#F3F7FF}.tilef{stroke:#08112A}.tilebar{stroke:#20B27C}}</style></defs>
+<g transform="translate(13 -5)" fill="none" stroke-linecap="round" stroke-linejoin="round"><path class="ink" d="M34 214C66 214 84 196 90 170C98 134 100 112 112 88C124 64 144 52 172 52L196 52" stroke="#08112A" stroke-width="40"/><path class="bar" d="M62 138L168 138" stroke="#20B27C" stroke-width="34"/></g>
+</svg>

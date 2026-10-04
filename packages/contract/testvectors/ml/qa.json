@@ -1,0 +1,4022 @@
+{
+  "schema": "flowd.testvectors/1",
+  "suite": "qa",
+  "description": "Auto-QA over transcript, on-screen text, scenes, audio and vision facts against the brief: 14 checks, pass / warn / fail, reason codes. Disclosure failures block settlement. Checks with no input are skipped, never silently passed.",
+  "contract_version": "1.0.0",
+  "parity": "reference",
+  "compare": {
+    "objects": "subset",
+    "arrays": "same length, element-wise subset",
+    "numbers": "exact",
+    "null": "must be null"
+  },
+  "reference": "services/ml/src/flowd_ml/qa/",
+  "generated_by": "services/ml/scripts/export_vectors.py (do not edit by hand)",
+  "endpoint": "/v1/qa",
+  "cases": [
+    {
+      "id": "clean_pass",
+      "description": "A compliant video: every check that has input passes.",
+      "in": {
+        "media": {
+          "duration_ms": 24000,
+          "width": 1080,
+          "height": 1920
+        },
+        "transcript": [
+          {
+            "t_start_ms": 300,
+            "t_end_ms": 2100,
+            "text": "I was wrong about AI photo apps."
+          },
+          {
+            "t_start_ms": 2200,
+            "t_end_ms": 4800,
+            "text": "This is a paid partnership with Lumi, and look at this."
+          },
+          {
+            "t_start_ms": 9600,
+            "t_end_ms": 14000,
+            "text": "Wow, no way. The result is so good."
+          },
+          {
+            "t_start_ms": 20400,
+            "t_end_ms": 23200,
+            "text": "Try it free for seven days, link in bio."
+          }
+        ],
+        "on_screen_text": [
+          {
+            "t_start_ms": 400,
+            "t_end_ms": 2400,
+            "text": "I was wrong about AI photo apps",
+            "in_safe_zone": true
+          },
+          {
+            "t_start_ms": 2500,
+            "t_end_ms": 5000,
+            "text": "#ad Paid partnership with Lumi",
+            "in_safe_zone": true
+          }
+        ],
+        "scenes": [
+          {
+            "t_start_ms": 0,
+            "t_end_ms": 1200,
+            "kind": "face"
+          },
+          {
+            "t_start_ms": 1200,
+            "t_end_ms": 14000,
+            "kind": "screen_recording"
+          },
+          {
+            "t_start_ms": 14000,
+            "t_end_ms": 24000,
+            "kind": "face"
+          }
+        ],
+        "brief": {
+          "beats": [
+            {
+              "beat": "hook",
+              "required": true
+            },
+            {
+              "beat": "app_reveal",
+              "required": true
+            },
+            {
+              "beat": "cta",
+              "required": true
+            }
+          ],
+          "disclosure_text": "#ad Paid partnership with Lumi",
+          "banned_claims": [
+            "guaranteed results"
+          ],
+          "cta": "Link in bio",
+          "app_name": "Lumi",
+          "brand_name": "Lumi"
+        }
+      },
+      "out": {
+        "verdict": "pass",
+        "passed": true,
+        "auto_approvable": false,
+        "blocks_settlement": false,
+        "suggested_reason_code": null,
+        "checks": [
+          {
+            "check": "disclosure_audio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "disclosure_onscreen",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "banned_claims",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "brief_beats",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "safe_zone",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "aspect_ratio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "length",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "resolution",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          }
+        ],
+        "skipped": [
+          "music_licence",
+          "ai_content",
+          "duplicate",
+          "watermark",
+          "audio_clarity",
+          "moderation"
+        ]
+      }
+    },
+    {
+      "id": "no_spoken_disclosure",
+      "description": "No #ad spoken: fails and blocks settlement.",
+      "in": {
+        "media": {
+          "duration_ms": 24000,
+          "width": 1080,
+          "height": 1920
+        },
+        "transcript": [
+          {
+            "t_start_ms": 300,
+            "t_end_ms": 2100,
+            "text": "I was wrong about AI photo apps."
+          },
+          {
+            "t_start_ms": 20400,
+            "t_end_ms": 23200,
+            "text": "Try it free, link in bio."
+          }
+        ],
+        "on_screen_text": [
+          {
+            "t_start_ms": 400,
+            "t_end_ms": 2400,
+            "text": "I was wrong about AI photo apps",
+            "in_safe_zone": true
+          },
+          {
+            "t_start_ms": 2500,
+            "t_end_ms": 5000,
+            "text": "#ad Paid partnership with Lumi",
+            "in_safe_zone": true
+          }
+        ],
+        "scenes": [
+          {
+            "t_start_ms": 0,
+            "t_end_ms": 1200,
+            "kind": "face"
+          },
+          {
+            "t_start_ms": 1200,
+            "t_end_ms": 14000,
+            "kind": "screen_recording"
+          },
+          {
+            "t_start_ms": 14000,
+            "t_end_ms": 24000,
+            "kind": "face"
+          }
+        ],
+        "brief": {
+          "beats": [
+            {
+              "beat": "hook",
+              "required": true
+            },
+            {
+              "beat": "app_reveal",
+              "required": true
+            },
+            {
+              "beat": "cta",
+              "required": true
+            }
+          ],
+          "disclosure_text": "#ad Paid partnership with Lumi",
+          "banned_claims": [
+            "guaranteed results"
+          ],
+          "cta": "Link in bio",
+          "app_name": "Lumi",
+          "brand_name": "Lumi"
+        }
+      },
+      "out": {
+        "verdict": "fail",
+        "passed": false,
+        "auto_approvable": false,
+        "blocks_settlement": true,
+        "suggested_reason_code": "missing_disclosure",
+        "checks": [
+          {
+            "check": "disclosure_audio",
+            "result": "fail",
+            "blocks_settlement": true,
+            "reason_code": "missing_disclosure"
+          },
+          {
+            "check": "disclosure_onscreen",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "banned_claims",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "brief_beats",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "safe_zone",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "aspect_ratio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "length",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "resolution",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          }
+        ],
+        "skipped": [
+          "music_licence",
+          "ai_content",
+          "duplicate",
+          "watermark",
+          "audio_clarity",
+          "moderation"
+        ]
+      }
+    },
+    {
+      "id": "no_onscreen_disclosure",
+      "description": "No #ad on screen: fails and blocks settlement.",
+      "in": {
+        "media": {
+          "duration_ms": 24000,
+          "width": 1080,
+          "height": 1920
+        },
+        "transcript": [
+          {
+            "t_start_ms": 300,
+            "t_end_ms": 2100,
+            "text": "I was wrong about AI photo apps."
+          },
+          {
+            "t_start_ms": 2200,
+            "t_end_ms": 4800,
+            "text": "This is a paid partnership with Lumi, and look at this."
+          },
+          {
+            "t_start_ms": 9600,
+            "t_end_ms": 14000,
+            "text": "Wow, no way. The result is so good."
+          },
+          {
+            "t_start_ms": 20400,
+            "t_end_ms": 23200,
+            "text": "Try it free for seven days, link in bio."
+          }
+        ],
+        "on_screen_text": [
+          {
+            "t_start_ms": 400,
+            "t_end_ms": 2400,
+            "text": "I was wrong about AI photo apps",
+            "in_safe_zone": true
+          }
+        ],
+        "scenes": [
+          {
+            "t_start_ms": 0,
+            "t_end_ms": 1200,
+            "kind": "face"
+          },
+          {
+            "t_start_ms": 1200,
+            "t_end_ms": 14000,
+            "kind": "screen_recording"
+          },
+          {
+            "t_start_ms": 14000,
+            "t_end_ms": 24000,
+            "kind": "face"
+          }
+        ],
+        "brief": {
+          "beats": [
+            {
+              "beat": "hook",
+              "required": true
+            },
+            {
+              "beat": "app_reveal",
+              "required": true
+            },
+            {
+              "beat": "cta",
+              "required": true
+            }
+          ],
+          "disclosure_text": "#ad Paid partnership with Lumi",
+          "banned_claims": [
+            "guaranteed results"
+          ],
+          "cta": "Link in bio",
+          "app_name": "Lumi",
+          "brand_name": "Lumi"
+        }
+      },
+      "out": {
+        "verdict": "fail",
+        "passed": false,
+        "auto_approvable": false,
+        "blocks_settlement": true,
+        "suggested_reason_code": "missing_disclosure",
+        "checks": [
+          {
+            "check": "disclosure_audio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "disclosure_onscreen",
+            "result": "fail",
+            "blocks_settlement": true,
+            "reason_code": "missing_disclosure"
+          },
+          {
+            "check": "banned_claims",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "brief_beats",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "safe_zone",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "aspect_ratio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "length",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "resolution",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          }
+        ],
+        "skipped": [
+          "music_licence",
+          "ai_content",
+          "duplicate",
+          "watermark",
+          "audio_clarity",
+          "moderation"
+        ]
+      }
+    },
+    {
+      "id": "late_spoken_disclosure",
+      "description": "Disclosure spoken at 20 s of 24 s: a warning, not a block.",
+      "in": {
+        "media": {
+          "duration_ms": 24000,
+          "width": 1080,
+          "height": 1920
+        },
+        "transcript": [
+          {
+            "t_start_ms": 300,
+            "t_end_ms": 2100,
+            "text": "I was wrong about AI photo apps."
+          },
+          {
+            "t_start_ms": 20400,
+            "t_end_ms": 23200,
+            "text": "Paid partnership with Lumi. Link in bio."
+          }
+        ],
+        "on_screen_text": [
+          {
+            "t_start_ms": 400,
+            "t_end_ms": 2400,
+            "text": "I was wrong about AI photo apps",
+            "in_safe_zone": true
+          },
+          {
+            "t_start_ms": 2500,
+            "t_end_ms": 5000,
+            "text": "#ad Paid partnership with Lumi",
+            "in_safe_zone": true
+          }
+        ],
+        "scenes": [
+          {
+            "t_start_ms": 0,
+            "t_end_ms": 1200,
+            "kind": "face"
+          },
+          {
+            "t_start_ms": 1200,
+            "t_end_ms": 14000,
+            "kind": "screen_recording"
+          },
+          {
+            "t_start_ms": 14000,
+            "t_end_ms": 24000,
+            "kind": "face"
+          }
+        ],
+        "brief": {
+          "beats": [
+            {
+              "beat": "hook",
+              "required": true
+            },
+            {
+              "beat": "app_reveal",
+              "required": true
+            },
+            {
+              "beat": "cta",
+              "required": true
+            }
+          ],
+          "disclosure_text": "#ad Paid partnership with Lumi",
+          "banned_claims": [
+            "guaranteed results"
+          ],
+          "cta": "Link in bio",
+          "app_name": "Lumi",
+          "brand_name": "Lumi"
+        }
+      },
+      "out": {
+        "verdict": "warn",
+        "passed": false,
+        "auto_approvable": false,
+        "blocks_settlement": false,
+        "suggested_reason_code": "missing_disclosure",
+        "checks": [
+          {
+            "check": "disclosure_audio",
+            "result": "warn",
+            "blocks_settlement": false,
+            "reason_code": "missing_disclosure"
+          },
+          {
+            "check": "disclosure_onscreen",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "banned_claims",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "brief_beats",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "safe_zone",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "aspect_ratio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "length",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "resolution",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          }
+        ],
+        "skipped": [
+          "music_licence",
+          "ai_content",
+          "duplicate",
+          "watermark",
+          "audio_clarity",
+          "moderation"
+        ]
+      }
+    },
+    {
+      "id": "short_onscreen_disclosure",
+      "description": "#ad visible for 1.4 s: a warning (needs 2 s).",
+      "in": {
+        "media": {
+          "duration_ms": 24000,
+          "width": 1080,
+          "height": 1920
+        },
+        "transcript": [
+          {
+            "t_start_ms": 300,
+            "t_end_ms": 2100,
+            "text": "I was wrong about AI photo apps."
+          },
+          {
+            "t_start_ms": 2200,
+            "t_end_ms": 4800,
+            "text": "This is a paid partnership with Lumi, and look at this."
+          },
+          {
+            "t_start_ms": 9600,
+            "t_end_ms": 14000,
+            "text": "Wow, no way. The result is so good."
+          },
+          {
+            "t_start_ms": 20400,
+            "t_end_ms": 23200,
+            "text": "Try it free for seven days, link in bio."
+          }
+        ],
+        "on_screen_text": [
+          {
+            "t_start_ms": 2500,
+            "t_end_ms": 3900,
+            "text": "#ad",
+            "in_safe_zone": true
+          }
+        ],
+        "scenes": [
+          {
+            "t_start_ms": 0,
+            "t_end_ms": 1200,
+            "kind": "face"
+          },
+          {
+            "t_start_ms": 1200,
+            "t_end_ms": 14000,
+            "kind": "screen_recording"
+          },
+          {
+            "t_start_ms": 14000,
+            "t_end_ms": 24000,
+            "kind": "face"
+          }
+        ],
+        "brief": {
+          "beats": [
+            {
+              "beat": "hook",
+              "required": true
+            },
+            {
+              "beat": "app_reveal",
+              "required": true
+            },
+            {
+              "beat": "cta",
+              "required": true
+            }
+          ],
+          "disclosure_text": "#ad Paid partnership with Lumi",
+          "banned_claims": [
+            "guaranteed results"
+          ],
+          "cta": "Link in bio",
+          "app_name": "Lumi",
+          "brand_name": "Lumi"
+        }
+      },
+      "out": {
+        "verdict": "warn",
+        "passed": false,
+        "auto_approvable": false,
+        "blocks_settlement": false,
+        "suggested_reason_code": "missing_disclosure",
+        "checks": [
+          {
+            "check": "disclosure_audio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "disclosure_onscreen",
+            "result": "warn",
+            "blocks_settlement": false,
+            "reason_code": "missing_disclosure"
+          },
+          {
+            "check": "banned_claims",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "brief_beats",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "safe_zone",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "aspect_ratio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "length",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "resolution",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          }
+        ],
+        "skipped": [
+          "music_licence",
+          "ai_content",
+          "duplicate",
+          "watermark",
+          "audio_clarity",
+          "moderation"
+        ]
+      }
+    },
+    {
+      "id": "banned_claim_said",
+      "description": "A brand banned claim is spoken: fails with the transcript line as evidence.",
+      "in": {
+        "media": {
+          "duration_ms": 24000,
+          "width": 1080,
+          "height": 1920
+        },
+        "transcript": [
+          {
+            "t_start_ms": 300,
+            "t_end_ms": 2100,
+            "text": "Lumi gives you guaranteed results."
+          },
+          {
+            "t_start_ms": 2200,
+            "t_end_ms": 4800,
+            "text": "Paid partnership with Lumi."
+          },
+          {
+            "t_start_ms": 20400,
+            "t_end_ms": 23200,
+            "text": "Link in bio."
+          }
+        ],
+        "on_screen_text": [
+          {
+            "t_start_ms": 400,
+            "t_end_ms": 2400,
+            "text": "I was wrong about AI photo apps",
+            "in_safe_zone": true
+          },
+          {
+            "t_start_ms": 2500,
+            "t_end_ms": 5000,
+            "text": "#ad Paid partnership with Lumi",
+            "in_safe_zone": true
+          }
+        ],
+        "scenes": [
+          {
+            "t_start_ms": 0,
+            "t_end_ms": 1200,
+            "kind": "face"
+          },
+          {
+            "t_start_ms": 1200,
+            "t_end_ms": 14000,
+            "kind": "screen_recording"
+          },
+          {
+            "t_start_ms": 14000,
+            "t_end_ms": 24000,
+            "kind": "face"
+          }
+        ],
+        "brief": {
+          "beats": [
+            {
+              "beat": "hook",
+              "required": true
+            },
+            {
+              "beat": "app_reveal",
+              "required": true
+            },
+            {
+              "beat": "cta",
+              "required": true
+            }
+          ],
+          "disclosure_text": "#ad Paid partnership with Lumi",
+          "banned_claims": [
+            "guaranteed results"
+          ],
+          "cta": "Link in bio",
+          "app_name": "Lumi",
+          "brand_name": "Lumi"
+        }
+      },
+      "out": {
+        "verdict": "fail",
+        "passed": false,
+        "auto_approvable": false,
+        "blocks_settlement": false,
+        "suggested_reason_code": "banned_claim",
+        "checks": [
+          {
+            "check": "disclosure_audio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "disclosure_onscreen",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "banned_claims",
+            "result": "fail",
+            "blocks_settlement": false,
+            "reason_code": "banned_claim"
+          },
+          {
+            "check": "brief_beats",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "safe_zone",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "aspect_ratio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "length",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "resolution",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          }
+        ],
+        "skipped": [
+          "music_licence",
+          "ai_content",
+          "duplicate",
+          "watermark",
+          "audio_clarity",
+          "moderation"
+        ]
+      }
+    },
+    {
+      "id": "platform_risky_claim",
+      "description": "A platform-level risky claim only warns.",
+      "in": {
+        "media": {
+          "duration_ms": 24000,
+          "width": 1080,
+          "height": 1920
+        },
+        "transcript": [
+          {
+            "t_start_ms": 300,
+            "t_end_ms": 2100,
+            "text": "This is a get rich app."
+          },
+          {
+            "t_start_ms": 2200,
+            "t_end_ms": 4800,
+            "text": "Paid partnership with Lumi."
+          },
+          {
+            "t_start_ms": 20400,
+            "t_end_ms": 23200,
+            "text": "Link in bio."
+          }
+        ],
+        "on_screen_text": [
+          {
+            "t_start_ms": 400,
+            "t_end_ms": 2400,
+            "text": "I was wrong about AI photo apps",
+            "in_safe_zone": true
+          },
+          {
+            "t_start_ms": 2500,
+            "t_end_ms": 5000,
+            "text": "#ad Paid partnership with Lumi",
+            "in_safe_zone": true
+          }
+        ],
+        "scenes": [
+          {
+            "t_start_ms": 0,
+            "t_end_ms": 1200,
+            "kind": "face"
+          },
+          {
+            "t_start_ms": 1200,
+            "t_end_ms": 14000,
+            "kind": "screen_recording"
+          },
+          {
+            "t_start_ms": 14000,
+            "t_end_ms": 24000,
+            "kind": "face"
+          }
+        ],
+        "brief": {
+          "beats": [
+            {
+              "beat": "hook",
+              "required": true
+            },
+            {
+              "beat": "app_reveal",
+              "required": true
+            },
+            {
+              "beat": "cta",
+              "required": true
+            }
+          ],
+          "disclosure_text": "#ad Paid partnership with Lumi",
+          "banned_claims": [
+            "guaranteed results"
+          ],
+          "cta": "Link in bio",
+          "app_name": "Lumi",
+          "brand_name": "Lumi"
+        }
+      },
+      "out": {
+        "verdict": "warn",
+        "passed": false,
+        "auto_approvable": false,
+        "blocks_settlement": false,
+        "suggested_reason_code": "banned_claim",
+        "checks": [
+          {
+            "check": "disclosure_audio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "disclosure_onscreen",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "banned_claims",
+            "result": "warn",
+            "blocks_settlement": false,
+            "reason_code": "banned_claim"
+          },
+          {
+            "check": "brief_beats",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "safe_zone",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "aspect_ratio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "length",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "resolution",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          }
+        ],
+        "skipped": [
+          "music_licence",
+          "ai_content",
+          "duplicate",
+          "watermark",
+          "audio_clarity",
+          "moderation"
+        ]
+      }
+    },
+    {
+      "id": "music_original_only",
+      "description": "Music on an original-audio-only bounty: fails.",
+      "in": {
+        "media": {
+          "duration_ms": 24000,
+          "width": 1080,
+          "height": 1920
+        },
+        "transcript": [
+          {
+            "t_start_ms": 300,
+            "t_end_ms": 2100,
+            "text": "I was wrong about AI photo apps."
+          },
+          {
+            "t_start_ms": 2200,
+            "t_end_ms": 4800,
+            "text": "This is a paid partnership with Lumi, and look at this."
+          },
+          {
+            "t_start_ms": 9600,
+            "t_end_ms": 14000,
+            "text": "Wow, no way. The result is so good."
+          },
+          {
+            "t_start_ms": 20400,
+            "t_end_ms": 23200,
+            "text": "Try it free for seven days, link in bio."
+          }
+        ],
+        "on_screen_text": [
+          {
+            "t_start_ms": 400,
+            "t_end_ms": 2400,
+            "text": "I was wrong about AI photo apps",
+            "in_safe_zone": true
+          },
+          {
+            "t_start_ms": 2500,
+            "t_end_ms": 5000,
+            "text": "#ad Paid partnership with Lumi",
+            "in_safe_zone": true
+          }
+        ],
+        "scenes": [
+          {
+            "t_start_ms": 0,
+            "t_end_ms": 1200,
+            "kind": "face"
+          },
+          {
+            "t_start_ms": 1200,
+            "t_end_ms": 14000,
+            "kind": "screen_recording"
+          },
+          {
+            "t_start_ms": 14000,
+            "t_end_ms": 24000,
+            "kind": "face"
+          }
+        ],
+        "brief": {
+          "beats": [
+            {
+              "beat": "hook",
+              "required": true
+            },
+            {
+              "beat": "app_reveal",
+              "required": true
+            },
+            {
+              "beat": "cta",
+              "required": true
+            }
+          ],
+          "disclosure_text": "#ad Paid partnership with Lumi",
+          "banned_claims": [
+            "guaranteed results"
+          ],
+          "cta": "Link in bio",
+          "app_name": "Lumi",
+          "brand_name": "Lumi",
+          "music_policy": "original_only"
+        },
+        "audio": {
+          "music_detected": true,
+          "music_licensed": true
+        }
+      },
+      "out": {
+        "verdict": "fail",
+        "passed": false,
+        "auto_approvable": false,
+        "blocks_settlement": false,
+        "suggested_reason_code": "music_not_licensed",
+        "checks": [
+          {
+            "check": "disclosure_audio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "disclosure_onscreen",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "music_licence",
+            "result": "fail",
+            "blocks_settlement": false,
+            "reason_code": "music_not_licensed"
+          },
+          {
+            "check": "banned_claims",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "brief_beats",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "safe_zone",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "aspect_ratio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "length",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "resolution",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          }
+        ],
+        "skipped": [
+          "ai_content",
+          "duplicate",
+          "watermark",
+          "audio_clarity",
+          "moderation"
+        ]
+      }
+    },
+    {
+      "id": "music_unlicensed",
+      "description": "Music that is not a commercial-library track: fails.",
+      "in": {
+        "media": {
+          "duration_ms": 24000,
+          "width": 1080,
+          "height": 1920
+        },
+        "transcript": [
+          {
+            "t_start_ms": 300,
+            "t_end_ms": 2100,
+            "text": "I was wrong about AI photo apps."
+          },
+          {
+            "t_start_ms": 2200,
+            "t_end_ms": 4800,
+            "text": "This is a paid partnership with Lumi, and look at this."
+          },
+          {
+            "t_start_ms": 9600,
+            "t_end_ms": 14000,
+            "text": "Wow, no way. The result is so good."
+          },
+          {
+            "t_start_ms": 20400,
+            "t_end_ms": 23200,
+            "text": "Try it free for seven days, link in bio."
+          }
+        ],
+        "on_screen_text": [
+          {
+            "t_start_ms": 400,
+            "t_end_ms": 2400,
+            "text": "I was wrong about AI photo apps",
+            "in_safe_zone": true
+          },
+          {
+            "t_start_ms": 2500,
+            "t_end_ms": 5000,
+            "text": "#ad Paid partnership with Lumi",
+            "in_safe_zone": true
+          }
+        ],
+        "scenes": [
+          {
+            "t_start_ms": 0,
+            "t_end_ms": 1200,
+            "kind": "face"
+          },
+          {
+            "t_start_ms": 1200,
+            "t_end_ms": 14000,
+            "kind": "screen_recording"
+          },
+          {
+            "t_start_ms": 14000,
+            "t_end_ms": 24000,
+            "kind": "face"
+          }
+        ],
+        "brief": {
+          "beats": [
+            {
+              "beat": "hook",
+              "required": true
+            },
+            {
+              "beat": "app_reveal",
+              "required": true
+            },
+            {
+              "beat": "cta",
+              "required": true
+            }
+          ],
+          "disclosure_text": "#ad Paid partnership with Lumi",
+          "banned_claims": [
+            "guaranteed results"
+          ],
+          "cta": "Link in bio",
+          "app_name": "Lumi",
+          "brand_name": "Lumi"
+        },
+        "audio": {
+          "music_detected": true,
+          "music_licensed": false
+        }
+      },
+      "out": {
+        "verdict": "fail",
+        "passed": false,
+        "auto_approvable": false,
+        "blocks_settlement": false,
+        "suggested_reason_code": "music_not_licensed",
+        "checks": [
+          {
+            "check": "disclosure_audio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "disclosure_onscreen",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "music_licence",
+            "result": "fail",
+            "blocks_settlement": false,
+            "reason_code": "music_not_licensed"
+          },
+          {
+            "check": "banned_claims",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "brief_beats",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "safe_zone",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "aspect_ratio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "length",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "resolution",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          }
+        ],
+        "skipped": [
+          "ai_content",
+          "duplicate",
+          "watermark",
+          "audio_clarity",
+          "moderation"
+        ]
+      }
+    },
+    {
+      "id": "ai_unlabelled",
+      "description": "AI-generated (0.9) with no label: fails.",
+      "in": {
+        "media": {
+          "duration_ms": 24000,
+          "width": 1080,
+          "height": 1920
+        },
+        "transcript": [
+          {
+            "t_start_ms": 300,
+            "t_end_ms": 2100,
+            "text": "I was wrong about AI photo apps."
+          },
+          {
+            "t_start_ms": 2200,
+            "t_end_ms": 4800,
+            "text": "This is a paid partnership with Lumi, and look at this."
+          },
+          {
+            "t_start_ms": 9600,
+            "t_end_ms": 14000,
+            "text": "Wow, no way. The result is so good."
+          },
+          {
+            "t_start_ms": 20400,
+            "t_end_ms": 23200,
+            "text": "Try it free for seven days, link in bio."
+          }
+        ],
+        "on_screen_text": [
+          {
+            "t_start_ms": 400,
+            "t_end_ms": 2400,
+            "text": "I was wrong about AI photo apps",
+            "in_safe_zone": true
+          },
+          {
+            "t_start_ms": 2500,
+            "t_end_ms": 5000,
+            "text": "#ad Paid partnership with Lumi",
+            "in_safe_zone": true
+          }
+        ],
+        "scenes": [
+          {
+            "t_start_ms": 0,
+            "t_end_ms": 1200,
+            "kind": "face"
+          },
+          {
+            "t_start_ms": 1200,
+            "t_end_ms": 14000,
+            "kind": "screen_recording"
+          },
+          {
+            "t_start_ms": 14000,
+            "t_end_ms": 24000,
+            "kind": "face"
+          }
+        ],
+        "brief": {
+          "beats": [
+            {
+              "beat": "hook",
+              "required": true
+            },
+            {
+              "beat": "app_reveal",
+              "required": true
+            },
+            {
+              "beat": "cta",
+              "required": true
+            }
+          ],
+          "disclosure_text": "#ad Paid partnership with Lumi",
+          "banned_claims": [
+            "guaranteed results"
+          ],
+          "cta": "Link in bio",
+          "app_name": "Lumi",
+          "brand_name": "Lumi"
+        },
+        "vision": {
+          "ai_generated_probability": 0.9
+        }
+      },
+      "out": {
+        "verdict": "fail",
+        "passed": false,
+        "auto_approvable": false,
+        "blocks_settlement": false,
+        "suggested_reason_code": "ai_content_undisclosed",
+        "checks": [
+          {
+            "check": "disclosure_audio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "disclosure_onscreen",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "banned_claims",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "ai_content",
+            "result": "fail",
+            "blocks_settlement": false,
+            "reason_code": "ai_content_undisclosed"
+          },
+          {
+            "check": "brief_beats",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "safe_zone",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "aspect_ratio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "length",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "resolution",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          }
+        ],
+        "skipped": [
+          "music_licence",
+          "duplicate",
+          "watermark",
+          "audio_clarity",
+          "moderation"
+        ]
+      }
+    },
+    {
+      "id": "ai_labelled",
+      "description": "AI-generated and labelled on screen: passes.",
+      "in": {
+        "media": {
+          "duration_ms": 24000,
+          "width": 1080,
+          "height": 1920
+        },
+        "transcript": [
+          {
+            "t_start_ms": 300,
+            "t_end_ms": 2100,
+            "text": "I was wrong about AI photo apps."
+          },
+          {
+            "t_start_ms": 2200,
+            "t_end_ms": 4800,
+            "text": "This is a paid partnership with Lumi, and look at this."
+          },
+          {
+            "t_start_ms": 9600,
+            "t_end_ms": 14000,
+            "text": "Wow, no way. The result is so good."
+          },
+          {
+            "t_start_ms": 20400,
+            "t_end_ms": 23200,
+            "text": "Try it free for seven days, link in bio."
+          }
+        ],
+        "on_screen_text": [
+          {
+            "t_start_ms": 400,
+            "t_end_ms": 3400,
+            "text": "#ad AI-generated",
+            "in_safe_zone": true
+          }
+        ],
+        "scenes": [
+          {
+            "t_start_ms": 0,
+            "t_end_ms": 1200,
+            "kind": "face"
+          },
+          {
+            "t_start_ms": 1200,
+            "t_end_ms": 14000,
+            "kind": "screen_recording"
+          },
+          {
+            "t_start_ms": 14000,
+            "t_end_ms": 24000,
+            "kind": "face"
+          }
+        ],
+        "brief": {
+          "beats": [
+            {
+              "beat": "hook",
+              "required": true
+            },
+            {
+              "beat": "app_reveal",
+              "required": true
+            },
+            {
+              "beat": "cta",
+              "required": true
+            }
+          ],
+          "disclosure_text": "#ad Paid partnership with Lumi",
+          "banned_claims": [
+            "guaranteed results"
+          ],
+          "cta": "Link in bio",
+          "app_name": "Lumi",
+          "brand_name": "Lumi"
+        },
+        "vision": {
+          "ai_generated_probability": 0.9
+        }
+      },
+      "out": {
+        "verdict": "pass",
+        "passed": true,
+        "auto_approvable": false,
+        "blocks_settlement": false,
+        "suggested_reason_code": null,
+        "checks": [
+          {
+            "check": "disclosure_audio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "disclosure_onscreen",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "banned_claims",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "ai_content",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "brief_beats",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "safe_zone",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "aspect_ratio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "length",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "resolution",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          }
+        ],
+        "skipped": [
+          "music_licence",
+          "duplicate",
+          "watermark",
+          "audio_clarity",
+          "moderation"
+        ]
+      }
+    },
+    {
+      "id": "ai_not_allowed",
+      "description": "AI-generated where the brief forbids it: fails even when labelled.",
+      "in": {
+        "media": {
+          "duration_ms": 24000,
+          "width": 1080,
+          "height": 1920
+        },
+        "transcript": [
+          {
+            "t_start_ms": 300,
+            "t_end_ms": 2100,
+            "text": "I was wrong about AI photo apps."
+          },
+          {
+            "t_start_ms": 2200,
+            "t_end_ms": 4800,
+            "text": "This is a paid partnership with Lumi, and look at this."
+          },
+          {
+            "t_start_ms": 9600,
+            "t_end_ms": 14000,
+            "text": "Wow, no way. The result is so good."
+          },
+          {
+            "t_start_ms": 20400,
+            "t_end_ms": 23200,
+            "text": "Try it free for seven days, link in bio."
+          }
+        ],
+        "on_screen_text": [
+          {
+            "t_start_ms": 400,
+            "t_end_ms": 3400,
+            "text": "#ad AI-generated",
+            "in_safe_zone": true
+          }
+        ],
+        "scenes": [
+          {
+            "t_start_ms": 0,
+            "t_end_ms": 1200,
+            "kind": "face"
+          },
+          {
+            "t_start_ms": 1200,
+            "t_end_ms": 14000,
+            "kind": "screen_recording"
+          },
+          {
+            "t_start_ms": 14000,
+            "t_end_ms": 24000,
+            "kind": "face"
+          }
+        ],
+        "brief": {
+          "beats": [
+            {
+              "beat": "hook",
+              "required": true
+            },
+            {
+              "beat": "app_reveal",
+              "required": true
+            },
+            {
+              "beat": "cta",
+              "required": true
+            }
+          ],
+          "disclosure_text": "#ad Paid partnership with Lumi",
+          "banned_claims": [
+            "guaranteed results"
+          ],
+          "cta": "Link in bio",
+          "app_name": "Lumi",
+          "brand_name": "Lumi",
+          "ai_policy": "not_allowed"
+        },
+        "vision": {
+          "ai_generated_probability": 0.9
+        }
+      },
+      "out": {
+        "verdict": "fail",
+        "passed": false,
+        "auto_approvable": false,
+        "blocks_settlement": false,
+        "suggested_reason_code": "ai_content_undisclosed",
+        "checks": [
+          {
+            "check": "disclosure_audio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "disclosure_onscreen",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "banned_claims",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "ai_content",
+            "result": "fail",
+            "blocks_settlement": false,
+            "reason_code": "ai_content_undisclosed"
+          },
+          {
+            "check": "brief_beats",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "safe_zone",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "aspect_ratio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "length",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "resolution",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          }
+        ],
+        "skipped": [
+          "music_licence",
+          "duplicate",
+          "watermark",
+          "audio_clarity",
+          "moderation"
+        ]
+      }
+    },
+    {
+      "id": "duplicate_exact",
+      "description": "Hash identical to another creator's video: fails (unoriginal_clip).",
+      "in": {
+        "media": {
+          "duration_ms": 24000,
+          "width": 1080,
+          "height": 1920
+        },
+        "transcript": [
+          {
+            "t_start_ms": 300,
+            "t_end_ms": 2100,
+            "text": "I was wrong about AI photo apps."
+          },
+          {
+            "t_start_ms": 2200,
+            "t_end_ms": 4800,
+            "text": "This is a paid partnership with Lumi, and look at this."
+          },
+          {
+            "t_start_ms": 9600,
+            "t_end_ms": 14000,
+            "text": "Wow, no way. The result is so good."
+          },
+          {
+            "t_start_ms": 20400,
+            "t_end_ms": 23200,
+            "text": "Try it free for seven days, link in bio."
+          }
+        ],
+        "on_screen_text": [
+          {
+            "t_start_ms": 400,
+            "t_end_ms": 2400,
+            "text": "I was wrong about AI photo apps",
+            "in_safe_zone": true
+          },
+          {
+            "t_start_ms": 2500,
+            "t_end_ms": 5000,
+            "text": "#ad Paid partnership with Lumi",
+            "in_safe_zone": true
+          }
+        ],
+        "scenes": [
+          {
+            "t_start_ms": 0,
+            "t_end_ms": 1200,
+            "kind": "face"
+          },
+          {
+            "t_start_ms": 1200,
+            "t_end_ms": 14000,
+            "kind": "screen_recording"
+          },
+          {
+            "t_start_ms": 14000,
+            "t_end_ms": 24000,
+            "kind": "face"
+          }
+        ],
+        "brief": {
+          "beats": [
+            {
+              "beat": "hook",
+              "required": true
+            },
+            {
+              "beat": "app_reveal",
+              "required": true
+            },
+            {
+              "beat": "cta",
+              "required": true
+            }
+          ],
+          "disclosure_text": "#ad Paid partnership with Lumi",
+          "banned_claims": [
+            "guaranteed results"
+          ],
+          "cta": "Link in bio",
+          "app_name": "Lumi",
+          "brand_name": "Lumi"
+        },
+        "phash": "bf2183365fb6e014",
+        "known_hashes": [
+          {
+            "id": "sub_0311",
+            "phash": "bf2183365fb6e014",
+            "kind": "other_creator"
+          }
+        ]
+      },
+      "out": {
+        "verdict": "fail",
+        "passed": false,
+        "auto_approvable": false,
+        "blocks_settlement": false,
+        "suggested_reason_code": "unoriginal_clip",
+        "checks": [
+          {
+            "check": "disclosure_audio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "disclosure_onscreen",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "banned_claims",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "duplicate",
+            "result": "fail",
+            "blocks_settlement": false,
+            "reason_code": "unoriginal_clip"
+          },
+          {
+            "check": "brief_beats",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "safe_zone",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "aspect_ratio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "length",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "resolution",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          }
+        ],
+        "skipped": [
+          "music_licence",
+          "ai_content",
+          "watermark",
+          "audio_clarity",
+          "moderation"
+        ]
+      }
+    },
+    {
+      "id": "duplicate_own_repost",
+      "description": "Hash close to the creator's own earlier post: fails (duplicate_content).",
+      "in": {
+        "media": {
+          "duration_ms": 24000,
+          "width": 1080,
+          "height": 1920
+        },
+        "transcript": [
+          {
+            "t_start_ms": 300,
+            "t_end_ms": 2100,
+            "text": "I was wrong about AI photo apps."
+          },
+          {
+            "t_start_ms": 2200,
+            "t_end_ms": 4800,
+            "text": "This is a paid partnership with Lumi, and look at this."
+          },
+          {
+            "t_start_ms": 9600,
+            "t_end_ms": 14000,
+            "text": "Wow, no way. The result is so good."
+          },
+          {
+            "t_start_ms": 20400,
+            "t_end_ms": 23200,
+            "text": "Try it free for seven days, link in bio."
+          }
+        ],
+        "on_screen_text": [
+          {
+            "t_start_ms": 400,
+            "t_end_ms": 2400,
+            "text": "I was wrong about AI photo apps",
+            "in_safe_zone": true
+          },
+          {
+            "t_start_ms": 2500,
+            "t_end_ms": 5000,
+            "text": "#ad Paid partnership with Lumi",
+            "in_safe_zone": true
+          }
+        ],
+        "scenes": [
+          {
+            "t_start_ms": 0,
+            "t_end_ms": 1200,
+            "kind": "face"
+          },
+          {
+            "t_start_ms": 1200,
+            "t_end_ms": 14000,
+            "kind": "screen_recording"
+          },
+          {
+            "t_start_ms": 14000,
+            "t_end_ms": 24000,
+            "kind": "face"
+          }
+        ],
+        "brief": {
+          "beats": [
+            {
+              "beat": "hook",
+              "required": true
+            },
+            {
+              "beat": "app_reveal",
+              "required": true
+            },
+            {
+              "beat": "cta",
+              "required": true
+            }
+          ],
+          "disclosure_text": "#ad Paid partnership with Lumi",
+          "banned_claims": [
+            "guaranteed results"
+          ],
+          "cta": "Link in bio",
+          "app_name": "Lumi",
+          "brand_name": "Lumi"
+        },
+        "phash": "bf2183365fb6e014",
+        "known_hashes": [
+          {
+            "id": "post_0201",
+            "phash": "bf2183365fb6e016",
+            "kind": "own_earlier"
+          }
+        ]
+      },
+      "out": {
+        "verdict": "fail",
+        "passed": false,
+        "auto_approvable": false,
+        "blocks_settlement": false,
+        "suggested_reason_code": "duplicate_content",
+        "checks": [
+          {
+            "check": "disclosure_audio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "disclosure_onscreen",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "banned_claims",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "duplicate",
+            "result": "fail",
+            "blocks_settlement": false,
+            "reason_code": "duplicate_content"
+          },
+          {
+            "check": "brief_beats",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "safe_zone",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "aspect_ratio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "length",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "resolution",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          }
+        ],
+        "skipped": [
+          "music_licence",
+          "ai_content",
+          "watermark",
+          "audio_clarity",
+          "moderation"
+        ]
+      }
+    },
+    {
+      "id": "duplicate_near",
+      "description": "Distance 9: a warning.",
+      "in": {
+        "media": {
+          "duration_ms": 24000,
+          "width": 1080,
+          "height": 1920
+        },
+        "transcript": [
+          {
+            "t_start_ms": 300,
+            "t_end_ms": 2100,
+            "text": "I was wrong about AI photo apps."
+          },
+          {
+            "t_start_ms": 2200,
+            "t_end_ms": 4800,
+            "text": "This is a paid partnership with Lumi, and look at this."
+          },
+          {
+            "t_start_ms": 9600,
+            "t_end_ms": 14000,
+            "text": "Wow, no way. The result is so good."
+          },
+          {
+            "t_start_ms": 20400,
+            "t_end_ms": 23200,
+            "text": "Try it free for seven days, link in bio."
+          }
+        ],
+        "on_screen_text": [
+          {
+            "t_start_ms": 400,
+            "t_end_ms": 2400,
+            "text": "I was wrong about AI photo apps",
+            "in_safe_zone": true
+          },
+          {
+            "t_start_ms": 2500,
+            "t_end_ms": 5000,
+            "text": "#ad Paid partnership with Lumi",
+            "in_safe_zone": true
+          }
+        ],
+        "scenes": [
+          {
+            "t_start_ms": 0,
+            "t_end_ms": 1200,
+            "kind": "face"
+          },
+          {
+            "t_start_ms": 1200,
+            "t_end_ms": 14000,
+            "kind": "screen_recording"
+          },
+          {
+            "t_start_ms": 14000,
+            "t_end_ms": 24000,
+            "kind": "face"
+          }
+        ],
+        "brief": {
+          "beats": [
+            {
+              "beat": "hook",
+              "required": true
+            },
+            {
+              "beat": "app_reveal",
+              "required": true
+            },
+            {
+              "beat": "cta",
+              "required": true
+            }
+          ],
+          "disclosure_text": "#ad Paid partnership with Lumi",
+          "banned_claims": [
+            "guaranteed results"
+          ],
+          "cta": "Link in bio",
+          "app_name": "Lumi",
+          "brand_name": "Lumi"
+        },
+        "phash": "bf2183365fb6e014",
+        "known_hashes": [
+          {
+            "id": "sub_0311",
+            "phash": "bf2183365fb6e5b5",
+            "kind": "other_creator"
+          }
+        ]
+      },
+      "out": {
+        "verdict": "fail",
+        "passed": false,
+        "auto_approvable": false,
+        "blocks_settlement": false,
+        "suggested_reason_code": "unoriginal_clip",
+        "checks": [
+          {
+            "check": "disclosure_audio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "disclosure_onscreen",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "banned_claims",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "duplicate",
+            "result": "fail",
+            "blocks_settlement": false,
+            "reason_code": "unoriginal_clip"
+          },
+          {
+            "check": "brief_beats",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "safe_zone",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "aspect_ratio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "length",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "resolution",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          }
+        ],
+        "skipped": [
+          "music_licence",
+          "ai_content",
+          "watermark",
+          "audio_clarity",
+          "moderation"
+        ]
+      }
+    },
+    {
+      "id": "watermark",
+      "description": "Another app's watermark: fails.",
+      "in": {
+        "media": {
+          "duration_ms": 24000,
+          "width": 1080,
+          "height": 1920
+        },
+        "transcript": [
+          {
+            "t_start_ms": 300,
+            "t_end_ms": 2100,
+            "text": "I was wrong about AI photo apps."
+          },
+          {
+            "t_start_ms": 2200,
+            "t_end_ms": 4800,
+            "text": "This is a paid partnership with Lumi, and look at this."
+          },
+          {
+            "t_start_ms": 9600,
+            "t_end_ms": 14000,
+            "text": "Wow, no way. The result is so good."
+          },
+          {
+            "t_start_ms": 20400,
+            "t_end_ms": 23200,
+            "text": "Try it free for seven days, link in bio."
+          }
+        ],
+        "on_screen_text": [
+          {
+            "t_start_ms": 400,
+            "t_end_ms": 2400,
+            "text": "I was wrong about AI photo apps",
+            "in_safe_zone": true
+          },
+          {
+            "t_start_ms": 2500,
+            "t_end_ms": 5000,
+            "text": "#ad Paid partnership with Lumi",
+            "in_safe_zone": true
+          }
+        ],
+        "scenes": [
+          {
+            "t_start_ms": 0,
+            "t_end_ms": 1200,
+            "kind": "face"
+          },
+          {
+            "t_start_ms": 1200,
+            "t_end_ms": 14000,
+            "kind": "screen_recording"
+          },
+          {
+            "t_start_ms": 14000,
+            "t_end_ms": 24000,
+            "kind": "face"
+          }
+        ],
+        "brief": {
+          "beats": [
+            {
+              "beat": "hook",
+              "required": true
+            },
+            {
+              "beat": "app_reveal",
+              "required": true
+            },
+            {
+              "beat": "cta",
+              "required": true
+            }
+          ],
+          "disclosure_text": "#ad Paid partnership with Lumi",
+          "banned_claims": [
+            "guaranteed results"
+          ],
+          "cta": "Link in bio",
+          "app_name": "Lumi",
+          "brand_name": "Lumi"
+        },
+        "vision": {
+          "watermarks": [
+            "ClipCut"
+          ]
+        }
+      },
+      "out": {
+        "verdict": "fail",
+        "passed": false,
+        "auto_approvable": false,
+        "blocks_settlement": false,
+        "suggested_reason_code": "watermark_present",
+        "checks": [
+          {
+            "check": "disclosure_audio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "disclosure_onscreen",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "banned_claims",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "watermark",
+            "result": "fail",
+            "blocks_settlement": false,
+            "reason_code": "watermark_present"
+          },
+          {
+            "check": "brief_beats",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "safe_zone",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "aspect_ratio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "length",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "resolution",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          }
+        ],
+        "skipped": [
+          "music_licence",
+          "ai_content",
+          "duplicate",
+          "audio_clarity",
+          "moderation"
+        ]
+      }
+    },
+    {
+      "id": "competitor_on_screen",
+      "description": "A competitor named in on-screen text: fails (competitor_shown).",
+      "in": {
+        "media": {
+          "duration_ms": 24000,
+          "width": 1080,
+          "height": 1920
+        },
+        "transcript": [
+          {
+            "t_start_ms": 300,
+            "t_end_ms": 2100,
+            "text": "I was wrong about AI photo apps."
+          },
+          {
+            "t_start_ms": 2200,
+            "t_end_ms": 4800,
+            "text": "This is a paid partnership with Lumi, and look at this."
+          },
+          {
+            "t_start_ms": 9600,
+            "t_end_ms": 14000,
+            "text": "Wow, no way. The result is so good."
+          },
+          {
+            "t_start_ms": 20400,
+            "t_end_ms": 23200,
+            "text": "Try it free for seven days, link in bio."
+          }
+        ],
+        "on_screen_text": [
+          {
+            "t_start_ms": 400,
+            "t_end_ms": 2400,
+            "text": "better than PixelPal",
+            "in_safe_zone": true
+          },
+          {
+            "t_start_ms": 2500,
+            "t_end_ms": 5000,
+            "text": "#ad Paid partnership with Lumi",
+            "in_safe_zone": true
+          }
+        ],
+        "scenes": [
+          {
+            "t_start_ms": 0,
+            "t_end_ms": 1200,
+            "kind": "face"
+          },
+          {
+            "t_start_ms": 1200,
+            "t_end_ms": 14000,
+            "kind": "screen_recording"
+          },
+          {
+            "t_start_ms": 14000,
+            "t_end_ms": 24000,
+            "kind": "face"
+          }
+        ],
+        "brief": {
+          "beats": [
+            {
+              "beat": "hook",
+              "required": true
+            },
+            {
+              "beat": "app_reveal",
+              "required": true
+            },
+            {
+              "beat": "cta",
+              "required": true
+            }
+          ],
+          "disclosure_text": "#ad Paid partnership with Lumi",
+          "banned_claims": [
+            "guaranteed results"
+          ],
+          "cta": "Link in bio",
+          "app_name": "Lumi",
+          "brand_name": "Lumi",
+          "competitor_names": [
+            "PixelPal"
+          ]
+        }
+      },
+      "out": {
+        "verdict": "fail",
+        "passed": false,
+        "auto_approvable": false,
+        "blocks_settlement": false,
+        "suggested_reason_code": "competitor_shown",
+        "checks": [
+          {
+            "check": "disclosure_audio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "disclosure_onscreen",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "banned_claims",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "watermark",
+            "result": "fail",
+            "blocks_settlement": false,
+            "reason_code": "competitor_shown"
+          },
+          {
+            "check": "brief_beats",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "safe_zone",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "aspect_ratio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "length",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "resolution",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          }
+        ],
+        "skipped": [
+          "music_licence",
+          "ai_content",
+          "duplicate",
+          "audio_clarity",
+          "moderation"
+        ]
+      }
+    },
+    {
+      "id": "missing_beat",
+      "description": "A required offer beat is missing: warns (2 of 3 found, coverage 0.67).",
+      "in": {
+        "media": {
+          "duration_ms": 24000,
+          "width": 1080,
+          "height": 1920
+        },
+        "transcript": [
+          {
+            "t_start_ms": 300,
+            "t_end_ms": 2100,
+            "text": "I was wrong about AI photo apps."
+          },
+          {
+            "t_start_ms": 2200,
+            "t_end_ms": 4800,
+            "text": "This is a paid partnership with Lumi, and look at this."
+          },
+          {
+            "t_start_ms": 9600,
+            "t_end_ms": 14000,
+            "text": "Wow, no way. The result is so good."
+          }
+        ],
+        "on_screen_text": [
+          {
+            "t_start_ms": 400,
+            "t_end_ms": 2400,
+            "text": "I was wrong about AI photo apps",
+            "in_safe_zone": true
+          },
+          {
+            "t_start_ms": 2500,
+            "t_end_ms": 5000,
+            "text": "#ad Paid partnership with Lumi",
+            "in_safe_zone": true
+          }
+        ],
+        "scenes": [
+          {
+            "t_start_ms": 0,
+            "t_end_ms": 1200,
+            "kind": "face"
+          },
+          {
+            "t_start_ms": 1200,
+            "t_end_ms": 14000,
+            "kind": "screen_recording"
+          },
+          {
+            "t_start_ms": 14000,
+            "t_end_ms": 24000,
+            "kind": "face"
+          }
+        ],
+        "brief": {
+          "beats": [
+            {
+              "beat": "hook",
+              "required": true
+            },
+            {
+              "beat": "app_reveal",
+              "required": true
+            },
+            {
+              "beat": "offer",
+              "required": true
+            }
+          ],
+          "disclosure_text": "#ad Paid partnership with Lumi",
+          "banned_claims": [
+            "guaranteed results"
+          ],
+          "cta": "Link in bio",
+          "app_name": "Lumi",
+          "brand_name": "Lumi"
+        }
+      },
+      "out": {
+        "verdict": "warn",
+        "passed": false,
+        "auto_approvable": false,
+        "blocks_settlement": false,
+        "suggested_reason_code": "offer_not_stated",
+        "checks": [
+          {
+            "check": "disclosure_audio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "disclosure_onscreen",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "banned_claims",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "brief_beats",
+            "result": "warn",
+            "blocks_settlement": false,
+            "reason_code": "offer_not_stated"
+          },
+          {
+            "check": "safe_zone",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "aspect_ratio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "length",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "resolution",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          }
+        ],
+        "skipped": [
+          "music_licence",
+          "ai_content",
+          "duplicate",
+          "watermark",
+          "audio_clarity",
+          "moderation"
+        ]
+      }
+    },
+    {
+      "id": "beats_mostly_missing",
+      "description": "Most required beats missing: fails.",
+      "in": {
+        "media": {
+          "duration_ms": 24000,
+          "width": 1080,
+          "height": 1920
+        },
+        "transcript": [
+          {
+            "t_start_ms": 300,
+            "t_end_ms": 2100,
+            "text": "Hello."
+          },
+          {
+            "t_start_ms": 2200,
+            "t_end_ms": 4800,
+            "text": "Paid partnership with Lumi."
+          }
+        ],
+        "on_screen_text": [
+          {
+            "t_start_ms": 400,
+            "t_end_ms": 2400,
+            "text": "I was wrong about AI photo apps",
+            "in_safe_zone": true
+          },
+          {
+            "t_start_ms": 2500,
+            "t_end_ms": 5000,
+            "text": "#ad Paid partnership with Lumi",
+            "in_safe_zone": true
+          }
+        ],
+        "scenes": [
+          {
+            "t_start_ms": 0,
+            "t_end_ms": 24000,
+            "kind": "face"
+          }
+        ],
+        "brief": {
+          "beats": [
+            {
+              "beat": "proof",
+              "required": true
+            },
+            {
+              "beat": "offer",
+              "required": true
+            },
+            {
+              "beat": "demo",
+              "required": true
+            },
+            {
+              "beat": "win_state",
+              "required": true
+            }
+          ],
+          "disclosure_text": "#ad Paid partnership with Lumi",
+          "banned_claims": [
+            "guaranteed results"
+          ],
+          "cta": "Link in bio",
+          "app_name": "Lumi",
+          "brand_name": "Lumi"
+        }
+      },
+      "out": {
+        "verdict": "fail",
+        "passed": false,
+        "auto_approvable": false,
+        "blocks_settlement": false,
+        "suggested_reason_code": "missing_required_beat",
+        "checks": [
+          {
+            "check": "disclosure_audio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "disclosure_onscreen",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "banned_claims",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "brief_beats",
+            "result": "fail",
+            "blocks_settlement": false,
+            "reason_code": "missing_required_beat"
+          },
+          {
+            "check": "safe_zone",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "aspect_ratio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "length",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "resolution",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          }
+        ],
+        "skipped": [
+          "music_licence",
+          "ai_content",
+          "duplicate",
+          "watermark",
+          "audio_clarity",
+          "moderation"
+        ]
+      }
+    },
+    {
+      "id": "text_outside_safe_zone",
+      "description": "Most on-screen text outside the safe zone: fails.",
+      "in": {
+        "media": {
+          "duration_ms": 24000,
+          "width": 1080,
+          "height": 1920
+        },
+        "transcript": [
+          {
+            "t_start_ms": 300,
+            "t_end_ms": 2100,
+            "text": "I was wrong about AI photo apps."
+          },
+          {
+            "t_start_ms": 2200,
+            "t_end_ms": 4800,
+            "text": "This is a paid partnership with Lumi, and look at this."
+          },
+          {
+            "t_start_ms": 9600,
+            "t_end_ms": 14000,
+            "text": "Wow, no way. The result is so good."
+          },
+          {
+            "t_start_ms": 20400,
+            "t_end_ms": 23200,
+            "text": "Try it free for seven days, link in bio."
+          }
+        ],
+        "on_screen_text": [
+          {
+            "t_start_ms": 400,
+            "t_end_ms": 2400,
+            "text": "I was wrong",
+            "in_safe_zone": false
+          },
+          {
+            "t_start_ms": 2500,
+            "t_end_ms": 5000,
+            "text": "#ad Paid partnership with Lumi",
+            "in_safe_zone": false
+          }
+        ],
+        "scenes": [
+          {
+            "t_start_ms": 0,
+            "t_end_ms": 1200,
+            "kind": "face"
+          },
+          {
+            "t_start_ms": 1200,
+            "t_end_ms": 14000,
+            "kind": "screen_recording"
+          },
+          {
+            "t_start_ms": 14000,
+            "t_end_ms": 24000,
+            "kind": "face"
+          }
+        ],
+        "brief": {
+          "beats": [
+            {
+              "beat": "hook",
+              "required": true
+            },
+            {
+              "beat": "app_reveal",
+              "required": true
+            },
+            {
+              "beat": "cta",
+              "required": true
+            }
+          ],
+          "disclosure_text": "#ad Paid partnership with Lumi",
+          "banned_claims": [
+            "guaranteed results"
+          ],
+          "cta": "Link in bio",
+          "app_name": "Lumi",
+          "brand_name": "Lumi"
+        }
+      },
+      "out": {
+        "verdict": "fail",
+        "passed": false,
+        "auto_approvable": false,
+        "blocks_settlement": false,
+        "suggested_reason_code": "other_requirement",
+        "checks": [
+          {
+            "check": "disclosure_audio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "disclosure_onscreen",
+            "result": "warn",
+            "blocks_settlement": false,
+            "reason_code": "missing_disclosure"
+          },
+          {
+            "check": "banned_claims",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "brief_beats",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "safe_zone",
+            "result": "fail",
+            "blocks_settlement": false,
+            "reason_code": "other_requirement"
+          },
+          {
+            "check": "aspect_ratio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "length",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "resolution",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          }
+        ],
+        "skipped": [
+          "music_licence",
+          "ai_content",
+          "duplicate",
+          "watermark",
+          "audio_clarity",
+          "moderation"
+        ]
+      }
+    },
+    {
+      "id": "landscape",
+      "description": "1920x1080 is not 9:16: fails.",
+      "in": {
+        "media": {
+          "duration_ms": 24000,
+          "width": 1920,
+          "height": 1080
+        },
+        "transcript": [
+          {
+            "t_start_ms": 300,
+            "t_end_ms": 2100,
+            "text": "I was wrong about AI photo apps."
+          },
+          {
+            "t_start_ms": 2200,
+            "t_end_ms": 4800,
+            "text": "This is a paid partnership with Lumi, and look at this."
+          },
+          {
+            "t_start_ms": 9600,
+            "t_end_ms": 14000,
+            "text": "Wow, no way. The result is so good."
+          },
+          {
+            "t_start_ms": 20400,
+            "t_end_ms": 23200,
+            "text": "Try it free for seven days, link in bio."
+          }
+        ],
+        "on_screen_text": [
+          {
+            "t_start_ms": 400,
+            "t_end_ms": 2400,
+            "text": "I was wrong about AI photo apps",
+            "in_safe_zone": true
+          },
+          {
+            "t_start_ms": 2500,
+            "t_end_ms": 5000,
+            "text": "#ad Paid partnership with Lumi",
+            "in_safe_zone": true
+          }
+        ],
+        "scenes": [
+          {
+            "t_start_ms": 0,
+            "t_end_ms": 1200,
+            "kind": "face"
+          },
+          {
+            "t_start_ms": 1200,
+            "t_end_ms": 14000,
+            "kind": "screen_recording"
+          },
+          {
+            "t_start_ms": 14000,
+            "t_end_ms": 24000,
+            "kind": "face"
+          }
+        ],
+        "brief": {
+          "beats": [
+            {
+              "beat": "hook",
+              "required": true
+            },
+            {
+              "beat": "app_reveal",
+              "required": true
+            },
+            {
+              "beat": "cta",
+              "required": true
+            }
+          ],
+          "disclosure_text": "#ad Paid partnership with Lumi",
+          "banned_claims": [
+            "guaranteed results"
+          ],
+          "cta": "Link in bio",
+          "app_name": "Lumi",
+          "brand_name": "Lumi"
+        }
+      },
+      "out": {
+        "verdict": "fail",
+        "passed": false,
+        "auto_approvable": false,
+        "blocks_settlement": false,
+        "suggested_reason_code": "wrong_format",
+        "checks": [
+          {
+            "check": "disclosure_audio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "disclosure_onscreen",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "banned_claims",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "brief_beats",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "safe_zone",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "aspect_ratio",
+            "result": "fail",
+            "blocks_settlement": false,
+            "reason_code": "wrong_format"
+          },
+          {
+            "check": "length",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "resolution",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          }
+        ],
+        "skipped": [
+          "music_licence",
+          "ai_content",
+          "duplicate",
+          "watermark",
+          "audio_clarity",
+          "moderation"
+        ]
+      }
+    },
+    {
+      "id": "too_long",
+      "description": "58 s against a 15-60 s... brief capped at 30 s: fails.",
+      "in": {
+        "media": {
+          "duration_ms": 58000,
+          "width": 1080,
+          "height": 1920
+        },
+        "transcript": [
+          {
+            "t_start_ms": 300,
+            "t_end_ms": 2100,
+            "text": "I was wrong about AI photo apps."
+          },
+          {
+            "t_start_ms": 2200,
+            "t_end_ms": 4800,
+            "text": "This is a paid partnership with Lumi, and look at this."
+          },
+          {
+            "t_start_ms": 9600,
+            "t_end_ms": 14000,
+            "text": "Wow, no way. The result is so good."
+          },
+          {
+            "t_start_ms": 20400,
+            "t_end_ms": 23200,
+            "text": "Try it free for seven days, link in bio."
+          }
+        ],
+        "on_screen_text": [
+          {
+            "t_start_ms": 400,
+            "t_end_ms": 2400,
+            "text": "I was wrong about AI photo apps",
+            "in_safe_zone": true
+          },
+          {
+            "t_start_ms": 2500,
+            "t_end_ms": 5000,
+            "text": "#ad Paid partnership with Lumi",
+            "in_safe_zone": true
+          }
+        ],
+        "scenes": [
+          {
+            "t_start_ms": 0,
+            "t_end_ms": 1200,
+            "kind": "face"
+          },
+          {
+            "t_start_ms": 1200,
+            "t_end_ms": 14000,
+            "kind": "screen_recording"
+          },
+          {
+            "t_start_ms": 14000,
+            "t_end_ms": 24000,
+            "kind": "face"
+          }
+        ],
+        "brief": {
+          "beats": [
+            {
+              "beat": "hook",
+              "required": true
+            },
+            {
+              "beat": "app_reveal",
+              "required": true
+            },
+            {
+              "beat": "cta",
+              "required": true
+            }
+          ],
+          "disclosure_text": "#ad Paid partnership with Lumi",
+          "banned_claims": [
+            "guaranteed results"
+          ],
+          "cta": "Link in bio",
+          "app_name": "Lumi",
+          "brand_name": "Lumi",
+          "max_duration_s": 30
+        }
+      },
+      "out": {
+        "verdict": "fail",
+        "passed": false,
+        "auto_approvable": false,
+        "blocks_settlement": false,
+        "suggested_reason_code": "wrong_format",
+        "checks": [
+          {
+            "check": "disclosure_audio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "disclosure_onscreen",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "banned_claims",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "brief_beats",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "safe_zone",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "aspect_ratio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "length",
+            "result": "fail",
+            "blocks_settlement": false,
+            "reason_code": "wrong_format"
+          },
+          {
+            "check": "resolution",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          }
+        ],
+        "skipped": [
+          "music_licence",
+          "ai_content",
+          "duplicate",
+          "watermark",
+          "audio_clarity",
+          "moderation"
+        ]
+      }
+    },
+    {
+      "id": "a_little_long",
+      "description": "32 s against a 30 s cap: warns.",
+      "in": {
+        "media": {
+          "duration_ms": 32000,
+          "width": 1080,
+          "height": 1920
+        },
+        "transcript": [
+          {
+            "t_start_ms": 300,
+            "t_end_ms": 2100,
+            "text": "I was wrong about AI photo apps."
+          },
+          {
+            "t_start_ms": 2200,
+            "t_end_ms": 4800,
+            "text": "This is a paid partnership with Lumi, and look at this."
+          },
+          {
+            "t_start_ms": 9600,
+            "t_end_ms": 14000,
+            "text": "Wow, no way. The result is so good."
+          },
+          {
+            "t_start_ms": 20400,
+            "t_end_ms": 23200,
+            "text": "Try it free for seven days, link in bio."
+          }
+        ],
+        "on_screen_text": [
+          {
+            "t_start_ms": 400,
+            "t_end_ms": 2400,
+            "text": "I was wrong about AI photo apps",
+            "in_safe_zone": true
+          },
+          {
+            "t_start_ms": 2500,
+            "t_end_ms": 5000,
+            "text": "#ad Paid partnership with Lumi",
+            "in_safe_zone": true
+          }
+        ],
+        "scenes": [
+          {
+            "t_start_ms": 0,
+            "t_end_ms": 1200,
+            "kind": "face"
+          },
+          {
+            "t_start_ms": 1200,
+            "t_end_ms": 14000,
+            "kind": "screen_recording"
+          },
+          {
+            "t_start_ms": 14000,
+            "t_end_ms": 24000,
+            "kind": "face"
+          }
+        ],
+        "brief": {
+          "beats": [
+            {
+              "beat": "hook",
+              "required": true
+            },
+            {
+              "beat": "app_reveal",
+              "required": true
+            },
+            {
+              "beat": "cta",
+              "required": true
+            }
+          ],
+          "disclosure_text": "#ad Paid partnership with Lumi",
+          "banned_claims": [
+            "guaranteed results"
+          ],
+          "cta": "Link in bio",
+          "app_name": "Lumi",
+          "brand_name": "Lumi",
+          "max_duration_s": 30
+        }
+      },
+      "out": {
+        "verdict": "warn",
+        "passed": false,
+        "auto_approvable": false,
+        "blocks_settlement": false,
+        "suggested_reason_code": "wrong_format",
+        "checks": [
+          {
+            "check": "disclosure_audio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "disclosure_onscreen",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "banned_claims",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "brief_beats",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "safe_zone",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "aspect_ratio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "length",
+            "result": "warn",
+            "blocks_settlement": false,
+            "reason_code": "wrong_format"
+          },
+          {
+            "check": "resolution",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          }
+        ],
+        "skipped": [
+          "music_licence",
+          "ai_content",
+          "duplicate",
+          "watermark",
+          "audio_clarity",
+          "moderation"
+        ]
+      }
+    },
+    {
+      "id": "low_resolution",
+      "description": "540x960: below the 720x1280 minimum, fails.",
+      "in": {
+        "media": {
+          "duration_ms": 24000,
+          "width": 540,
+          "height": 960
+        },
+        "transcript": [
+          {
+            "t_start_ms": 300,
+            "t_end_ms": 2100,
+            "text": "I was wrong about AI photo apps."
+          },
+          {
+            "t_start_ms": 2200,
+            "t_end_ms": 4800,
+            "text": "This is a paid partnership with Lumi, and look at this."
+          },
+          {
+            "t_start_ms": 9600,
+            "t_end_ms": 14000,
+            "text": "Wow, no way. The result is so good."
+          },
+          {
+            "t_start_ms": 20400,
+            "t_end_ms": 23200,
+            "text": "Try it free for seven days, link in bio."
+          }
+        ],
+        "on_screen_text": [
+          {
+            "t_start_ms": 400,
+            "t_end_ms": 2400,
+            "text": "I was wrong about AI photo apps",
+            "in_safe_zone": true
+          },
+          {
+            "t_start_ms": 2500,
+            "t_end_ms": 5000,
+            "text": "#ad Paid partnership with Lumi",
+            "in_safe_zone": true
+          }
+        ],
+        "scenes": [
+          {
+            "t_start_ms": 0,
+            "t_end_ms": 1200,
+            "kind": "face"
+          },
+          {
+            "t_start_ms": 1200,
+            "t_end_ms": 14000,
+            "kind": "screen_recording"
+          },
+          {
+            "t_start_ms": 14000,
+            "t_end_ms": 24000,
+            "kind": "face"
+          }
+        ],
+        "brief": {
+          "beats": [
+            {
+              "beat": "hook",
+              "required": true
+            },
+            {
+              "beat": "app_reveal",
+              "required": true
+            },
+            {
+              "beat": "cta",
+              "required": true
+            }
+          ],
+          "disclosure_text": "#ad Paid partnership with Lumi",
+          "banned_claims": [
+            "guaranteed results"
+          ],
+          "cta": "Link in bio",
+          "app_name": "Lumi",
+          "brand_name": "Lumi"
+        }
+      },
+      "out": {
+        "verdict": "fail",
+        "passed": false,
+        "auto_approvable": false,
+        "blocks_settlement": false,
+        "suggested_reason_code": "low_video_quality",
+        "checks": [
+          {
+            "check": "disclosure_audio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "disclosure_onscreen",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "banned_claims",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "brief_beats",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "safe_zone",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "aspect_ratio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "length",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "resolution",
+            "result": "fail",
+            "blocks_settlement": false,
+            "reason_code": "low_video_quality"
+          }
+        ],
+        "skipped": [
+          "music_licence",
+          "ai_content",
+          "duplicate",
+          "watermark",
+          "audio_clarity",
+          "moderation"
+        ]
+      }
+    },
+    {
+      "id": "dead_air",
+      "description": "Three silences over a second: fails.",
+      "in": {
+        "media": {
+          "duration_ms": 24000,
+          "width": 1080,
+          "height": 1920
+        },
+        "transcript": [
+          {
+            "t_start_ms": 300,
+            "t_end_ms": 2100,
+            "text": "I was wrong about AI photo apps."
+          },
+          {
+            "t_start_ms": 2200,
+            "t_end_ms": 4800,
+            "text": "This is a paid partnership with Lumi, and look at this."
+          },
+          {
+            "t_start_ms": 9600,
+            "t_end_ms": 14000,
+            "text": "Wow, no way. The result is so good."
+          },
+          {
+            "t_start_ms": 20400,
+            "t_end_ms": 23200,
+            "text": "Try it free for seven days, link in bio."
+          }
+        ],
+        "on_screen_text": [
+          {
+            "t_start_ms": 400,
+            "t_end_ms": 2400,
+            "text": "I was wrong about AI photo apps",
+            "in_safe_zone": true
+          },
+          {
+            "t_start_ms": 2500,
+            "t_end_ms": 5000,
+            "text": "#ad Paid partnership with Lumi",
+            "in_safe_zone": true
+          }
+        ],
+        "scenes": [
+          {
+            "t_start_ms": 0,
+            "t_end_ms": 1200,
+            "kind": "face"
+          },
+          {
+            "t_start_ms": 1200,
+            "t_end_ms": 14000,
+            "kind": "screen_recording"
+          },
+          {
+            "t_start_ms": 14000,
+            "t_end_ms": 24000,
+            "kind": "face"
+          }
+        ],
+        "brief": {
+          "beats": [
+            {
+              "beat": "hook",
+              "required": true
+            },
+            {
+              "beat": "app_reveal",
+              "required": true
+            },
+            {
+              "beat": "cta",
+              "required": true
+            }
+          ],
+          "disclosure_text": "#ad Paid partnership with Lumi",
+          "banned_claims": [
+            "guaranteed results"
+          ],
+          "cta": "Link in bio",
+          "app_name": "Lumi",
+          "brand_name": "Lumi"
+        },
+        "audio": {
+          "dead_air_gaps_ms": [
+            1800,
+            1500,
+            1200
+          ],
+          "speech_ratio": 0.6
+        }
+      },
+      "out": {
+        "verdict": "fail",
+        "passed": false,
+        "auto_approvable": false,
+        "blocks_settlement": false,
+        "suggested_reason_code": "audio_unclear",
+        "checks": [
+          {
+            "check": "disclosure_audio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "disclosure_onscreen",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "banned_claims",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "brief_beats",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "safe_zone",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "aspect_ratio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "length",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "resolution",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "audio_clarity",
+            "result": "fail",
+            "blocks_settlement": false,
+            "reason_code": "audio_unclear"
+          }
+        ],
+        "skipped": [
+          "music_licence",
+          "ai_content",
+          "duplicate",
+          "watermark",
+          "moderation"
+        ]
+      }
+    },
+    {
+      "id": "moderation",
+      "description": "Moderation score 0.86: fails.",
+      "in": {
+        "media": {
+          "duration_ms": 24000,
+          "width": 1080,
+          "height": 1920
+        },
+        "transcript": [
+          {
+            "t_start_ms": 300,
+            "t_end_ms": 2100,
+            "text": "I was wrong about AI photo apps."
+          },
+          {
+            "t_start_ms": 2200,
+            "t_end_ms": 4800,
+            "text": "This is a paid partnership with Lumi, and look at this."
+          },
+          {
+            "t_start_ms": 9600,
+            "t_end_ms": 14000,
+            "text": "Wow, no way. The result is so good."
+          },
+          {
+            "t_start_ms": 20400,
+            "t_end_ms": 23200,
+            "text": "Try it free for seven days, link in bio."
+          }
+        ],
+        "on_screen_text": [
+          {
+            "t_start_ms": 400,
+            "t_end_ms": 2400,
+            "text": "I was wrong about AI photo apps",
+            "in_safe_zone": true
+          },
+          {
+            "t_start_ms": 2500,
+            "t_end_ms": 5000,
+            "text": "#ad Paid partnership with Lumi",
+            "in_safe_zone": true
+          }
+        ],
+        "scenes": [
+          {
+            "t_start_ms": 0,
+            "t_end_ms": 1200,
+            "kind": "face"
+          },
+          {
+            "t_start_ms": 1200,
+            "t_end_ms": 14000,
+            "kind": "screen_recording"
+          },
+          {
+            "t_start_ms": 14000,
+            "t_end_ms": 24000,
+            "kind": "face"
+          }
+        ],
+        "brief": {
+          "beats": [
+            {
+              "beat": "hook",
+              "required": true
+            },
+            {
+              "beat": "app_reveal",
+              "required": true
+            },
+            {
+              "beat": "cta",
+              "required": true
+            }
+          ],
+          "disclosure_text": "#ad Paid partnership with Lumi",
+          "banned_claims": [
+            "guaranteed results"
+          ],
+          "cta": "Link in bio",
+          "app_name": "Lumi",
+          "brand_name": "Lumi"
+        },
+        "vision": {
+          "moderation": {
+            "sexual": 0.86,
+            "violence": 0.01
+          }
+        }
+      },
+      "out": {
+        "verdict": "fail",
+        "passed": false,
+        "auto_approvable": false,
+        "blocks_settlement": false,
+        "suggested_reason_code": "brand_safety",
+        "checks": [
+          {
+            "check": "disclosure_audio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "disclosure_onscreen",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "banned_claims",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "brief_beats",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "safe_zone",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "aspect_ratio",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "length",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "resolution",
+            "result": "pass",
+            "blocks_settlement": false,
+            "reason_code": null
+          },
+          {
+            "check": "moderation",
+            "result": "fail",
+            "blocks_settlement": false,
+            "reason_code": "brand_safety"
+          }
+        ],
+        "skipped": [
+          "music_licence",
+          "ai_content",
+          "duplicate",
+          "watermark",
+          "audio_clarity"
+        ]
+      }
+    }
+  ]
+}

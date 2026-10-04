@@ -1,0 +1,3410 @@
+{
+  "schema": "flowd.testvectors/1",
+  "suite": "hook_score",
+  "description": "Hook Score checklist (first 3 seconds): weights 20/15/15/15/10/10/10/5, full / half / zero per item. Times are milliseconds, null = never.",
+  "contract_version": "1.0.0",
+  "parity": "required",
+  "compare": {
+    "objects": "subset",
+    "arrays": "same length, element-wise subset",
+    "numbers": "exact",
+    "null": "must be null"
+  },
+  "reference": "packages/contract/schema/formulas.mjs: scoreHook",
+  "generated_by": "services/ml/scripts/export_vectors.py (do not edit by hand)",
+  "endpoint": "/v1/hook-score",
+  "function": "scoreHook(obs)",
+  "cases": [
+    {
+      "id": "contract_hook_lands_2_4s",
+      "description": "The contract's worked example: hook lands at 2.4 s, everything else on time (90, band A).",
+      "in": {
+        "lands_ms": 2400,
+        "onscreen_ms": 900,
+        "spoken_matches_onscreen": true,
+        "face_ms": 300,
+        "faceless": false,
+        "app_ms": 2800,
+        "interrupt_ms": 1200,
+        "hook_type_known": true,
+        "hook_type_above_median": true,
+        "speech_ms": 400,
+        "captions_in_safe_zone": true
+      },
+      "out": {
+        "band": "A",
+        "points": 90,
+        "items": [
+          {
+            "id": "hook_lands_2s",
+            "label": "Hook lands by 2.0s",
+            "points": 10,
+            "max": 20,
+            "passed": false,
+            "reason": "Hook lands at 2.4s.",
+            "fix": "Open on the hook line; trim the intro."
+          },
+          {
+            "id": "onscreen_text_matches",
+            "label": "On-screen text mirrors the spoken hook within 1s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Hook text appears at 0.9s."
+          },
+          {
+            "id": "face_early",
+            "label": "A face is on screen within the first second",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Face on screen at 0.3s."
+          },
+          {
+            "id": "app_visible_3s",
+            "label": "App or product visible by 3s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "App visible at 2.8s."
+          },
+          {
+            "id": "pattern_interrupt",
+            "label": "Motion or pattern interrupt in the first 1.5s",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Pattern interrupt at 1.2s."
+          },
+          {
+            "id": "proven_hook_type",
+            "label": "Uses a proven hook type",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Library hook type."
+          },
+          {
+            "id": "speech_starts_fast",
+            "label": "Speech starts within 1s, no dead air",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Speech starts at 0.4s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions burned in, inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "contract_weak_opener",
+      "description": "The contract's weak example (5 points, band E).",
+      "in": {
+        "lands_ms": 3600,
+        "onscreen_ms": null,
+        "spoken_matches_onscreen": false,
+        "face_ms": 3100,
+        "faceless": false,
+        "app_ms": 6200,
+        "interrupt_ms": null,
+        "hook_type_known": false,
+        "hook_type_above_median": false,
+        "speech_ms": 1700,
+        "captions_in_safe_zone": false
+      },
+      "out": {
+        "band": "E",
+        "points": 5,
+        "items": [
+          {
+            "id": "hook_lands_2s",
+            "label": "Hook lands by 2.0s",
+            "points": 0,
+            "max": 20,
+            "passed": false,
+            "reason": "Hook lands at 3.6s.",
+            "fix": "Open on the hook line; trim the intro."
+          },
+          {
+            "id": "onscreen_text_matches",
+            "label": "On-screen text mirrors the spoken hook within 1s",
+            "points": 0,
+            "max": 15,
+            "passed": false,
+            "reason": "No on-screen hook text.",
+            "fix": "Burn the spoken hook in as text in the first second."
+          },
+          {
+            "id": "face_early",
+            "label": "A face is on screen within the first second",
+            "points": 0,
+            "max": 15,
+            "passed": false,
+            "reason": "No face until 3.1s.",
+            "fix": "Start on your face, then cut to the app."
+          },
+          {
+            "id": "app_visible_3s",
+            "label": "App or product visible by 3s",
+            "points": 0,
+            "max": 15,
+            "passed": false,
+            "reason": "App visible at 6.2s.",
+            "fix": "Move the app reveal into the first 3 seconds."
+          },
+          {
+            "id": "pattern_interrupt",
+            "label": "Motion or pattern interrupt in the first 1.5s",
+            "points": 0,
+            "max": 10,
+            "passed": false,
+            "reason": "No cut or motion in the first 1.5s.",
+            "fix": "Add a cut or a zoom in the first 1.5 seconds."
+          },
+          {
+            "id": "proven_hook_type",
+            "label": "Uses a proven hook type",
+            "points": 0,
+            "max": 10,
+            "passed": false,
+            "reason": "Not a library hook type.",
+            "fix": "Try a confession, curiosity-gap or specific-number opening."
+          },
+          {
+            "id": "speech_starts_fast",
+            "label": "Speech starts within 1s, no dead air",
+            "points": 5,
+            "max": 10,
+            "passed": false,
+            "reason": "Speech starts at 1.7s.",
+            "fix": "Cut the dead air before your first word."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions burned in, inside safe zones",
+            "points": 0,
+            "max": 5,
+            "passed": false,
+            "reason": "Captions outside the safe zones.",
+            "fix": "Move captions above the platform UI."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "perfect",
+      "description": "Every item earned: 100 points, band A.",
+      "in": {
+        "lands_ms": 800,
+        "onscreen_ms": 500,
+        "spoken_matches_onscreen": true,
+        "face_ms": 300,
+        "faceless": false,
+        "app_ms": 1500,
+        "interrupt_ms": 900,
+        "hook_type_known": true,
+        "hook_type_above_median": true,
+        "speech_ms": 300,
+        "captions_in_safe_zone": true
+      },
+      "out": {
+        "band": "A",
+        "points": 100,
+        "items": [
+          {
+            "id": "hook_lands_2s",
+            "label": "Hook lands by 2.0s",
+            "points": 20,
+            "max": 20,
+            "passed": true,
+            "reason": "Hook lands at 0.8s."
+          },
+          {
+            "id": "onscreen_text_matches",
+            "label": "On-screen text mirrors the spoken hook within 1s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Hook text appears at 0.5s."
+          },
+          {
+            "id": "face_early",
+            "label": "A face is on screen within the first second",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Face on screen at 0.3s."
+          },
+          {
+            "id": "app_visible_3s",
+            "label": "App or product visible by 3s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "App visible at 1.5s."
+          },
+          {
+            "id": "pattern_interrupt",
+            "label": "Motion or pattern interrupt in the first 1.5s",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Pattern interrupt at 0.9s."
+          },
+          {
+            "id": "proven_hook_type",
+            "label": "Uses a proven hook type",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Library hook type."
+          },
+          {
+            "id": "speech_starts_fast",
+            "label": "Speech starts within 1s, no dead air",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Speech starts at 0.3s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions burned in, inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "nothing_happens",
+      "description": "Nothing is found: 0 points, band E.",
+      "in": {
+        "lands_ms": null,
+        "onscreen_ms": null,
+        "spoken_matches_onscreen": false,
+        "face_ms": null,
+        "faceless": false,
+        "app_ms": null,
+        "interrupt_ms": null,
+        "hook_type_known": false,
+        "hook_type_above_median": false,
+        "speech_ms": null,
+        "captions_in_safe_zone": false
+      },
+      "out": {
+        "band": "E",
+        "points": 0,
+        "items": [
+          {
+            "id": "hook_lands_2s",
+            "label": "Hook lands by 2.0s",
+            "points": 0,
+            "max": 20,
+            "passed": false,
+            "reason": "The hook never lands.",
+            "fix": "Open on the hook line; trim the intro."
+          },
+          {
+            "id": "onscreen_text_matches",
+            "label": "On-screen text mirrors the spoken hook within 1s",
+            "points": 0,
+            "max": 15,
+            "passed": false,
+            "reason": "No on-screen hook text.",
+            "fix": "Burn the spoken hook in as text in the first second."
+          },
+          {
+            "id": "face_early",
+            "label": "A face is on screen within the first second",
+            "points": 0,
+            "max": 15,
+            "passed": false,
+            "reason": "No face on screen.",
+            "fix": "Start on your face, then cut to the app."
+          },
+          {
+            "id": "app_visible_3s",
+            "label": "App or product visible by 3s",
+            "points": 0,
+            "max": 15,
+            "passed": false,
+            "reason": "The app never appears.",
+            "fix": "Move the app reveal into the first 3 seconds."
+          },
+          {
+            "id": "pattern_interrupt",
+            "label": "Motion or pattern interrupt in the first 1.5s",
+            "points": 0,
+            "max": 10,
+            "passed": false,
+            "reason": "No cut or motion in the first 1.5s.",
+            "fix": "Add a cut or a zoom in the first 1.5 seconds."
+          },
+          {
+            "id": "proven_hook_type",
+            "label": "Uses a proven hook type",
+            "points": 0,
+            "max": 10,
+            "passed": false,
+            "reason": "Not a library hook type.",
+            "fix": "Try a confession, curiosity-gap or specific-number opening."
+          },
+          {
+            "id": "speech_starts_fast",
+            "label": "Speech starts within 1s, no dead air",
+            "points": 0,
+            "max": 10,
+            "passed": false,
+            "reason": "No speech found.",
+            "fix": "Cut the dead air before your first word."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions burned in, inside safe zones",
+            "points": 0,
+            "max": 5,
+            "passed": false,
+            "reason": "Captions outside the safe zones.",
+            "fix": "Move captions above the platform UI."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "lands_2000_full",
+      "description": "Hook lands exactly at 2.0 s: full 20.",
+      "in": {
+        "lands_ms": 2000,
+        "onscreen_ms": 500,
+        "spoken_matches_onscreen": true,
+        "face_ms": 300,
+        "faceless": false,
+        "app_ms": 1500,
+        "interrupt_ms": 900,
+        "hook_type_known": true,
+        "hook_type_above_median": true,
+        "speech_ms": 300,
+        "captions_in_safe_zone": true
+      },
+      "out": {
+        "band": "A",
+        "points": 100,
+        "items": [
+          {
+            "id": "hook_lands_2s",
+            "label": "Hook lands by 2.0s",
+            "points": 20,
+            "max": 20,
+            "passed": true,
+            "reason": "Hook lands at 2.0s."
+          },
+          {
+            "id": "onscreen_text_matches",
+            "label": "On-screen text mirrors the spoken hook within 1s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Hook text appears at 0.5s."
+          },
+          {
+            "id": "face_early",
+            "label": "A face is on screen within the first second",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Face on screen at 0.3s."
+          },
+          {
+            "id": "app_visible_3s",
+            "label": "App or product visible by 3s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "App visible at 1.5s."
+          },
+          {
+            "id": "pattern_interrupt",
+            "label": "Motion or pattern interrupt in the first 1.5s",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Pattern interrupt at 0.9s."
+          },
+          {
+            "id": "proven_hook_type",
+            "label": "Uses a proven hook type",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Library hook type."
+          },
+          {
+            "id": "speech_starts_fast",
+            "label": "Speech starts within 1s, no dead air",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Speech starts at 0.3s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions burned in, inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "lands_2001_half",
+      "description": "2.001 s: half (10).",
+      "in": {
+        "lands_ms": 2001,
+        "onscreen_ms": 500,
+        "spoken_matches_onscreen": true,
+        "face_ms": 300,
+        "faceless": false,
+        "app_ms": 1500,
+        "interrupt_ms": 900,
+        "hook_type_known": true,
+        "hook_type_above_median": true,
+        "speech_ms": 300,
+        "captions_in_safe_zone": true
+      },
+      "out": {
+        "band": "A",
+        "points": 90,
+        "items": [
+          {
+            "id": "hook_lands_2s",
+            "label": "Hook lands by 2.0s",
+            "points": 10,
+            "max": 20,
+            "passed": false,
+            "reason": "Hook lands at 2.0s.",
+            "fix": "Open on the hook line; trim the intro."
+          },
+          {
+            "id": "onscreen_text_matches",
+            "label": "On-screen text mirrors the spoken hook within 1s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Hook text appears at 0.5s."
+          },
+          {
+            "id": "face_early",
+            "label": "A face is on screen within the first second",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Face on screen at 0.3s."
+          },
+          {
+            "id": "app_visible_3s",
+            "label": "App or product visible by 3s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "App visible at 1.5s."
+          },
+          {
+            "id": "pattern_interrupt",
+            "label": "Motion or pattern interrupt in the first 1.5s",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Pattern interrupt at 0.9s."
+          },
+          {
+            "id": "proven_hook_type",
+            "label": "Uses a proven hook type",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Library hook type."
+          },
+          {
+            "id": "speech_starts_fast",
+            "label": "Speech starts within 1s, no dead air",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Speech starts at 0.3s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions burned in, inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "lands_3000_half",
+      "description": "3.0 s: still half.",
+      "in": {
+        "lands_ms": 3000,
+        "onscreen_ms": 500,
+        "spoken_matches_onscreen": true,
+        "face_ms": 300,
+        "faceless": false,
+        "app_ms": 1500,
+        "interrupt_ms": 900,
+        "hook_type_known": true,
+        "hook_type_above_median": true,
+        "speech_ms": 300,
+        "captions_in_safe_zone": true
+      },
+      "out": {
+        "band": "A",
+        "points": 90,
+        "items": [
+          {
+            "id": "hook_lands_2s",
+            "label": "Hook lands by 2.0s",
+            "points": 10,
+            "max": 20,
+            "passed": false,
+            "reason": "Hook lands at 3.0s.",
+            "fix": "Open on the hook line; trim the intro."
+          },
+          {
+            "id": "onscreen_text_matches",
+            "label": "On-screen text mirrors the spoken hook within 1s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Hook text appears at 0.5s."
+          },
+          {
+            "id": "face_early",
+            "label": "A face is on screen within the first second",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Face on screen at 0.3s."
+          },
+          {
+            "id": "app_visible_3s",
+            "label": "App or product visible by 3s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "App visible at 1.5s."
+          },
+          {
+            "id": "pattern_interrupt",
+            "label": "Motion or pattern interrupt in the first 1.5s",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Pattern interrupt at 0.9s."
+          },
+          {
+            "id": "proven_hook_type",
+            "label": "Uses a proven hook type",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Library hook type."
+          },
+          {
+            "id": "speech_starts_fast",
+            "label": "Speech starts within 1s, no dead air",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Speech starts at 0.3s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions burned in, inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "lands_3001_zero",
+      "description": "3.001 s: zero.",
+      "in": {
+        "lands_ms": 3001,
+        "onscreen_ms": 500,
+        "spoken_matches_onscreen": true,
+        "face_ms": 300,
+        "faceless": false,
+        "app_ms": 1500,
+        "interrupt_ms": 900,
+        "hook_type_known": true,
+        "hook_type_above_median": true,
+        "speech_ms": 300,
+        "captions_in_safe_zone": true
+      },
+      "out": {
+        "band": "B",
+        "points": 80,
+        "items": [
+          {
+            "id": "hook_lands_2s",
+            "label": "Hook lands by 2.0s",
+            "points": 0,
+            "max": 20,
+            "passed": false,
+            "reason": "Hook lands at 3.0s.",
+            "fix": "Open on the hook line; trim the intro."
+          },
+          {
+            "id": "onscreen_text_matches",
+            "label": "On-screen text mirrors the spoken hook within 1s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Hook text appears at 0.5s."
+          },
+          {
+            "id": "face_early",
+            "label": "A face is on screen within the first second",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Face on screen at 0.3s."
+          },
+          {
+            "id": "app_visible_3s",
+            "label": "App or product visible by 3s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "App visible at 1.5s."
+          },
+          {
+            "id": "pattern_interrupt",
+            "label": "Motion or pattern interrupt in the first 1.5s",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Pattern interrupt at 0.9s."
+          },
+          {
+            "id": "proven_hook_type",
+            "label": "Uses a proven hook type",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Library hook type."
+          },
+          {
+            "id": "speech_starts_fast",
+            "label": "Speech starts within 1s, no dead air",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Speech starts at 0.3s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions burned in, inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "lands_never",
+      "description": "The hook never lands: zero, reason 'The hook never lands.'",
+      "in": {
+        "lands_ms": null,
+        "onscreen_ms": 500,
+        "spoken_matches_onscreen": true,
+        "face_ms": 300,
+        "faceless": false,
+        "app_ms": 1500,
+        "interrupt_ms": 900,
+        "hook_type_known": true,
+        "hook_type_above_median": true,
+        "speech_ms": 300,
+        "captions_in_safe_zone": true
+      },
+      "out": {
+        "band": "B",
+        "points": 80,
+        "items": [
+          {
+            "id": "hook_lands_2s",
+            "label": "Hook lands by 2.0s",
+            "points": 0,
+            "max": 20,
+            "passed": false,
+            "reason": "The hook never lands.",
+            "fix": "Open on the hook line; trim the intro."
+          },
+          {
+            "id": "onscreen_text_matches",
+            "label": "On-screen text mirrors the spoken hook within 1s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Hook text appears at 0.5s."
+          },
+          {
+            "id": "face_early",
+            "label": "A face is on screen within the first second",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Face on screen at 0.3s."
+          },
+          {
+            "id": "app_visible_3s",
+            "label": "App or product visible by 3s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "App visible at 1.5s."
+          },
+          {
+            "id": "pattern_interrupt",
+            "label": "Motion or pattern interrupt in the first 1.5s",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Pattern interrupt at 0.9s."
+          },
+          {
+            "id": "proven_hook_type",
+            "label": "Uses a proven hook type",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Library hook type."
+          },
+          {
+            "id": "speech_starts_fast",
+            "label": "Speech starts within 1s, no dead air",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Speech starts at 0.3s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions burned in, inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "onscreen_1000_matches_full",
+      "description": "Hook text at 1.0 s mirroring the spoken hook: full 15.",
+      "in": {
+        "lands_ms": 800,
+        "onscreen_ms": 1000,
+        "spoken_matches_onscreen": true,
+        "face_ms": 300,
+        "faceless": false,
+        "app_ms": 1500,
+        "interrupt_ms": 900,
+        "hook_type_known": true,
+        "hook_type_above_median": true,
+        "speech_ms": 300,
+        "captions_in_safe_zone": true
+      },
+      "out": {
+        "band": "A",
+        "points": 100,
+        "items": [
+          {
+            "id": "hook_lands_2s",
+            "label": "Hook lands by 2.0s",
+            "points": 20,
+            "max": 20,
+            "passed": true,
+            "reason": "Hook lands at 0.8s."
+          },
+          {
+            "id": "onscreen_text_matches",
+            "label": "On-screen text mirrors the spoken hook within 1s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Hook text appears at 1.0s."
+          },
+          {
+            "id": "face_early",
+            "label": "A face is on screen within the first second",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Face on screen at 0.3s."
+          },
+          {
+            "id": "app_visible_3s",
+            "label": "App or product visible by 3s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "App visible at 1.5s."
+          },
+          {
+            "id": "pattern_interrupt",
+            "label": "Motion or pattern interrupt in the first 1.5s",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Pattern interrupt at 0.9s."
+          },
+          {
+            "id": "proven_hook_type",
+            "label": "Uses a proven hook type",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Library hook type."
+          },
+          {
+            "id": "speech_starts_fast",
+            "label": "Speech starts within 1s, no dead air",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Speech starts at 0.3s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions burned in, inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "onscreen_1000_differs_half",
+      "description": "Hook text at 1.0 s that differs from what is said: half (8, Math.round(7.5)).",
+      "in": {
+        "lands_ms": 800,
+        "onscreen_ms": 1000,
+        "spoken_matches_onscreen": false,
+        "face_ms": 300,
+        "faceless": false,
+        "app_ms": 1500,
+        "interrupt_ms": 900,
+        "hook_type_known": true,
+        "hook_type_above_median": true,
+        "speech_ms": 300,
+        "captions_in_safe_zone": true
+      },
+      "out": {
+        "band": "A",
+        "points": 93,
+        "items": [
+          {
+            "id": "hook_lands_2s",
+            "label": "Hook lands by 2.0s",
+            "points": 20,
+            "max": 20,
+            "passed": true,
+            "reason": "Hook lands at 0.8s."
+          },
+          {
+            "id": "onscreen_text_matches",
+            "label": "On-screen text mirrors the spoken hook within 1s",
+            "points": 8,
+            "max": 15,
+            "passed": false,
+            "reason": "Hook text appears at 1.0s and differs from what you say.",
+            "fix": "Burn the spoken hook in as text in the first second."
+          },
+          {
+            "id": "face_early",
+            "label": "A face is on screen within the first second",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Face on screen at 0.3s."
+          },
+          {
+            "id": "app_visible_3s",
+            "label": "App or product visible by 3s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "App visible at 1.5s."
+          },
+          {
+            "id": "pattern_interrupt",
+            "label": "Motion or pattern interrupt in the first 1.5s",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Pattern interrupt at 0.9s."
+          },
+          {
+            "id": "proven_hook_type",
+            "label": "Uses a proven hook type",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Library hook type."
+          },
+          {
+            "id": "speech_starts_fast",
+            "label": "Speech starts within 1s, no dead air",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Speech starts at 0.3s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions burned in, inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "onscreen_2000_matches_half",
+      "description": "Matching text at 2.0 s: half (8).",
+      "in": {
+        "lands_ms": 800,
+        "onscreen_ms": 2000,
+        "spoken_matches_onscreen": true,
+        "face_ms": 300,
+        "faceless": false,
+        "app_ms": 1500,
+        "interrupt_ms": 900,
+        "hook_type_known": true,
+        "hook_type_above_median": true,
+        "speech_ms": 300,
+        "captions_in_safe_zone": true
+      },
+      "out": {
+        "band": "A",
+        "points": 93,
+        "items": [
+          {
+            "id": "hook_lands_2s",
+            "label": "Hook lands by 2.0s",
+            "points": 20,
+            "max": 20,
+            "passed": true,
+            "reason": "Hook lands at 0.8s."
+          },
+          {
+            "id": "onscreen_text_matches",
+            "label": "On-screen text mirrors the spoken hook within 1s",
+            "points": 8,
+            "max": 15,
+            "passed": false,
+            "reason": "Hook text appears at 2.0s.",
+            "fix": "Burn the spoken hook in as text in the first second."
+          },
+          {
+            "id": "face_early",
+            "label": "A face is on screen within the first second",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Face on screen at 0.3s."
+          },
+          {
+            "id": "app_visible_3s",
+            "label": "App or product visible by 3s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "App visible at 1.5s."
+          },
+          {
+            "id": "pattern_interrupt",
+            "label": "Motion or pattern interrupt in the first 1.5s",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Pattern interrupt at 0.9s."
+          },
+          {
+            "id": "proven_hook_type",
+            "label": "Uses a proven hook type",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Library hook type."
+          },
+          {
+            "id": "speech_starts_fast",
+            "label": "Speech starts within 1s, no dead air",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Speech starts at 0.3s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions burned in, inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "onscreen_2001_zero",
+      "description": "Text at 2.001 s: zero.",
+      "in": {
+        "lands_ms": 800,
+        "onscreen_ms": 2001,
+        "spoken_matches_onscreen": true,
+        "face_ms": 300,
+        "faceless": false,
+        "app_ms": 1500,
+        "interrupt_ms": 900,
+        "hook_type_known": true,
+        "hook_type_above_median": true,
+        "speech_ms": 300,
+        "captions_in_safe_zone": true
+      },
+      "out": {
+        "band": "A",
+        "points": 85,
+        "items": [
+          {
+            "id": "hook_lands_2s",
+            "label": "Hook lands by 2.0s",
+            "points": 20,
+            "max": 20,
+            "passed": true,
+            "reason": "Hook lands at 0.8s."
+          },
+          {
+            "id": "onscreen_text_matches",
+            "label": "On-screen text mirrors the spoken hook within 1s",
+            "points": 0,
+            "max": 15,
+            "passed": false,
+            "reason": "Hook text appears at 2.0s.",
+            "fix": "Burn the spoken hook in as text in the first second."
+          },
+          {
+            "id": "face_early",
+            "label": "A face is on screen within the first second",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Face on screen at 0.3s."
+          },
+          {
+            "id": "app_visible_3s",
+            "label": "App or product visible by 3s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "App visible at 1.5s."
+          },
+          {
+            "id": "pattern_interrupt",
+            "label": "Motion or pattern interrupt in the first 1.5s",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Pattern interrupt at 0.9s."
+          },
+          {
+            "id": "proven_hook_type",
+            "label": "Uses a proven hook type",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Library hook type."
+          },
+          {
+            "id": "speech_starts_fast",
+            "label": "Speech starts within 1s, no dead air",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Speech starts at 0.3s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions burned in, inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "faceless_no_face_full",
+      "description": "Faceless format with no face: full 15, reason 'Faceless format: no face needed.'",
+      "in": {
+        "lands_ms": 800,
+        "onscreen_ms": 500,
+        "spoken_matches_onscreen": true,
+        "face_ms": null,
+        "faceless": true,
+        "app_ms": 1500,
+        "interrupt_ms": 900,
+        "hook_type_known": true,
+        "hook_type_above_median": true,
+        "speech_ms": 300,
+        "captions_in_safe_zone": true
+      },
+      "out": {
+        "band": "A",
+        "points": 100,
+        "items": [
+          {
+            "id": "hook_lands_2s",
+            "label": "Hook lands by 2.0s",
+            "points": 20,
+            "max": 20,
+            "passed": true,
+            "reason": "Hook lands at 0.8s."
+          },
+          {
+            "id": "onscreen_text_matches",
+            "label": "On-screen text mirrors the spoken hook within 1s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Hook text appears at 0.5s."
+          },
+          {
+            "id": "face_early",
+            "label": "A face is on screen within the first second",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Faceless format: no face needed."
+          },
+          {
+            "id": "app_visible_3s",
+            "label": "App or product visible by 3s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "App visible at 1.5s."
+          },
+          {
+            "id": "pattern_interrupt",
+            "label": "Motion or pattern interrupt in the first 1.5s",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Pattern interrupt at 0.9s."
+          },
+          {
+            "id": "proven_hook_type",
+            "label": "Uses a proven hook type",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Library hook type."
+          },
+          {
+            "id": "speech_starts_fast",
+            "label": "Speech starts within 1s, no dead air",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Speech starts at 0.3s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions burned in, inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "face_1000_full",
+      "description": "Face at 1.0 s: full.",
+      "in": {
+        "lands_ms": 800,
+        "onscreen_ms": 500,
+        "spoken_matches_onscreen": true,
+        "face_ms": 1000,
+        "faceless": false,
+        "app_ms": 1500,
+        "interrupt_ms": 900,
+        "hook_type_known": true,
+        "hook_type_above_median": true,
+        "speech_ms": 300,
+        "captions_in_safe_zone": true
+      },
+      "out": {
+        "band": "A",
+        "points": 100,
+        "items": [
+          {
+            "id": "hook_lands_2s",
+            "label": "Hook lands by 2.0s",
+            "points": 20,
+            "max": 20,
+            "passed": true,
+            "reason": "Hook lands at 0.8s."
+          },
+          {
+            "id": "onscreen_text_matches",
+            "label": "On-screen text mirrors the spoken hook within 1s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Hook text appears at 0.5s."
+          },
+          {
+            "id": "face_early",
+            "label": "A face is on screen within the first second",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Face on screen at 1.0s."
+          },
+          {
+            "id": "app_visible_3s",
+            "label": "App or product visible by 3s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "App visible at 1.5s."
+          },
+          {
+            "id": "pattern_interrupt",
+            "label": "Motion or pattern interrupt in the first 1.5s",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Pattern interrupt at 0.9s."
+          },
+          {
+            "id": "proven_hook_type",
+            "label": "Uses a proven hook type",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Library hook type."
+          },
+          {
+            "id": "speech_starts_fast",
+            "label": "Speech starts within 1s, no dead air",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Speech starts at 0.3s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions burned in, inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "face_1001_half",
+      "description": "Face at 1.001 s: half (8).",
+      "in": {
+        "lands_ms": 800,
+        "onscreen_ms": 500,
+        "spoken_matches_onscreen": true,
+        "face_ms": 1001,
+        "faceless": false,
+        "app_ms": 1500,
+        "interrupt_ms": 900,
+        "hook_type_known": true,
+        "hook_type_above_median": true,
+        "speech_ms": 300,
+        "captions_in_safe_zone": true
+      },
+      "out": {
+        "band": "A",
+        "points": 93,
+        "items": [
+          {
+            "id": "hook_lands_2s",
+            "label": "Hook lands by 2.0s",
+            "points": 20,
+            "max": 20,
+            "passed": true,
+            "reason": "Hook lands at 0.8s."
+          },
+          {
+            "id": "onscreen_text_matches",
+            "label": "On-screen text mirrors the spoken hook within 1s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Hook text appears at 0.5s."
+          },
+          {
+            "id": "face_early",
+            "label": "A face is on screen within the first second",
+            "points": 8,
+            "max": 15,
+            "passed": false,
+            "reason": "No face until 1.0s.",
+            "fix": "Start on your face, then cut to the app."
+          },
+          {
+            "id": "app_visible_3s",
+            "label": "App or product visible by 3s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "App visible at 1.5s."
+          },
+          {
+            "id": "pattern_interrupt",
+            "label": "Motion or pattern interrupt in the first 1.5s",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Pattern interrupt at 0.9s."
+          },
+          {
+            "id": "proven_hook_type",
+            "label": "Uses a proven hook type",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Library hook type."
+          },
+          {
+            "id": "speech_starts_fast",
+            "label": "Speech starts within 1s, no dead air",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Speech starts at 0.3s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions burned in, inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "face_2000_half",
+      "description": "Face at 2.0 s: half.",
+      "in": {
+        "lands_ms": 800,
+        "onscreen_ms": 500,
+        "spoken_matches_onscreen": true,
+        "face_ms": 2000,
+        "faceless": false,
+        "app_ms": 1500,
+        "interrupt_ms": 900,
+        "hook_type_known": true,
+        "hook_type_above_median": true,
+        "speech_ms": 300,
+        "captions_in_safe_zone": true
+      },
+      "out": {
+        "band": "A",
+        "points": 93,
+        "items": [
+          {
+            "id": "hook_lands_2s",
+            "label": "Hook lands by 2.0s",
+            "points": 20,
+            "max": 20,
+            "passed": true,
+            "reason": "Hook lands at 0.8s."
+          },
+          {
+            "id": "onscreen_text_matches",
+            "label": "On-screen text mirrors the spoken hook within 1s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Hook text appears at 0.5s."
+          },
+          {
+            "id": "face_early",
+            "label": "A face is on screen within the first second",
+            "points": 8,
+            "max": 15,
+            "passed": false,
+            "reason": "No face until 2.0s.",
+            "fix": "Start on your face, then cut to the app."
+          },
+          {
+            "id": "app_visible_3s",
+            "label": "App or product visible by 3s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "App visible at 1.5s."
+          },
+          {
+            "id": "pattern_interrupt",
+            "label": "Motion or pattern interrupt in the first 1.5s",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Pattern interrupt at 0.9s."
+          },
+          {
+            "id": "proven_hook_type",
+            "label": "Uses a proven hook type",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Library hook type."
+          },
+          {
+            "id": "speech_starts_fast",
+            "label": "Speech starts within 1s, no dead air",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Speech starts at 0.3s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions burned in, inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "face_2001_zero",
+      "description": "Face at 2.001 s: zero, 'No face until 2.0s.'",
+      "in": {
+        "lands_ms": 800,
+        "onscreen_ms": 500,
+        "spoken_matches_onscreen": true,
+        "face_ms": 2001,
+        "faceless": false,
+        "app_ms": 1500,
+        "interrupt_ms": 900,
+        "hook_type_known": true,
+        "hook_type_above_median": true,
+        "speech_ms": 300,
+        "captions_in_safe_zone": true
+      },
+      "out": {
+        "band": "A",
+        "points": 85,
+        "items": [
+          {
+            "id": "hook_lands_2s",
+            "label": "Hook lands by 2.0s",
+            "points": 20,
+            "max": 20,
+            "passed": true,
+            "reason": "Hook lands at 0.8s."
+          },
+          {
+            "id": "onscreen_text_matches",
+            "label": "On-screen text mirrors the spoken hook within 1s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Hook text appears at 0.5s."
+          },
+          {
+            "id": "face_early",
+            "label": "A face is on screen within the first second",
+            "points": 0,
+            "max": 15,
+            "passed": false,
+            "reason": "No face until 2.0s.",
+            "fix": "Start on your face, then cut to the app."
+          },
+          {
+            "id": "app_visible_3s",
+            "label": "App or product visible by 3s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "App visible at 1.5s."
+          },
+          {
+            "id": "pattern_interrupt",
+            "label": "Motion or pattern interrupt in the first 1.5s",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Pattern interrupt at 0.9s."
+          },
+          {
+            "id": "proven_hook_type",
+            "label": "Uses a proven hook type",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Library hook type."
+          },
+          {
+            "id": "speech_starts_fast",
+            "label": "Speech starts within 1s, no dead air",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Speech starts at 0.3s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions burned in, inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "face_never",
+      "description": "No face at all.",
+      "in": {
+        "lands_ms": 800,
+        "onscreen_ms": 500,
+        "spoken_matches_onscreen": true,
+        "face_ms": null,
+        "faceless": false,
+        "app_ms": 1500,
+        "interrupt_ms": 900,
+        "hook_type_known": true,
+        "hook_type_above_median": true,
+        "speech_ms": 300,
+        "captions_in_safe_zone": true
+      },
+      "out": {
+        "band": "A",
+        "points": 85,
+        "items": [
+          {
+            "id": "hook_lands_2s",
+            "label": "Hook lands by 2.0s",
+            "points": 20,
+            "max": 20,
+            "passed": true,
+            "reason": "Hook lands at 0.8s."
+          },
+          {
+            "id": "onscreen_text_matches",
+            "label": "On-screen text mirrors the spoken hook within 1s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Hook text appears at 0.5s."
+          },
+          {
+            "id": "face_early",
+            "label": "A face is on screen within the first second",
+            "points": 0,
+            "max": 15,
+            "passed": false,
+            "reason": "No face on screen.",
+            "fix": "Start on your face, then cut to the app."
+          },
+          {
+            "id": "app_visible_3s",
+            "label": "App or product visible by 3s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "App visible at 1.5s."
+          },
+          {
+            "id": "pattern_interrupt",
+            "label": "Motion or pattern interrupt in the first 1.5s",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Pattern interrupt at 0.9s."
+          },
+          {
+            "id": "proven_hook_type",
+            "label": "Uses a proven hook type",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Library hook type."
+          },
+          {
+            "id": "speech_starts_fast",
+            "label": "Speech starts within 1s, no dead air",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Speech starts at 0.3s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions burned in, inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "app_3000_full",
+      "description": "App at 3.0 s: full.",
+      "in": {
+        "lands_ms": 800,
+        "onscreen_ms": 500,
+        "spoken_matches_onscreen": true,
+        "face_ms": 300,
+        "faceless": false,
+        "app_ms": 3000,
+        "interrupt_ms": 900,
+        "hook_type_known": true,
+        "hook_type_above_median": true,
+        "speech_ms": 300,
+        "captions_in_safe_zone": true
+      },
+      "out": {
+        "band": "A",
+        "points": 100,
+        "items": [
+          {
+            "id": "hook_lands_2s",
+            "label": "Hook lands by 2.0s",
+            "points": 20,
+            "max": 20,
+            "passed": true,
+            "reason": "Hook lands at 0.8s."
+          },
+          {
+            "id": "onscreen_text_matches",
+            "label": "On-screen text mirrors the spoken hook within 1s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Hook text appears at 0.5s."
+          },
+          {
+            "id": "face_early",
+            "label": "A face is on screen within the first second",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Face on screen at 0.3s."
+          },
+          {
+            "id": "app_visible_3s",
+            "label": "App or product visible by 3s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "App visible at 3.0s."
+          },
+          {
+            "id": "pattern_interrupt",
+            "label": "Motion or pattern interrupt in the first 1.5s",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Pattern interrupt at 0.9s."
+          },
+          {
+            "id": "proven_hook_type",
+            "label": "Uses a proven hook type",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Library hook type."
+          },
+          {
+            "id": "speech_starts_fast",
+            "label": "Speech starts within 1s, no dead air",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Speech starts at 0.3s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions burned in, inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "app_3001_half",
+      "description": "App at 3.001 s: half (8).",
+      "in": {
+        "lands_ms": 800,
+        "onscreen_ms": 500,
+        "spoken_matches_onscreen": true,
+        "face_ms": 300,
+        "faceless": false,
+        "app_ms": 3001,
+        "interrupt_ms": 900,
+        "hook_type_known": true,
+        "hook_type_above_median": true,
+        "speech_ms": 300,
+        "captions_in_safe_zone": true
+      },
+      "out": {
+        "band": "A",
+        "points": 93,
+        "items": [
+          {
+            "id": "hook_lands_2s",
+            "label": "Hook lands by 2.0s",
+            "points": 20,
+            "max": 20,
+            "passed": true,
+            "reason": "Hook lands at 0.8s."
+          },
+          {
+            "id": "onscreen_text_matches",
+            "label": "On-screen text mirrors the spoken hook within 1s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Hook text appears at 0.5s."
+          },
+          {
+            "id": "face_early",
+            "label": "A face is on screen within the first second",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Face on screen at 0.3s."
+          },
+          {
+            "id": "app_visible_3s",
+            "label": "App or product visible by 3s",
+            "points": 8,
+            "max": 15,
+            "passed": false,
+            "reason": "App visible at 3.0s.",
+            "fix": "Move the app reveal into the first 3 seconds."
+          },
+          {
+            "id": "pattern_interrupt",
+            "label": "Motion or pattern interrupt in the first 1.5s",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Pattern interrupt at 0.9s."
+          },
+          {
+            "id": "proven_hook_type",
+            "label": "Uses a proven hook type",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Library hook type."
+          },
+          {
+            "id": "speech_starts_fast",
+            "label": "Speech starts within 1s, no dead air",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Speech starts at 0.3s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions burned in, inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "app_5000_half",
+      "description": "App at 5.0 s: half.",
+      "in": {
+        "lands_ms": 800,
+        "onscreen_ms": 500,
+        "spoken_matches_onscreen": true,
+        "face_ms": 300,
+        "faceless": false,
+        "app_ms": 5000,
+        "interrupt_ms": 900,
+        "hook_type_known": true,
+        "hook_type_above_median": true,
+        "speech_ms": 300,
+        "captions_in_safe_zone": true
+      },
+      "out": {
+        "band": "A",
+        "points": 93,
+        "items": [
+          {
+            "id": "hook_lands_2s",
+            "label": "Hook lands by 2.0s",
+            "points": 20,
+            "max": 20,
+            "passed": true,
+            "reason": "Hook lands at 0.8s."
+          },
+          {
+            "id": "onscreen_text_matches",
+            "label": "On-screen text mirrors the spoken hook within 1s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Hook text appears at 0.5s."
+          },
+          {
+            "id": "face_early",
+            "label": "A face is on screen within the first second",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Face on screen at 0.3s."
+          },
+          {
+            "id": "app_visible_3s",
+            "label": "App or product visible by 3s",
+            "points": 8,
+            "max": 15,
+            "passed": false,
+            "reason": "App visible at 5.0s.",
+            "fix": "Move the app reveal into the first 3 seconds."
+          },
+          {
+            "id": "pattern_interrupt",
+            "label": "Motion or pattern interrupt in the first 1.5s",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Pattern interrupt at 0.9s."
+          },
+          {
+            "id": "proven_hook_type",
+            "label": "Uses a proven hook type",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Library hook type."
+          },
+          {
+            "id": "speech_starts_fast",
+            "label": "Speech starts within 1s, no dead air",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Speech starts at 0.3s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions burned in, inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "app_5001_zero",
+      "description": "App at 5.001 s: zero.",
+      "in": {
+        "lands_ms": 800,
+        "onscreen_ms": 500,
+        "spoken_matches_onscreen": true,
+        "face_ms": 300,
+        "faceless": false,
+        "app_ms": 5001,
+        "interrupt_ms": 900,
+        "hook_type_known": true,
+        "hook_type_above_median": true,
+        "speech_ms": 300,
+        "captions_in_safe_zone": true
+      },
+      "out": {
+        "band": "A",
+        "points": 85,
+        "items": [
+          {
+            "id": "hook_lands_2s",
+            "label": "Hook lands by 2.0s",
+            "points": 20,
+            "max": 20,
+            "passed": true,
+            "reason": "Hook lands at 0.8s."
+          },
+          {
+            "id": "onscreen_text_matches",
+            "label": "On-screen text mirrors the spoken hook within 1s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Hook text appears at 0.5s."
+          },
+          {
+            "id": "face_early",
+            "label": "A face is on screen within the first second",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Face on screen at 0.3s."
+          },
+          {
+            "id": "app_visible_3s",
+            "label": "App or product visible by 3s",
+            "points": 0,
+            "max": 15,
+            "passed": false,
+            "reason": "App visible at 5.0s.",
+            "fix": "Move the app reveal into the first 3 seconds."
+          },
+          {
+            "id": "pattern_interrupt",
+            "label": "Motion or pattern interrupt in the first 1.5s",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Pattern interrupt at 0.9s."
+          },
+          {
+            "id": "proven_hook_type",
+            "label": "Uses a proven hook type",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Library hook type."
+          },
+          {
+            "id": "speech_starts_fast",
+            "label": "Speech starts within 1s, no dead air",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Speech starts at 0.3s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions burned in, inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "app_never",
+      "description": "The app never appears.",
+      "in": {
+        "lands_ms": 800,
+        "onscreen_ms": 500,
+        "spoken_matches_onscreen": true,
+        "face_ms": 300,
+        "faceless": false,
+        "app_ms": null,
+        "interrupt_ms": 900,
+        "hook_type_known": true,
+        "hook_type_above_median": true,
+        "speech_ms": 300,
+        "captions_in_safe_zone": true
+      },
+      "out": {
+        "band": "A",
+        "points": 85,
+        "items": [
+          {
+            "id": "hook_lands_2s",
+            "label": "Hook lands by 2.0s",
+            "points": 20,
+            "max": 20,
+            "passed": true,
+            "reason": "Hook lands at 0.8s."
+          },
+          {
+            "id": "onscreen_text_matches",
+            "label": "On-screen text mirrors the spoken hook within 1s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Hook text appears at 0.5s."
+          },
+          {
+            "id": "face_early",
+            "label": "A face is on screen within the first second",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Face on screen at 0.3s."
+          },
+          {
+            "id": "app_visible_3s",
+            "label": "App or product visible by 3s",
+            "points": 0,
+            "max": 15,
+            "passed": false,
+            "reason": "The app never appears.",
+            "fix": "Move the app reveal into the first 3 seconds."
+          },
+          {
+            "id": "pattern_interrupt",
+            "label": "Motion or pattern interrupt in the first 1.5s",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Pattern interrupt at 0.9s."
+          },
+          {
+            "id": "proven_hook_type",
+            "label": "Uses a proven hook type",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Library hook type."
+          },
+          {
+            "id": "speech_starts_fast",
+            "label": "Speech starts within 1s, no dead air",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Speech starts at 0.3s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions burned in, inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "interrupt_1500_full",
+      "description": "Pattern interrupt at 1.5 s: full 10.",
+      "in": {
+        "lands_ms": 800,
+        "onscreen_ms": 500,
+        "spoken_matches_onscreen": true,
+        "face_ms": 300,
+        "faceless": false,
+        "app_ms": 1500,
+        "interrupt_ms": 1500,
+        "hook_type_known": true,
+        "hook_type_above_median": true,
+        "speech_ms": 300,
+        "captions_in_safe_zone": true
+      },
+      "out": {
+        "band": "A",
+        "points": 100,
+        "items": [
+          {
+            "id": "hook_lands_2s",
+            "label": "Hook lands by 2.0s",
+            "points": 20,
+            "max": 20,
+            "passed": true,
+            "reason": "Hook lands at 0.8s."
+          },
+          {
+            "id": "onscreen_text_matches",
+            "label": "On-screen text mirrors the spoken hook within 1s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Hook text appears at 0.5s."
+          },
+          {
+            "id": "face_early",
+            "label": "A face is on screen within the first second",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Face on screen at 0.3s."
+          },
+          {
+            "id": "app_visible_3s",
+            "label": "App or product visible by 3s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "App visible at 1.5s."
+          },
+          {
+            "id": "pattern_interrupt",
+            "label": "Motion or pattern interrupt in the first 1.5s",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Pattern interrupt at 1.5s."
+          },
+          {
+            "id": "proven_hook_type",
+            "label": "Uses a proven hook type",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Library hook type."
+          },
+          {
+            "id": "speech_starts_fast",
+            "label": "Speech starts within 1s, no dead air",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Speech starts at 0.3s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions burned in, inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "interrupt_1501_zero",
+      "description": "At 1.501 s: zero (no half credit).",
+      "in": {
+        "lands_ms": 800,
+        "onscreen_ms": 500,
+        "spoken_matches_onscreen": true,
+        "face_ms": 300,
+        "faceless": false,
+        "app_ms": 1500,
+        "interrupt_ms": 1501,
+        "hook_type_known": true,
+        "hook_type_above_median": true,
+        "speech_ms": 300,
+        "captions_in_safe_zone": true
+      },
+      "out": {
+        "band": "A",
+        "points": 90,
+        "items": [
+          {
+            "id": "hook_lands_2s",
+            "label": "Hook lands by 2.0s",
+            "points": 20,
+            "max": 20,
+            "passed": true,
+            "reason": "Hook lands at 0.8s."
+          },
+          {
+            "id": "onscreen_text_matches",
+            "label": "On-screen text mirrors the spoken hook within 1s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Hook text appears at 0.5s."
+          },
+          {
+            "id": "face_early",
+            "label": "A face is on screen within the first second",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Face on screen at 0.3s."
+          },
+          {
+            "id": "app_visible_3s",
+            "label": "App or product visible by 3s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "App visible at 1.5s."
+          },
+          {
+            "id": "pattern_interrupt",
+            "label": "Motion or pattern interrupt in the first 1.5s",
+            "points": 0,
+            "max": 10,
+            "passed": false,
+            "reason": "Pattern interrupt at 1.5s.",
+            "fix": "Add a cut or a zoom in the first 1.5 seconds."
+          },
+          {
+            "id": "proven_hook_type",
+            "label": "Uses a proven hook type",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Library hook type."
+          },
+          {
+            "id": "speech_starts_fast",
+            "label": "Speech starts within 1s, no dead air",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Speech starts at 0.3s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions burned in, inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "hook_type_known_above",
+      "description": "Library hook type with an above-median trial rate: full 10.",
+      "in": {
+        "lands_ms": 800,
+        "onscreen_ms": 500,
+        "spoken_matches_onscreen": true,
+        "face_ms": 300,
+        "faceless": false,
+        "app_ms": 1500,
+        "interrupt_ms": 900,
+        "hook_type_known": true,
+        "hook_type_above_median": true,
+        "speech_ms": 300,
+        "captions_in_safe_zone": true
+      },
+      "out": {
+        "band": "A",
+        "points": 100,
+        "items": [
+          {
+            "id": "hook_lands_2s",
+            "label": "Hook lands by 2.0s",
+            "points": 20,
+            "max": 20,
+            "passed": true,
+            "reason": "Hook lands at 0.8s."
+          },
+          {
+            "id": "onscreen_text_matches",
+            "label": "On-screen text mirrors the spoken hook within 1s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Hook text appears at 0.5s."
+          },
+          {
+            "id": "face_early",
+            "label": "A face is on screen within the first second",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Face on screen at 0.3s."
+          },
+          {
+            "id": "app_visible_3s",
+            "label": "App or product visible by 3s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "App visible at 1.5s."
+          },
+          {
+            "id": "pattern_interrupt",
+            "label": "Motion or pattern interrupt in the first 1.5s",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Pattern interrupt at 0.9s."
+          },
+          {
+            "id": "proven_hook_type",
+            "label": "Uses a proven hook type",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Library hook type."
+          },
+          {
+            "id": "speech_starts_fast",
+            "label": "Speech starts within 1s, no dead air",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Speech starts at 0.3s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions burned in, inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "hook_type_known_below",
+      "description": "Library hook type below the median: half (5).",
+      "in": {
+        "lands_ms": 800,
+        "onscreen_ms": 500,
+        "spoken_matches_onscreen": true,
+        "face_ms": 300,
+        "faceless": false,
+        "app_ms": 1500,
+        "interrupt_ms": 900,
+        "hook_type_known": true,
+        "hook_type_above_median": false,
+        "speech_ms": 300,
+        "captions_in_safe_zone": true
+      },
+      "out": {
+        "band": "A",
+        "points": 95,
+        "items": [
+          {
+            "id": "hook_lands_2s",
+            "label": "Hook lands by 2.0s",
+            "points": 20,
+            "max": 20,
+            "passed": true,
+            "reason": "Hook lands at 0.8s."
+          },
+          {
+            "id": "onscreen_text_matches",
+            "label": "On-screen text mirrors the spoken hook within 1s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Hook text appears at 0.5s."
+          },
+          {
+            "id": "face_early",
+            "label": "A face is on screen within the first second",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Face on screen at 0.3s."
+          },
+          {
+            "id": "app_visible_3s",
+            "label": "App or product visible by 3s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "App visible at 1.5s."
+          },
+          {
+            "id": "pattern_interrupt",
+            "label": "Motion or pattern interrupt in the first 1.5s",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Pattern interrupt at 0.9s."
+          },
+          {
+            "id": "proven_hook_type",
+            "label": "Uses a proven hook type",
+            "points": 5,
+            "max": 10,
+            "passed": false,
+            "reason": "Library hook type.",
+            "fix": "Try a confession, curiosity-gap or specific-number opening."
+          },
+          {
+            "id": "speech_starts_fast",
+            "label": "Speech starts within 1s, no dead air",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Speech starts at 0.3s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions burned in, inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "hook_type_unknown",
+      "description": "Not a library hook type: zero.",
+      "in": {
+        "lands_ms": 800,
+        "onscreen_ms": 500,
+        "spoken_matches_onscreen": true,
+        "face_ms": 300,
+        "faceless": false,
+        "app_ms": 1500,
+        "interrupt_ms": 900,
+        "hook_type_known": false,
+        "hook_type_above_median": false,
+        "speech_ms": 300,
+        "captions_in_safe_zone": true
+      },
+      "out": {
+        "band": "A",
+        "points": 90,
+        "items": [
+          {
+            "id": "hook_lands_2s",
+            "label": "Hook lands by 2.0s",
+            "points": 20,
+            "max": 20,
+            "passed": true,
+            "reason": "Hook lands at 0.8s."
+          },
+          {
+            "id": "onscreen_text_matches",
+            "label": "On-screen text mirrors the spoken hook within 1s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Hook text appears at 0.5s."
+          },
+          {
+            "id": "face_early",
+            "label": "A face is on screen within the first second",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Face on screen at 0.3s."
+          },
+          {
+            "id": "app_visible_3s",
+            "label": "App or product visible by 3s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "App visible at 1.5s."
+          },
+          {
+            "id": "pattern_interrupt",
+            "label": "Motion or pattern interrupt in the first 1.5s",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Pattern interrupt at 0.9s."
+          },
+          {
+            "id": "proven_hook_type",
+            "label": "Uses a proven hook type",
+            "points": 0,
+            "max": 10,
+            "passed": false,
+            "reason": "Not a library hook type.",
+            "fix": "Try a confession, curiosity-gap or specific-number opening."
+          },
+          {
+            "id": "speech_starts_fast",
+            "label": "Speech starts within 1s, no dead air",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Speech starts at 0.3s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions burned in, inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "hook_type_unknown_but_flag",
+      "description": "above_median set without known: still zero (known is required).",
+      "in": {
+        "lands_ms": 800,
+        "onscreen_ms": 500,
+        "spoken_matches_onscreen": true,
+        "face_ms": 300,
+        "faceless": false,
+        "app_ms": 1500,
+        "interrupt_ms": 900,
+        "hook_type_known": false,
+        "hook_type_above_median": true,
+        "speech_ms": 300,
+        "captions_in_safe_zone": true
+      },
+      "out": {
+        "band": "A",
+        "points": 90,
+        "items": [
+          {
+            "id": "hook_lands_2s",
+            "label": "Hook lands by 2.0s",
+            "points": 20,
+            "max": 20,
+            "passed": true,
+            "reason": "Hook lands at 0.8s."
+          },
+          {
+            "id": "onscreen_text_matches",
+            "label": "On-screen text mirrors the spoken hook within 1s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Hook text appears at 0.5s."
+          },
+          {
+            "id": "face_early",
+            "label": "A face is on screen within the first second",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Face on screen at 0.3s."
+          },
+          {
+            "id": "app_visible_3s",
+            "label": "App or product visible by 3s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "App visible at 1.5s."
+          },
+          {
+            "id": "pattern_interrupt",
+            "label": "Motion or pattern interrupt in the first 1.5s",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Pattern interrupt at 0.9s."
+          },
+          {
+            "id": "proven_hook_type",
+            "label": "Uses a proven hook type",
+            "points": 0,
+            "max": 10,
+            "passed": false,
+            "reason": "Not a library hook type.",
+            "fix": "Try a confession, curiosity-gap or specific-number opening."
+          },
+          {
+            "id": "speech_starts_fast",
+            "label": "Speech starts within 1s, no dead air",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Speech starts at 0.3s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions burned in, inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "speech_1000_full",
+      "description": "Speech at 1.0 s: full 10.",
+      "in": {
+        "lands_ms": 800,
+        "onscreen_ms": 500,
+        "spoken_matches_onscreen": true,
+        "face_ms": 300,
+        "faceless": false,
+        "app_ms": 1500,
+        "interrupt_ms": 900,
+        "hook_type_known": true,
+        "hook_type_above_median": true,
+        "speech_ms": 1000,
+        "captions_in_safe_zone": true
+      },
+      "out": {
+        "band": "A",
+        "points": 100,
+        "items": [
+          {
+            "id": "hook_lands_2s",
+            "label": "Hook lands by 2.0s",
+            "points": 20,
+            "max": 20,
+            "passed": true,
+            "reason": "Hook lands at 0.8s."
+          },
+          {
+            "id": "onscreen_text_matches",
+            "label": "On-screen text mirrors the spoken hook within 1s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Hook text appears at 0.5s."
+          },
+          {
+            "id": "face_early",
+            "label": "A face is on screen within the first second",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Face on screen at 0.3s."
+          },
+          {
+            "id": "app_visible_3s",
+            "label": "App or product visible by 3s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "App visible at 1.5s."
+          },
+          {
+            "id": "pattern_interrupt",
+            "label": "Motion or pattern interrupt in the first 1.5s",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Pattern interrupt at 0.9s."
+          },
+          {
+            "id": "proven_hook_type",
+            "label": "Uses a proven hook type",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Library hook type."
+          },
+          {
+            "id": "speech_starts_fast",
+            "label": "Speech starts within 1s, no dead air",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Speech starts at 1.0s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions burned in, inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "speech_1001_half",
+      "description": "Speech at 1.001 s: half (5).",
+      "in": {
+        "lands_ms": 800,
+        "onscreen_ms": 500,
+        "spoken_matches_onscreen": true,
+        "face_ms": 300,
+        "faceless": false,
+        "app_ms": 1500,
+        "interrupt_ms": 900,
+        "hook_type_known": true,
+        "hook_type_above_median": true,
+        "speech_ms": 1001,
+        "captions_in_safe_zone": true
+      },
+      "out": {
+        "band": "A",
+        "points": 95,
+        "items": [
+          {
+            "id": "hook_lands_2s",
+            "label": "Hook lands by 2.0s",
+            "points": 20,
+            "max": 20,
+            "passed": true,
+            "reason": "Hook lands at 0.8s."
+          },
+          {
+            "id": "onscreen_text_matches",
+            "label": "On-screen text mirrors the spoken hook within 1s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Hook text appears at 0.5s."
+          },
+          {
+            "id": "face_early",
+            "label": "A face is on screen within the first second",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Face on screen at 0.3s."
+          },
+          {
+            "id": "app_visible_3s",
+            "label": "App or product visible by 3s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "App visible at 1.5s."
+          },
+          {
+            "id": "pattern_interrupt",
+            "label": "Motion or pattern interrupt in the first 1.5s",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Pattern interrupt at 0.9s."
+          },
+          {
+            "id": "proven_hook_type",
+            "label": "Uses a proven hook type",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Library hook type."
+          },
+          {
+            "id": "speech_starts_fast",
+            "label": "Speech starts within 1s, no dead air",
+            "points": 5,
+            "max": 10,
+            "passed": false,
+            "reason": "Speech starts at 1.0s.",
+            "fix": "Cut the dead air before your first word."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions burned in, inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "speech_2000_half",
+      "description": "Speech at 2.0 s: half.",
+      "in": {
+        "lands_ms": 800,
+        "onscreen_ms": 500,
+        "spoken_matches_onscreen": true,
+        "face_ms": 300,
+        "faceless": false,
+        "app_ms": 1500,
+        "interrupt_ms": 900,
+        "hook_type_known": true,
+        "hook_type_above_median": true,
+        "speech_ms": 2000,
+        "captions_in_safe_zone": true
+      },
+      "out": {
+        "band": "A",
+        "points": 95,
+        "items": [
+          {
+            "id": "hook_lands_2s",
+            "label": "Hook lands by 2.0s",
+            "points": 20,
+            "max": 20,
+            "passed": true,
+            "reason": "Hook lands at 0.8s."
+          },
+          {
+            "id": "onscreen_text_matches",
+            "label": "On-screen text mirrors the spoken hook within 1s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Hook text appears at 0.5s."
+          },
+          {
+            "id": "face_early",
+            "label": "A face is on screen within the first second",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Face on screen at 0.3s."
+          },
+          {
+            "id": "app_visible_3s",
+            "label": "App or product visible by 3s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "App visible at 1.5s."
+          },
+          {
+            "id": "pattern_interrupt",
+            "label": "Motion or pattern interrupt in the first 1.5s",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Pattern interrupt at 0.9s."
+          },
+          {
+            "id": "proven_hook_type",
+            "label": "Uses a proven hook type",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Library hook type."
+          },
+          {
+            "id": "speech_starts_fast",
+            "label": "Speech starts within 1s, no dead air",
+            "points": 5,
+            "max": 10,
+            "passed": false,
+            "reason": "Speech starts at 2.0s.",
+            "fix": "Cut the dead air before your first word."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions burned in, inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "speech_2001_zero",
+      "description": "Speech at 2.001 s: zero.",
+      "in": {
+        "lands_ms": 800,
+        "onscreen_ms": 500,
+        "spoken_matches_onscreen": true,
+        "face_ms": 300,
+        "faceless": false,
+        "app_ms": 1500,
+        "interrupt_ms": 900,
+        "hook_type_known": true,
+        "hook_type_above_median": true,
+        "speech_ms": 2001,
+        "captions_in_safe_zone": true
+      },
+      "out": {
+        "band": "A",
+        "points": 90,
+        "items": [
+          {
+            "id": "hook_lands_2s",
+            "label": "Hook lands by 2.0s",
+            "points": 20,
+            "max": 20,
+            "passed": true,
+            "reason": "Hook lands at 0.8s."
+          },
+          {
+            "id": "onscreen_text_matches",
+            "label": "On-screen text mirrors the spoken hook within 1s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Hook text appears at 0.5s."
+          },
+          {
+            "id": "face_early",
+            "label": "A face is on screen within the first second",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Face on screen at 0.3s."
+          },
+          {
+            "id": "app_visible_3s",
+            "label": "App or product visible by 3s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "App visible at 1.5s."
+          },
+          {
+            "id": "pattern_interrupt",
+            "label": "Motion or pattern interrupt in the first 1.5s",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Pattern interrupt at 0.9s."
+          },
+          {
+            "id": "proven_hook_type",
+            "label": "Uses a proven hook type",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Library hook type."
+          },
+          {
+            "id": "speech_starts_fast",
+            "label": "Speech starts within 1s, no dead air",
+            "points": 0,
+            "max": 10,
+            "passed": false,
+            "reason": "Speech starts at 2.0s.",
+            "fix": "Cut the dead air before your first word."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions burned in, inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "speech_never",
+      "description": "No speech.",
+      "in": {
+        "lands_ms": 800,
+        "onscreen_ms": 500,
+        "spoken_matches_onscreen": true,
+        "face_ms": 300,
+        "faceless": false,
+        "app_ms": 1500,
+        "interrupt_ms": 900,
+        "hook_type_known": true,
+        "hook_type_above_median": true,
+        "speech_ms": null,
+        "captions_in_safe_zone": true
+      },
+      "out": {
+        "band": "A",
+        "points": 90,
+        "items": [
+          {
+            "id": "hook_lands_2s",
+            "label": "Hook lands by 2.0s",
+            "points": 20,
+            "max": 20,
+            "passed": true,
+            "reason": "Hook lands at 0.8s."
+          },
+          {
+            "id": "onscreen_text_matches",
+            "label": "On-screen text mirrors the spoken hook within 1s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Hook text appears at 0.5s."
+          },
+          {
+            "id": "face_early",
+            "label": "A face is on screen within the first second",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Face on screen at 0.3s."
+          },
+          {
+            "id": "app_visible_3s",
+            "label": "App or product visible by 3s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "App visible at 1.5s."
+          },
+          {
+            "id": "pattern_interrupt",
+            "label": "Motion or pattern interrupt in the first 1.5s",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Pattern interrupt at 0.9s."
+          },
+          {
+            "id": "proven_hook_type",
+            "label": "Uses a proven hook type",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Library hook type."
+          },
+          {
+            "id": "speech_starts_fast",
+            "label": "Speech starts within 1s, no dead air",
+            "points": 0,
+            "max": 10,
+            "passed": false,
+            "reason": "No speech found.",
+            "fix": "Cut the dead air before your first word."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions burned in, inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "captions_outside",
+      "description": "Captions outside the safe zones: zero, band falls.",
+      "in": {
+        "lands_ms": 800,
+        "onscreen_ms": 500,
+        "spoken_matches_onscreen": true,
+        "face_ms": 300,
+        "faceless": false,
+        "app_ms": 1500,
+        "interrupt_ms": 900,
+        "hook_type_known": true,
+        "hook_type_above_median": true,
+        "speech_ms": 300,
+        "captions_in_safe_zone": false
+      },
+      "out": {
+        "band": "A",
+        "points": 95,
+        "items": [
+          {
+            "id": "hook_lands_2s",
+            "label": "Hook lands by 2.0s",
+            "points": 20,
+            "max": 20,
+            "passed": true,
+            "reason": "Hook lands at 0.8s."
+          },
+          {
+            "id": "onscreen_text_matches",
+            "label": "On-screen text mirrors the spoken hook within 1s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Hook text appears at 0.5s."
+          },
+          {
+            "id": "face_early",
+            "label": "A face is on screen within the first second",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Face on screen at 0.3s."
+          },
+          {
+            "id": "app_visible_3s",
+            "label": "App or product visible by 3s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "App visible at 1.5s."
+          },
+          {
+            "id": "pattern_interrupt",
+            "label": "Motion or pattern interrupt in the first 1.5s",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Pattern interrupt at 0.9s."
+          },
+          {
+            "id": "proven_hook_type",
+            "label": "Uses a proven hook type",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Library hook type."
+          },
+          {
+            "id": "speech_starts_fast",
+            "label": "Speech starts within 1s, no dead air",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Speech starts at 0.3s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions burned in, inside safe zones",
+            "points": 0,
+            "max": 5,
+            "passed": false,
+            "reason": "Captions outside the safe zones.",
+            "fix": "Move captions above the platform UI."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "band_boundary_85",
+      "description": "Exactly 85 points is band A (perfect minus 15 from app half + onscreen half).",
+      "in": {
+        "lands_ms": 800,
+        "onscreen_ms": 1500,
+        "spoken_matches_onscreen": true,
+        "face_ms": 300,
+        "faceless": false,
+        "app_ms": 4000,
+        "interrupt_ms": 900,
+        "hook_type_known": true,
+        "hook_type_above_median": true,
+        "speech_ms": 300,
+        "captions_in_safe_zone": true
+      },
+      "out": {
+        "band": "A",
+        "points": 86,
+        "items": [
+          {
+            "id": "hook_lands_2s",
+            "label": "Hook lands by 2.0s",
+            "points": 20,
+            "max": 20,
+            "passed": true,
+            "reason": "Hook lands at 0.8s."
+          },
+          {
+            "id": "onscreen_text_matches",
+            "label": "On-screen text mirrors the spoken hook within 1s",
+            "points": 8,
+            "max": 15,
+            "passed": false,
+            "reason": "Hook text appears at 1.5s.",
+            "fix": "Burn the spoken hook in as text in the first second."
+          },
+          {
+            "id": "face_early",
+            "label": "A face is on screen within the first second",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Face on screen at 0.3s."
+          },
+          {
+            "id": "app_visible_3s",
+            "label": "App or product visible by 3s",
+            "points": 8,
+            "max": 15,
+            "passed": false,
+            "reason": "App visible at 4.0s.",
+            "fix": "Move the app reveal into the first 3 seconds."
+          },
+          {
+            "id": "pattern_interrupt",
+            "label": "Motion or pattern interrupt in the first 1.5s",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Pattern interrupt at 0.9s."
+          },
+          {
+            "id": "proven_hook_type",
+            "label": "Uses a proven hook type",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Library hook type."
+          },
+          {
+            "id": "speech_starts_fast",
+            "label": "Speech starts within 1s, no dead air",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Speech starts at 0.3s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions burned in, inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "band_boundary_70",
+      "description": "Around the B/C line.",
+      "in": {
+        "lands_ms": 2500,
+        "onscreen_ms": 500,
+        "spoken_matches_onscreen": true,
+        "face_ms": 1500,
+        "faceless": false,
+        "app_ms": 4000,
+        "interrupt_ms": null,
+        "hook_type_known": true,
+        "hook_type_above_median": true,
+        "speech_ms": 300,
+        "captions_in_safe_zone": true
+      },
+      "out": {
+        "band": "C",
+        "points": 66,
+        "items": [
+          {
+            "id": "hook_lands_2s",
+            "label": "Hook lands by 2.0s",
+            "points": 10,
+            "max": 20,
+            "passed": false,
+            "reason": "Hook lands at 2.5s.",
+            "fix": "Open on the hook line; trim the intro."
+          },
+          {
+            "id": "onscreen_text_matches",
+            "label": "On-screen text mirrors the spoken hook within 1s",
+            "points": 15,
+            "max": 15,
+            "passed": true,
+            "reason": "Hook text appears at 0.5s."
+          },
+          {
+            "id": "face_early",
+            "label": "A face is on screen within the first second",
+            "points": 8,
+            "max": 15,
+            "passed": false,
+            "reason": "No face until 1.5s.",
+            "fix": "Start on your face, then cut to the app."
+          },
+          {
+            "id": "app_visible_3s",
+            "label": "App or product visible by 3s",
+            "points": 8,
+            "max": 15,
+            "passed": false,
+            "reason": "App visible at 4.0s.",
+            "fix": "Move the app reveal into the first 3 seconds."
+          },
+          {
+            "id": "pattern_interrupt",
+            "label": "Motion or pattern interrupt in the first 1.5s",
+            "points": 0,
+            "max": 10,
+            "passed": false,
+            "reason": "No cut or motion in the first 1.5s.",
+            "fix": "Add a cut or a zoom in the first 1.5 seconds."
+          },
+          {
+            "id": "proven_hook_type",
+            "label": "Uses a proven hook type",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Library hook type."
+          },
+          {
+            "id": "speech_starts_fast",
+            "label": "Speech starts within 1s, no dead air",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "Speech starts at 0.3s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions burned in, inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    }
+  ]
+}

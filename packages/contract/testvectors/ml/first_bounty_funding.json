@@ -1,0 +1,103 @@
+{
+  "schema": "flowd.testvectors/1",
+  "suite": "first_bounty_funding",
+  "description": "First bounty: fee waived, flowd matches min($500, what the brand funds) on top.",
+  "contract_version": "1.0.0",
+  "parity": "required",
+  "compare": {
+    "objects": "subset",
+    "arrays": "same length, element-wise subset",
+    "numbers": "exact",
+    "null": "must be null"
+  },
+  "reference": "packages/contract/schema/formulas.mjs: firstBountyFunding",
+  "generated_by": "services/ml/scripts/export_vectors.py (do not edit by hand)",
+  "function": "firstBountyFunding(args)",
+  "cases": [
+    {
+      "id": "contract_1500",
+      "description": "The contract's example: brand funds $1,500, flowd matches $500.",
+      "in": {
+        "brand_funds_cents": 150000
+      },
+      "out": {
+        "budget_cents": 200000,
+        "take_rate": 0.0,
+        "fee_reserve_cents": 0,
+        "escrow_total_cents": 200000,
+        "matched_cents": 50000,
+        "brand_funded_cents": 150000,
+        "processing_cents": 4380,
+        "card_charge_cents": 154380
+      }
+    },
+    {
+      "id": "contract_300",
+      "description": "Brand funds $300: matched = $300 (min of $500 and what the brand funds).",
+      "in": {
+        "brand_funds_cents": 30000
+      },
+      "out": {
+        "budget_cents": 60000,
+        "take_rate": 0.0,
+        "fee_reserve_cents": 0,
+        "escrow_total_cents": 60000,
+        "matched_cents": 30000,
+        "brand_funded_cents": 30000,
+        "processing_cents": 900,
+        "card_charge_cents": 30900
+      }
+    },
+    {
+      "id": "exactly_500",
+      "description": "Brand funds exactly $500.",
+      "in": {
+        "brand_funds_cents": 50000
+      },
+      "out": {
+        "budget_cents": 100000,
+        "take_rate": 0.0,
+        "fee_reserve_cents": 0,
+        "escrow_total_cents": 100000,
+        "matched_cents": 50000,
+        "brand_funded_cents": 50000,
+        "processing_cents": 1480,
+        "card_charge_cents": 51480
+      }
+    },
+    {
+      "id": "above_cap",
+      "description": "Brand funds $5,000: matched stays $500.",
+      "in": {
+        "brand_funds_cents": 500000
+      },
+      "out": {
+        "budget_cents": 550000,
+        "take_rate": 0.0,
+        "fee_reserve_cents": 0,
+        "escrow_total_cents": 550000,
+        "matched_cents": 50000,
+        "brand_funded_cents": 500000,
+        "processing_cents": 14530,
+        "card_charge_cents": 514530
+      }
+    },
+    {
+      "id": "one_cent",
+      "description": "One cent.",
+      "in": {
+        "brand_funds_cents": 1
+      },
+      "out": {
+        "budget_cents": 2,
+        "take_rate": 0.0,
+        "fee_reserve_cents": 0,
+        "escrow_total_cents": 2,
+        "matched_cents": 1,
+        "brand_funded_cents": 1,
+        "processing_cents": 30,
+        "card_charge_cents": 31
+      }
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+# CI / local build output (xcodebuild -derivedDataPath build/DerivedData)
+build/
+*.xcresult
+*.xcarchive
+*.ipa
+
+# Xcode user state (Flowd.xcodeproj/ itself is ignored by the repo root .gitignore)
+xcuserdata/
+*.xcuserstate
+DerivedData/
+.DS_Store

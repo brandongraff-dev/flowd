@@ -1,0 +1,248 @@
+{
+  "schema": "flowd.testvectors/1",
+  "suite": "expected_earnings",
+  "description": "Pay Math: expected pay at p25 / median / p75 views (0.40x / 1.0x / 2.55x), funnel 0.45% visits -> 38% installs -> 6.2% trials -> 34.8% paid, capped per video. Always an estimate.",
+  "contract_version": "1.0.0",
+  "parity": "required",
+  "compare": {
+    "objects": "subset",
+    "arrays": "same length, element-wise subset",
+    "numbers": "exact",
+    "null": "must be null"
+  },
+  "reference": "packages/contract/schema/formulas.mjs: expectedEarnings",
+  "generated_by": "services/ml/scripts/export_vectors.py (do not edit by hand)",
+  "function": "expectedEarnings(args)",
+  "cases": [
+    {
+      "id": "contract_stacked_2_10",
+      "description": "The contract's example: $2.10 CPM + $0.40/$1.50/$4.00, median 14,200 views, $250 cap.",
+      "in": {
+        "base_median_views": 14200,
+        "cpm_cents": 210,
+        "rates": {
+          "install": 40,
+          "trial": 150,
+          "paid": 400
+        },
+        "per_video_cap_cents": 25000
+      },
+      "out": {
+        "p25": {
+          "views": 5680,
+          "installs": 9.71,
+          "trials": 0.6,
+          "paid": 0.21,
+          "cpm_pay_cents": 1193,
+          "cpa_pay_cents": 563,
+          "pay_cents": 1756,
+          "capped": false
+        },
+        "median": {
+          "views": 14200,
+          "installs": 24.28,
+          "trials": 1.51,
+          "paid": 0.52,
+          "cpm_pay_cents": 2982,
+          "cpa_pay_cents": 1407,
+          "pay_cents": 4389,
+          "capped": false
+        },
+        "p75": {
+          "views": 36210,
+          "installs": 61.92,
+          "trials": 3.84,
+          "paid": 1.34,
+          "cpm_pay_cents": 7604,
+          "cpa_pay_cents": 3587,
+          "pay_cents": 11191,
+          "capped": false
+        }
+      }
+    },
+    {
+      "id": "cpm_only",
+      "description": "CPM-only bounty.",
+      "in": {
+        "base_median_views": 14200,
+        "cpm_cents": 200,
+        "rates": {
+          "install": 0,
+          "trial": 0,
+          "paid": 0
+        },
+        "per_video_cap_cents": 25000
+      },
+      "out": {
+        "p25": {
+          "views": 5680,
+          "installs": 9.71,
+          "trials": 0.6,
+          "paid": 0.21,
+          "cpm_pay_cents": 1136,
+          "cpa_pay_cents": 0,
+          "pay_cents": 1136,
+          "capped": false
+        },
+        "median": {
+          "views": 14200,
+          "installs": 24.28,
+          "trials": 1.51,
+          "paid": 0.52,
+          "cpm_pay_cents": 2840,
+          "cpa_pay_cents": 0,
+          "pay_cents": 2840,
+          "capped": false
+        },
+        "p75": {
+          "views": 36210,
+          "installs": 61.92,
+          "trials": 3.84,
+          "paid": 1.34,
+          "cpm_pay_cents": 7242,
+          "cpa_pay_cents": 0,
+          "pay_cents": 7242,
+          "capped": false
+        }
+      }
+    },
+    {
+      "id": "cap_binds_p75",
+      "description": "A big creator: the cap binds at p75 and the median.",
+      "in": {
+        "base_median_views": 120000,
+        "cpm_cents": 250,
+        "rates": {
+          "install": 40,
+          "trial": 150,
+          "paid": 400
+        },
+        "per_video_cap_cents": 25000
+      },
+      "out": {
+        "p25": {
+          "views": 48000,
+          "installs": 82.08,
+          "trials": 5.09,
+          "paid": 1.77,
+          "cpm_pay_cents": 12000,
+          "cpa_pay_cents": 4755,
+          "pay_cents": 16755,
+          "capped": false
+        },
+        "median": {
+          "views": 120000,
+          "installs": 205.2,
+          "trials": 12.72,
+          "paid": 4.43,
+          "cpm_pay_cents": 30000,
+          "cpa_pay_cents": 11887,
+          "pay_cents": 25000,
+          "capped": true
+        },
+        "p75": {
+          "views": 306000,
+          "installs": 523.26,
+          "trials": 32.44,
+          "paid": 11.29,
+          "cpm_pay_cents": 76500,
+          "cpa_pay_cents": 30313,
+          "pay_cents": 25000,
+          "capped": true
+        }
+      }
+    },
+    {
+      "id": "tiny_creator",
+      "description": "A new creator with 800 median views.",
+      "in": {
+        "base_median_views": 800,
+        "cpm_cents": 200,
+        "rates": {
+          "install": 40,
+          "trial": 150,
+          "paid": 400
+        },
+        "per_video_cap_cents": 25000
+      },
+      "out": {
+        "p25": {
+          "views": 320,
+          "installs": 0.55,
+          "trials": 0.03,
+          "paid": 0.01,
+          "cpm_pay_cents": 64,
+          "cpa_pay_cents": 32,
+          "pay_cents": 96,
+          "capped": false
+        },
+        "median": {
+          "views": 800,
+          "installs": 1.37,
+          "trials": 0.08,
+          "paid": 0.03,
+          "cpm_pay_cents": 160,
+          "cpa_pay_cents": 79,
+          "pay_cents": 239,
+          "capped": false
+        },
+        "p75": {
+          "views": 2040,
+          "installs": 3.49,
+          "trials": 0.22,
+          "paid": 0.08,
+          "cpm_pay_cents": 408,
+          "cpa_pay_cents": 202,
+          "pay_cents": 610,
+          "capped": false
+        }
+      }
+    },
+    {
+      "id": "zero_views",
+      "description": "Zero median views.",
+      "in": {
+        "base_median_views": 0,
+        "cpm_cents": 200,
+        "rates": {
+          "install": 40,
+          "trial": 150,
+          "paid": 400
+        },
+        "per_video_cap_cents": 25000
+      },
+      "out": {
+        "p25": {
+          "views": 0,
+          "installs": 0.0,
+          "trials": 0.0,
+          "paid": 0.0,
+          "cpm_pay_cents": 0,
+          "cpa_pay_cents": 0,
+          "pay_cents": 0,
+          "capped": false
+        },
+        "median": {
+          "views": 0,
+          "installs": 0.0,
+          "trials": 0.0,
+          "paid": 0.0,
+          "cpm_pay_cents": 0,
+          "cpa_pay_cents": 0,
+          "pay_cents": 0,
+          "capped": false
+        },
+        "p75": {
+          "views": 0,
+          "installs": 0.0,
+          "trials": 0.0,
+          "paid": 0.0,
+          "cpm_pay_cents": 0,
+          "cpa_pay_cents": 0,
+          "pay_cents": 0,
+          "capped": false
+        }
+      }
+    }
+  ]
+}

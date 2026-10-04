@@ -1,0 +1,18 @@
+{
+  "name": "@flowd/tokens",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "flowd design tokens (Lagoon Glass). tokens.json is canonical; build.mjs verifies contrast and generates CSS, Tailwind v4 theme, SwiftUI and TypeScript.",
+  "scripts": {
+    "build": "node build.mjs",
+    "check": "node build.mjs --check",
+    "ramps": "node scripts/derive-ramps.mjs"
+  },
+  "exports": {
+    ".": { "types": "./dist/tokens.d.ts", "default": "./dist/tokens.mjs" },
+    "./tokens.css": "./dist/tokens.css",
+    "./recipes.css": "./dist/recipes.css",
+    "./tokens.json": "./tokens.json"
+  }
+}

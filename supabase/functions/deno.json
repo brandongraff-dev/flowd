@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "lint": {
+    "rules": { "tags": ["recommended"] }
+  },
+  "fmt": {
+    "lineWidth": 160,
+    "singleQuote": true,
+    "semiColons": true
+  },
+  "tasks": {
+    "check": "deno check */index.ts",
+    "test": "deno test --allow-read tests/",
+    "test:node": "node --test tests/*.test.ts",
+    "serve": "supabase functions serve --env-file .env"
+  }
+}

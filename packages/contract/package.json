@@ -1,0 +1,14 @@
+{
+  "name": "@flowd/contract",
+  "private": true,
+  "version": "1.0.0",
+  "description": "flowd domain contract: schema (source of truth), DOMAIN.md, types.ts, fixture generators and validator. Zero dependencies; Node 20+.",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build-contract.mjs",
+    "check": "node scripts/build-contract.mjs --check",
+    "fixtures": "node scripts/generate-fixtures.mjs",
+    "validate": "node scripts/validate-fixtures.mjs",
+    "selftest": "node scripts/validate-fixtures.mjs --self-test"
+  }
+}

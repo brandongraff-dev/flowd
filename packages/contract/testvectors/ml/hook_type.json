@@ -1,0 +1,204 @@
+{
+  "schema": "flowd.testvectors/1",
+  "suite": "hook_type",
+  "description": "Keyword classifier for the first spoken line: library hook type or null (not a library hook type).",
+  "contract_version": "1.0.0",
+  "parity": "reference",
+  "compare": {
+    "objects": "subset",
+    "arrays": "same length, element-wise subset",
+    "numbers": "exact",
+    "null": "must be null"
+  },
+  "reference": "services/ml/src/flowd_ml/scoring/hook_types.py",
+  "generated_by": "services/ml/scripts/export_vectors.py (do not edit by hand)",
+  "cases": [
+    {
+      "id": "line_00",
+      "description": "I was wrong about AI photo apps.",
+      "in": {
+        "fn": "classify_hook_text",
+        "text": "I was wrong about AI photo apps."
+      },
+      "out": {
+        "hook_type": "confession"
+      }
+    },
+    {
+      "id": "line_01",
+      "description": "I didn't expect to use this app every day.",
+      "in": {
+        "fn": "classify_hook_text",
+        "text": "I didn't expect to use this app every day."
+      },
+      "out": {
+        "hook_type": "confession"
+      }
+    },
+    {
+      "id": "line_02",
+      "description": "Confession: I never edit by hand anymore.",
+      "in": {
+        "fn": "classify_hook_text",
+        "text": "Confession: I never edit by hand anymore."
+      },
+      "out": {
+        "hook_type": "confession"
+      }
+    },
+    {
+      "id": "line_03",
+      "description": "POV: you finally found a workout app you don't quit.",
+      "in": {
+        "fn": "classify_hook_text",
+        "text": "POV: you finally found a workout app you don't quit."
+      },
+      "out": {
+        "hook_type": "pov"
+      }
+    },
+    {
+      "id": "line_04",
+      "description": "Why is nobody talking about this app?",
+      "in": {
+        "fn": "classify_hook_text",
+        "text": "Why is nobody talking about this app?"
+      },
+      "out": {
+        "hook_type": "direct_question"
+      }
+    },
+    {
+      "id": "line_05",
+      "description": "12 minutes a day, 30 days, here's what changed.",
+      "in": {
+        "fn": "classify_hook_text",
+        "text": "12 minutes a day, 30 days, here's what changed."
+      },
+      "out": {
+        "hook_type": "specific_number"
+      }
+    },
+    {
+      "id": "line_06",
+      "description": "I didn't pay a cent for the first week.",
+      "in": {
+        "fn": "classify_hook_text",
+        "text": "I didn't pay a cent for the first week."
+      },
+      "out": {
+        "hook_type": "risk_reversal"
+      }
+    },
+    {
+      "id": "line_07",
+      "description": "Wait until you see what this did to my mornings.",
+      "in": {
+        "fn": "classify_hook_text",
+        "text": "Wait until you see what this did to my mornings."
+      },
+      "out": {
+        "hook_type": "curiosity_gap"
+      }
+    },
+    {
+      "id": "line_08",
+      "description": "And that's when I knew.",
+      "in": {
+        "fn": "classify_hook_text",
+        "text": "And that's when I knew."
+      },
+      "out": {
+        "hook_type": "pattern_interrupt"
+      }
+    },
+    {
+      "id": "line_09",
+      "description": "Hey guys, welcome back to my channel.",
+      "in": {
+        "fn": "classify_hook_text",
+        "text": "Hey guys, welcome back to my channel."
+      },
+      "out": {
+        "hook_type": null
+      }
+    },
+    {
+      "id": "line_10",
+      "description": "So today I want to show you a photo app.",
+      "in": {
+        "fn": "classify_hook_text",
+        "text": "So today I want to show you a photo app."
+      },
+      "out": {
+        "hook_type": "pattern_interrupt"
+      }
+    },
+    {
+      "id": "line_11",
+      "description": "This app scans your receipts.",
+      "in": {
+        "fn": "classify_hook_text",
+        "text": "This app scans your receipts."
+      },
+      "out": {
+        "hook_type": null
+      }
+    },
+    {
+      "id": "line_12",
+      "description": "Is this the best budget app?",
+      "in": {
+        "fn": "classify_hook_text",
+        "text": "Is this the best budget app?"
+      },
+      "out": {
+        "hook_type": "direct_question"
+      }
+    },
+    {
+      "id": "line_13",
+      "description": "You can try it free for seven days.",
+      "in": {
+        "fn": "classify_hook_text",
+        "text": "You can try it free for seven days."
+      },
+      "out": {
+        "hook_type": "risk_reversal"
+      }
+    },
+    {
+      "id": "line_14",
+      "description": "$40 a month, gone.",
+      "in": {
+        "fn": "classify_hook_text",
+        "text": "$40 a month, gone."
+      },
+      "out": {
+        "hook_type": "specific_number"
+      }
+    },
+    {
+      "id": "line_15",
+      "description": "(empty)",
+      "in": {
+        "fn": "classify_hook_text",
+        "text": ""
+      },
+      "out": {
+        "hook_type": null
+      }
+    },
+    {
+      "id": "line_16",
+      "description": "The one thing nobody tells you about sleep.",
+      "in": {
+        "fn": "classify_hook_text",
+        "text": "The one thing nobody tells you about sleep."
+      },
+      "out": {
+        "hook_type": "curiosity_gap"
+      }
+    }
+  ]
+}

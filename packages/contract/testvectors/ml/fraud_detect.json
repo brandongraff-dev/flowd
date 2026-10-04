@@ -1,0 +1,532 @@
+{
+  "schema": "flowd.testvectors/1",
+  "suite": "fraud_detect",
+  "description": "The ten fraud detectors on raw evidence: which signals fire, at what severity and points. Detector shapes are defined by the Python service (severity = f(evidence)); only the composition is contract-level.",
+  "contract_version": "1.0.0",
+  "parity": "reference",
+  "compare": {
+    "objects": "subset",
+    "arrays": "same length, element-wise subset",
+    "numbers": "exact",
+    "null": "must be null"
+  },
+  "reference": "services/ml/src/flowd_ml/fraud/signals.py",
+  "generated_by": "services/ml/scripts/export_vectors.py (do not edit by hand)",
+  "endpoint": "/v1/fraud",
+  "cases": [
+    {
+      "id": "organic_clean",
+      "description": "A healthy post: natural decay, real engagement, US audience, established account.",
+      "in": {
+        "post": {
+          "views": 24800,
+          "likes": 1900,
+          "comments": 142,
+          "shares": 210,
+          "saves": 380,
+          "hourly_views": [
+            2200,
+            3800,
+            3100,
+            2300,
+            1700,
+            1300,
+            1000,
+            800,
+            700,
+            600,
+            520,
+            460,
+            410,
+            370,
+            330,
+            300,
+            280,
+            260,
+            240,
+            220,
+            200,
+            190,
+            180,
+            170,
+            160,
+            150,
+            140,
+            130,
+            125,
+            120,
+            115,
+            110,
+            105,
+            100,
+            95,
+            92,
+            90,
+            88,
+            85,
+            83,
+            80,
+            78,
+            76,
+            74,
+            72,
+            70,
+            68,
+            66
+          ],
+          "traffic_sources": {
+            "fyp": 0.62,
+            "following": 0.2,
+            "profile": 0.06,
+            "search": 0.05,
+            "sound": 0.02,
+            "share": 0.03,
+            "other": 0.02
+          },
+          "geo": {
+            "US": 0.74,
+            "CA": 0.08,
+            "GB": 0.05
+          }
+        },
+        "account": {
+          "followers": 18400,
+          "account_age_days": 412,
+          "comment_ratio_mean_28d": 0.0055,
+          "comment_ratio_sd_28d": 0.0015
+        },
+        "bounty": {
+          "target_countries": [
+            "US"
+          ],
+          "min_target_audience_ratio": 0.5,
+          "per_video_cap_cents": 25000,
+          "cpm_cents": 200
+        },
+        "history": [
+          {
+            "earnings_cents": 4800,
+            "cap_cents": 25000
+          },
+          {
+            "earnings_cents": 9100,
+            "cap_cents": 25000
+          },
+          {
+            "earnings_cents": 3300,
+            "cap_cents": 25000
+          }
+        ]
+      },
+      "out": {
+        "score": 0,
+        "band": "clean",
+        "action": "auto_clear",
+        "signals": []
+      }
+    },
+    {
+      "id": "bought_views_step",
+      "description": "Step function: 96% of views in two hours, 62% from 'other', new low-follower account.",
+      "in": {
+        "post": {
+          "views": 61440,
+          "likes": 140,
+          "comments": 6,
+          "shares": 11,
+          "saves": 20,
+          "hourly_views": [
+            120,
+            380,
+            54000,
+            5100,
+            300,
+            280,
+            250,
+            230,
+            210,
+            200,
+            190,
+            180
+          ],
+          "traffic_sources": {
+            "fyp": 0.28,
+            "following": 0.06,
+            "other": 0.62,
+            "profile": 0.04
+          },
+          "geo": {
+            "US": 0.31,
+            "BR": 0.33,
+            "PH": 0.36
+          }
+        },
+        "account": {
+          "followers": 1900,
+          "account_age_days": 19
+        },
+        "bounty": {
+          "target_countries": [
+            "US"
+          ],
+          "min_target_audience_ratio": 0.5,
+          "per_video_cap_cents": 25000,
+          "cpm_cents": 200
+        }
+      },
+      "out": {
+        "score": 66,
+        "band": "review",
+        "action": "hold_for_human_review",
+        "signals": [
+          {
+            "signal": "view_spike_no_engagement",
+            "severity": 0.94,
+            "points": 24
+          },
+          {
+            "signal": "bought_views_pattern",
+            "severity": 0.77,
+            "points": 23
+          },
+          {
+            "signal": "new_account",
+            "severity": 0.62,
+            "points": 6
+          },
+          {
+            "signal": "engagement_anomaly",
+            "severity": 0.72,
+            "points": 7
+          },
+          {
+            "signal": "traffic_source_anomaly",
+            "severity": 0.58,
+            "points": 6
+          }
+        ]
+      }
+    },
+    {
+      "id": "geo_mismatch_only",
+      "description": "Audience is 15% US against 55% needed (40 points short).",
+      "in": {
+        "post": {
+          "views": 12000,
+          "likes": 800,
+          "comments": 40,
+          "shares": 60,
+          "geo": {
+            "US": 0.15,
+            "BR": 0.5,
+            "MX": 0.35
+          }
+        },
+        "bounty": {
+          "target_countries": [
+            "US"
+          ],
+          "min_target_audience_ratio": 0.55
+        }
+      },
+      "out": {
+        "score": 11,
+        "band": "clean",
+        "action": "auto_clear",
+        "signals": [
+          {
+            "signal": "geo_mismatch",
+            "severity": 0.76,
+            "points": 11
+          }
+        ]
+      }
+    },
+    {
+      "id": "new_account_follower_outlier",
+      "description": "A 6-day-old account with 900 followers and 72,000 views.",
+      "in": {
+        "post": {
+          "views": 72000,
+          "likes": 4100,
+          "comments": 210,
+          "shares": 300
+        },
+        "account": {
+          "followers": 900,
+          "account_age_days": 6
+        }
+      },
+      "out": {
+        "score": 15,
+        "band": "clean",
+        "action": "auto_clear",
+        "signals": [
+          {
+            "signal": "view_to_follower_outlier",
+            "severity": 0.63,
+            "points": 6
+          },
+          {
+            "signal": "new_account",
+            "severity": 0.88,
+            "points": 9
+          }
+        ]
+      }
+    },
+    {
+      "id": "duplicate_exact",
+      "description": "Perceptual hash identical to another creator's video.",
+      "in": {
+        "duplicate": {
+          "phash_distance": 0,
+          "duplicate_of": "sub_0311",
+          "kind": "other_creator"
+        }
+      },
+      "out": {
+        "score": 20,
+        "band": "watch",
+        "action": "auto_clear",
+        "signals": [
+          {
+            "signal": "duplicate_hash",
+            "severity": 1.0,
+            "points": 20
+          }
+        ]
+      }
+    },
+    {
+      "id": "duplicate_distance_6",
+      "description": "Distance 6: still a duplicate (severity 0.6).",
+      "in": {
+        "duplicate": {
+          "phash_distance": 6,
+          "duplicate_of": "post_0201",
+          "kind": "own_earlier"
+        }
+      },
+      "out": {
+        "score": 12,
+        "band": "clean",
+        "action": "auto_clear",
+        "signals": [
+          {
+            "signal": "duplicate_hash",
+            "severity": 0.6,
+            "points": 12
+          }
+        ]
+      }
+    },
+    {
+      "id": "duplicate_distance_7_clear",
+      "description": "Distance 7: outside the line.",
+      "in": {
+        "duplicate": {
+          "phash_distance": 7,
+          "duplicate_of": "post_0201"
+        }
+      },
+      "out": {
+        "score": 0,
+        "band": "clean",
+        "action": "auto_clear",
+        "signals": []
+      }
+    },
+    {
+      "id": "cap_clustering_4_of_5",
+      "description": "Four of the last five posts earned within 2% of the cap.",
+      "in": {
+        "history": [
+          {
+            "earnings_cents": 24900,
+            "cap_cents": 25000
+          },
+          {
+            "earnings_cents": 24700,
+            "cap_cents": 25000
+          },
+          {
+            "earnings_cents": 1900,
+            "cap_cents": 25000
+          },
+          {
+            "earnings_cents": 25000,
+            "cap_cents": 25000
+          },
+          {
+            "earnings_cents": 24650,
+            "cap_cents": 25000
+          }
+        ]
+      },
+      "out": {
+        "score": 16,
+        "band": "clean",
+        "action": "auto_clear",
+        "signals": [
+          {
+            "signal": "cap_clustering",
+            "severity": 0.8,
+            "points": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "drip_flat_curve",
+      "description": "Constant ~180 views an hour for 72 hours: no natural decay.",
+      "in": {
+        "post": {
+          "views": 13080,
+          "likes": 700,
+          "comments": 30,
+          "shares": 40,
+          "hourly_views": [
+            180,
+            184,
+            188,
+            180,
+            184,
+            188,
+            180,
+            184,
+            188,
+            180,
+            184,
+            188,
+            180,
+            184,
+            188,
+            180,
+            184,
+            188,
+            180,
+            184,
+            188,
+            180,
+            184,
+            188,
+            180,
+            184,
+            188,
+            180,
+            184,
+            188,
+            180,
+            184,
+            188,
+            180,
+            184,
+            188,
+            180,
+            184,
+            188,
+            180,
+            184,
+            188,
+            180,
+            184,
+            188,
+            180,
+            184,
+            188,
+            180,
+            184,
+            188,
+            180,
+            184,
+            188,
+            180,
+            184,
+            188,
+            180,
+            184,
+            188,
+            180,
+            184,
+            188,
+            180,
+            184,
+            188,
+            180,
+            184,
+            188,
+            180,
+            184,
+            188
+          ]
+        }
+      },
+      "out": {
+        "score": 10,
+        "band": "clean",
+        "action": "auto_clear",
+        "signals": [
+          {
+            "signal": "curve_shape",
+            "severity": 1.0,
+            "points": 10
+          }
+        ]
+      }
+    },
+    {
+      "id": "engagement_anomaly_likes",
+      "description": "Likes at 0.2% of views on a 30,000-view post.",
+      "in": {
+        "post": {
+          "views": 30000,
+          "likes": 60,
+          "comments": 2,
+          "shares": 1
+        }
+      },
+      "out": {
+        "score": 8,
+        "band": "clean",
+        "action": "auto_clear",
+        "signals": [
+          {
+            "signal": "engagement_anomaly",
+            "severity": 0.75,
+            "points": 8
+          }
+        ]
+      }
+    },
+    {
+      "id": "traffic_other_only",
+      "description": "70% of views from 'other' sources, otherwise normal.",
+      "in": {
+        "post": {
+          "views": 20000,
+          "likes": 1500,
+          "comments": 90,
+          "shares": 120,
+          "traffic_sources": {
+            "fyp": 0.25,
+            "following": 0.05,
+            "other": 0.7
+          }
+        }
+      },
+      "out": {
+        "score": 7,
+        "band": "clean",
+        "action": "auto_clear",
+        "signals": [
+          {
+            "signal": "traffic_source_anomaly",
+            "severity": 0.7,
+            "points": 7
+          }
+        ]
+      }
+    }
+  ]
+}

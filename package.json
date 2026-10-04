@@ -1,0 +1,24 @@
+{
+  "name": "flowd",
+  "private": true,
+  "version": "0.1.0",
+  "description": "flowd — the open creator market for apps. Monorepo root (no workspaces; each app is self-contained).",
+  "scripts": {
+    "sync": "node scripts/sync.mjs",
+    "contract:build": "node packages/contract/scripts/build-contract.mjs",
+    "contract:check": "node packages/contract/scripts/build-contract.mjs --check",
+    "fixtures:gen": "node packages/contract/scripts/generate-fixtures.mjs",
+    "fixtures:validate": "node packages/contract/scripts/validate-fixtures.mjs",
+    "fixtures:selftest": "node packages/contract/scripts/validate-fixtures.mjs --self-test",
+    "web:dev": "npm --prefix apps/web run dev",
+    "web:build": "npm --prefix apps/web run build",
+    "web:typecheck": "npm --prefix apps/web run typecheck",
+    "web:test": "npm --prefix apps/web run test",
+    "supabase:gen": "node supabase/tools/gen-schema.mjs && node supabase/tools/gen-formula-tests.mjs && node supabase/tools/gen-openapi.mjs",
+    "supabase:check": "node supabase/tools/gen-schema.mjs --check && node supabase/tools/gen-formula-tests.mjs --check && node supabase/tools/gen-openapi.mjs --check && node supabase/tools/lint.mjs",
+    "supabase:verify": "node supabase/tools/verify-pglite.mjs",
+    "functions:test": "node --test \"supabase/functions/tests/*.test.ts\"",
+    "openapi:build": "node supabase/tools/gen-openapi.mjs",
+    "openapi:verify": "node supabase/tools/gen-openapi.mjs --verify"
+  }
+}

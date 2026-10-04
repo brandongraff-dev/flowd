@@ -1,0 +1,130 @@
+{
+  "schema": "flowd.testvectors/1",
+  "suite": "fill_time",
+  "description": "One point of the price-vs-fill model.",
+  "contract_version": "1.0.0",
+  "parity": "required",
+  "compare": {
+    "objects": "subset",
+    "arrays": "same length, element-wise subset",
+    "numbers": "exact",
+    "null": "must be null"
+  },
+  "reference": "packages/contract/schema/formulas.mjs: fillTime",
+  "generated_by": "services/ml/scripts/export_vectors.py (do not edit by hand)",
+  "function": "fillTime(args)",
+  "cases": [
+    {
+      "id": "at_clearing",
+      "description": "At the clearing price the fill time is the category median.",
+      "in": {
+        "cpm_cents": 240,
+        "clearing_cpm_cents": 240,
+        "median_fill_hours": 31,
+        "sample_n": 38
+      },
+      "out": {
+        "fill_hours_p50": 31.0,
+        "fill_hours_p80": 55.8,
+        "confidence": 0.66,
+        "thin_market": false
+      }
+    },
+    {
+      "id": "double_price",
+      "description": "2x the clearing price.",
+      "in": {
+        "cpm_cents": 480,
+        "clearing_cpm_cents": 240,
+        "median_fill_hours": 31,
+        "sample_n": 38
+      },
+      "out": {
+        "fill_hours_p50": 10.23,
+        "fill_hours_p80": 18.41,
+        "confidence": 0.33,
+        "thin_market": false
+      }
+    },
+    {
+      "id": "half_price",
+      "description": "Half the clearing price: (1/0.5)^1.6 = 3.03x slower.",
+      "in": {
+        "cpm_cents": 120,
+        "clearing_cpm_cents": 240,
+        "median_fill_hours": 31,
+        "sample_n": 38
+      },
+      "out": {
+        "fill_hours_p50": 93.97,
+        "fill_hours_p80": 169.15,
+        "confidence": 0.33,
+        "thin_market": false
+      }
+    },
+    {
+      "id": "floor_6_hours",
+      "description": "A very high price hits the 6-hour floor.",
+      "in": {
+        "cpm_cents": 1000,
+        "clearing_cpm_cents": 240,
+        "median_fill_hours": 31,
+        "sample_n": 38
+      },
+      "out": {
+        "fill_hours_p50": 6.0,
+        "fill_hours_p80": 10.8,
+        "confidence": 0.33,
+        "thin_market": false
+      }
+    },
+    {
+      "id": "thin_7",
+      "description": "7 comparable bounties is still thin (limit 8).",
+      "in": {
+        "cpm_cents": 240,
+        "clearing_cpm_cents": 240,
+        "median_fill_hours": 31,
+        "sample_n": 7
+      },
+      "out": {
+        "fill_hours_p50": 31.0,
+        "fill_hours_p80": 55.8,
+        "confidence": 0.26,
+        "thin_market": true
+      }
+    },
+    {
+      "id": "not_thin_8",
+      "description": "8 comparable bounties is not thin.",
+      "in": {
+        "cpm_cents": 240,
+        "clearing_cpm_cents": 240,
+        "median_fill_hours": 31,
+        "sample_n": 8
+      },
+      "out": {
+        "fill_hours_p50": 31.0,
+        "fill_hours_p80": 55.8,
+        "confidence": 0.29,
+        "thin_market": false
+      }
+    },
+    {
+      "id": "confidence_distance_cap",
+      "description": "The distance damping caps at 0.5.",
+      "in": {
+        "cpm_cents": 1200,
+        "clearing_cpm_cents": 240,
+        "median_fill_hours": 31,
+        "sample_n": 200
+      },
+      "out": {
+        "fill_hours_p50": 6.0,
+        "fill_hours_p80": 10.8,
+        "confidence": 0.45,
+        "thin_market": false
+      }
+    }
+  ]
+}

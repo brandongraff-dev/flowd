@@ -1,0 +1,57 @@
+/*
+ * Motion for the marketing and celebration pieces of the shell kit (marquee, animated beams). Namespaced fd-sh-* so it never
+ * collides with src/styles. Continuous motion is compositor-only (transform, stroke-dashoffset) and every piece has a
+ * reduced-motion equivalent: the marquee becomes a scrollable row, beams become static lines.
+ */
+
+/* Marquee: the track holds N identical copies; it slides by exactly one copy's width (a px var set by the component), so the loop is seamless. */
+@keyframes fd-sh-marquee {
+  to {
+    transform: translate3d(var(--fd-sh-shift, -50%), 0, 0);
+  }
+}
+
+.fd-sh-marquee-track {
+  animation: fd-sh-marquee var(--fd-sh-dur, 40s) linear infinite;
+  animation-direction: var(--fd-sh-dir, normal);
+}
+
+.fd-sh-marquee[data-pause]:hover .fd-sh-marquee-track,
+.fd-sh-marquee[data-pause]:focus-within .fd-sh-marquee-track {
+  animation-play-state: paused;
+}
+
+/* Animated beam: a short bright pulse (80 of 1000 path units) travelling along a hairline path. */
+@keyframes fd-sh-beam {
+  from {
+    stroke-dashoffset: 80;
+  }
+  to {
+    stroke-dashoffset: -1000;
+  }
+}
+
+.fd-sh-beam-pulse {
+  stroke-dasharray: 80 920;
+  animation: fd-sh-beam var(--fd-sh-beam-dur, 3.2s) linear infinite;
+  animation-delay: var(--fd-sh-beam-delay, 0s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fd-sh-marquee {
+    overflow-x: auto;
+    -webkit-mask-image: none !important;
+    mask-image: none !important;
+  }
+  .fd-sh-marquee-track {
+    animation: none;
+    transform: none;
+  }
+  .fd-sh-marquee-copy[aria-hidden="true"] {
+    display: none;
+  }
+  .fd-sh-beam-pulse {
+    animation: none;
+    display: none;
+  }
+}

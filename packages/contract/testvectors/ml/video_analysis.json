@@ -1,0 +1,1042 @@
+{
+  "schema": "flowd.testvectors/1",
+  "suite": "video_analysis",
+  "description": "The video pipeline on the deterministic fake adapters (scripted scenarios). Pins the whole derivation: observations, scores, tags, QA, hash.",
+  "contract_version": "1.0.0",
+  "parity": "reference",
+  "compare": {
+    "objects": "subset",
+    "arrays": "same length, element-wise subset",
+    "numbers": "exact",
+    "null": "must be null"
+  },
+  "reference": "services/ml/src/flowd_ml/video/pipeline.py",
+  "generated_by": "services/ml/scripts/export_vectors.py (do not edit by hand)",
+  "endpoint": "/v1/analyze-video",
+  "cases": [
+    {
+      "id": "strong_screen_reaction",
+      "description": "The fake adapters' 'strong_screen_reaction' scenario end to end.",
+      "in": {
+        "submission_id": "sub_0412",
+        "version": 1,
+        "video": {
+          "uri": "fake://strong_screen_reaction?seed=412"
+        },
+        "brief": {
+          "beats": [
+            {
+              "beat": "hook",
+              "required": true
+            },
+            {
+              "beat": "app_reveal",
+              "required": true
+            },
+            {
+              "beat": "demo",
+              "required": true
+            },
+            {
+              "beat": "cta",
+              "required": true
+            }
+          ],
+          "disclosure_text": "#ad Paid partnership with Lumi",
+          "banned_claims": [
+            "guaranteed results"
+          ],
+          "cta": "Link in bio",
+          "app_name": "Lumi",
+          "brand_name": "Lumi",
+          "min_duration_s": 15,
+          "max_duration_s": 60
+        },
+        "creator_median_views": 14200
+      },
+      "out": {
+        "id": "va_0412_v1",
+        "duration_ms": 24000,
+        "phash": "af72058f222ad78b",
+        "hook": {
+          "lands_at_ms": 300,
+          "face_at_ms": 500,
+          "app_at_ms": 1200,
+          "hook_type": "confession"
+        },
+        "tags": {
+          "format_id": "tmpl_screen_reaction",
+          "hook_type": "confession",
+          "time_to_app_reveal_ms": 1200,
+          "cta_type": "link_in_bio"
+        },
+        "hook_score": {
+          "band": "A",
+          "points": 100
+        },
+        "flow_score": {
+          "band": "A",
+          "points": 100
+        },
+        "qa": {
+          "verdict": "pass",
+          "suggested_reason_code": null
+        },
+        "checks": [
+          {
+            "check": "disclosure_audio",
+            "result": "pass"
+          },
+          {
+            "check": "disclosure_onscreen",
+            "result": "pass"
+          },
+          {
+            "check": "music_licence",
+            "result": "pass"
+          },
+          {
+            "check": "banned_claims",
+            "result": "pass"
+          },
+          {
+            "check": "ai_content",
+            "result": "pass"
+          },
+          {
+            "check": "duplicate",
+            "result": "pass"
+          },
+          {
+            "check": "watermark",
+            "result": "pass"
+          },
+          {
+            "check": "brief_beats",
+            "result": "pass"
+          },
+          {
+            "check": "safe_zone",
+            "result": "pass"
+          },
+          {
+            "check": "aspect_ratio",
+            "result": "pass"
+          },
+          {
+            "check": "length",
+            "result": "pass"
+          },
+          {
+            "check": "resolution",
+            "result": "pass"
+          },
+          {
+            "check": "audio_clarity",
+            "result": "pass"
+          },
+          {
+            "check": "moderation",
+            "result": "pass"
+          }
+        ]
+      }
+    },
+    {
+      "id": "slow_hook_no_disclosure",
+      "description": "The fake adapters' 'slow_hook_no_disclosure' scenario end to end.",
+      "in": {
+        "submission_id": "sub_0412",
+        "version": 1,
+        "video": {
+          "uri": "fake://slow_hook_no_disclosure?seed=412"
+        },
+        "brief": {
+          "beats": [
+            {
+              "beat": "hook",
+              "required": true
+            },
+            {
+              "beat": "app_reveal",
+              "required": true
+            },
+            {
+              "beat": "demo",
+              "required": true
+            },
+            {
+              "beat": "cta",
+              "required": true
+            }
+          ],
+          "disclosure_text": "#ad Paid partnership with Lumi",
+          "banned_claims": [
+            "guaranteed results"
+          ],
+          "cta": "Link in bio",
+          "app_name": "Lumi",
+          "brand_name": "Lumi",
+          "min_duration_s": 15,
+          "max_duration_s": 60
+        },
+        "creator_median_views": 14200
+      },
+      "out": {
+        "id": "va_0412_v1",
+        "duration_ms": 31000,
+        "phash": "af72058f222ad78b",
+        "hook": {
+          "lands_at_ms": 3400,
+          "face_at_ms": 0,
+          "app_at_ms": 8800,
+          "hook_type": "pattern_interrupt"
+        },
+        "tags": {
+          "format_id": null,
+          "hook_type": "pattern_interrupt",
+          "time_to_app_reveal_ms": 8800,
+          "cta_type": "link_in_bio"
+        },
+        "hook_score": {
+          "band": "E",
+          "points": 30
+        },
+        "flow_score": {
+          "band": "E",
+          "points": 36
+        },
+        "qa": {
+          "verdict": "fail",
+          "suggested_reason_code": "missing_disclosure"
+        },
+        "checks": [
+          {
+            "check": "disclosure_audio",
+            "result": "fail"
+          },
+          {
+            "check": "disclosure_onscreen",
+            "result": "fail"
+          },
+          {
+            "check": "music_licence",
+            "result": "pass"
+          },
+          {
+            "check": "banned_claims",
+            "result": "pass"
+          },
+          {
+            "check": "ai_content",
+            "result": "pass"
+          },
+          {
+            "check": "duplicate",
+            "result": "pass"
+          },
+          {
+            "check": "watermark",
+            "result": "pass"
+          },
+          {
+            "check": "brief_beats",
+            "result": "warn"
+          },
+          {
+            "check": "safe_zone",
+            "result": "fail"
+          },
+          {
+            "check": "aspect_ratio",
+            "result": "pass"
+          },
+          {
+            "check": "length",
+            "result": "pass"
+          },
+          {
+            "check": "resolution",
+            "result": "pass"
+          },
+          {
+            "check": "audio_clarity",
+            "result": "warn"
+          },
+          {
+            "check": "moderation",
+            "result": "pass"
+          }
+        ]
+      }
+    },
+    {
+      "id": "faceless_slideshow",
+      "description": "The fake adapters' 'faceless_slideshow' scenario end to end.",
+      "in": {
+        "submission_id": "sub_0412",
+        "version": 1,
+        "video": {
+          "uri": "fake://faceless_slideshow?seed=412"
+        },
+        "brief": {
+          "beats": [
+            {
+              "beat": "hook",
+              "required": true
+            },
+            {
+              "beat": "app_reveal",
+              "required": true
+            },
+            {
+              "beat": "demo",
+              "required": true
+            },
+            {
+              "beat": "cta",
+              "required": true
+            }
+          ],
+          "disclosure_text": "#ad Paid partnership with Lumi",
+          "banned_claims": [
+            "guaranteed results"
+          ],
+          "cta": "Link in bio",
+          "app_name": "Lumi",
+          "brand_name": "Lumi",
+          "min_duration_s": 15,
+          "max_duration_s": 60
+        },
+        "creator_median_views": 14200
+      },
+      "out": {
+        "id": "va_0412_v1",
+        "duration_ms": 22000,
+        "phash": "af72058f222ad78b",
+        "hook": {
+          "lands_at_ms": 200,
+          "face_at_ms": null,
+          "app_at_ms": 11000,
+          "hook_type": "curiosity_gap"
+        },
+        "tags": {
+          "format_id": "tmpl_faceless_slideshow",
+          "hook_type": "curiosity_gap",
+          "time_to_app_reveal_ms": 11000,
+          "cta_type": "link_in_bio"
+        },
+        "hook_score": {
+          "band": "B",
+          "points": 70
+        },
+        "flow_score": {
+          "band": "B",
+          "points": 75
+        },
+        "qa": {
+          "verdict": "warn",
+          "suggested_reason_code": "missing_disclosure"
+        },
+        "checks": [
+          {
+            "check": "disclosure_audio",
+            "result": "warn"
+          },
+          {
+            "check": "disclosure_onscreen",
+            "result": "pass"
+          },
+          {
+            "check": "music_licence",
+            "result": "pass"
+          },
+          {
+            "check": "banned_claims",
+            "result": "pass"
+          },
+          {
+            "check": "ai_content",
+            "result": "pass"
+          },
+          {
+            "check": "duplicate",
+            "result": "pass"
+          },
+          {
+            "check": "watermark",
+            "result": "pass"
+          },
+          {
+            "check": "brief_beats",
+            "result": "warn"
+          },
+          {
+            "check": "safe_zone",
+            "result": "pass"
+          },
+          {
+            "check": "aspect_ratio",
+            "result": "pass"
+          },
+          {
+            "check": "length",
+            "result": "pass"
+          },
+          {
+            "check": "resolution",
+            "result": "pass"
+          },
+          {
+            "check": "audio_clarity",
+            "result": "pass"
+          },
+          {
+            "check": "moderation",
+            "result": "pass"
+          }
+        ]
+      }
+    },
+    {
+      "id": "banned_claim",
+      "description": "The fake adapters' 'banned_claim' scenario end to end.",
+      "in": {
+        "submission_id": "sub_0412",
+        "version": 1,
+        "video": {
+          "uri": "fake://banned_claim?seed=412"
+        },
+        "brief": {
+          "beats": [
+            {
+              "beat": "hook",
+              "required": true
+            },
+            {
+              "beat": "app_reveal",
+              "required": true
+            },
+            {
+              "beat": "demo",
+              "required": true
+            },
+            {
+              "beat": "cta",
+              "required": true
+            }
+          ],
+          "disclosure_text": "#ad Paid partnership with Lumi",
+          "banned_claims": [
+            "guaranteed results"
+          ],
+          "cta": "Link in bio",
+          "app_name": "Lumi",
+          "brand_name": "Lumi",
+          "min_duration_s": 15,
+          "max_duration_s": 60
+        },
+        "creator_median_views": 14200
+      },
+      "out": {
+        "id": "va_0412_v1",
+        "duration_ms": 22000,
+        "phash": "af72058f222ad78b",
+        "hook": {
+          "lands_at_ms": 300,
+          "face_at_ms": 500,
+          "app_at_ms": 1100,
+          "hook_type": "confession"
+        },
+        "tags": {
+          "format_id": "tmpl_confession",
+          "hook_type": "confession",
+          "time_to_app_reveal_ms": 1100,
+          "cta_type": "link_in_bio"
+        },
+        "hook_score": {
+          "band": "A",
+          "points": 100
+        },
+        "flow_score": {
+          "band": "A",
+          "points": 100
+        },
+        "qa": {
+          "verdict": "fail",
+          "suggested_reason_code": "banned_claim"
+        },
+        "checks": [
+          {
+            "check": "disclosure_audio",
+            "result": "pass"
+          },
+          {
+            "check": "disclosure_onscreen",
+            "result": "pass"
+          },
+          {
+            "check": "music_licence",
+            "result": "pass"
+          },
+          {
+            "check": "banned_claims",
+            "result": "fail"
+          },
+          {
+            "check": "ai_content",
+            "result": "pass"
+          },
+          {
+            "check": "duplicate",
+            "result": "pass"
+          },
+          {
+            "check": "watermark",
+            "result": "pass"
+          },
+          {
+            "check": "brief_beats",
+            "result": "pass"
+          },
+          {
+            "check": "safe_zone",
+            "result": "pass"
+          },
+          {
+            "check": "aspect_ratio",
+            "result": "pass"
+          },
+          {
+            "check": "length",
+            "result": "pass"
+          },
+          {
+            "check": "resolution",
+            "result": "pass"
+          },
+          {
+            "check": "audio_clarity",
+            "result": "pass"
+          },
+          {
+            "check": "moderation",
+            "result": "pass"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ai_unlabelled",
+      "description": "The fake adapters' 'ai_unlabelled' scenario end to end.",
+      "in": {
+        "submission_id": "sub_0412",
+        "version": 1,
+        "video": {
+          "uri": "fake://ai_unlabelled?seed=412"
+        },
+        "brief": {
+          "beats": [
+            {
+              "beat": "hook",
+              "required": true
+            },
+            {
+              "beat": "app_reveal",
+              "required": true
+            },
+            {
+              "beat": "demo",
+              "required": true
+            },
+            {
+              "beat": "cta",
+              "required": true
+            }
+          ],
+          "disclosure_text": "#ad Paid partnership with Lumi",
+          "banned_claims": [
+            "guaranteed results"
+          ],
+          "cta": "Link in bio",
+          "app_name": "Lumi",
+          "brand_name": "Lumi",
+          "min_duration_s": 15,
+          "max_duration_s": 60
+        },
+        "creator_median_views": 14200
+      },
+      "out": {
+        "id": "va_0412_v1",
+        "duration_ms": 20000,
+        "phash": "af72058f222ad78b",
+        "hook": {
+          "lands_at_ms": 400,
+          "face_at_ms": 500,
+          "app_at_ms": 1300,
+          "hook_type": "direct_question"
+        },
+        "tags": {
+          "format_id": null,
+          "hook_type": "direct_question",
+          "time_to_app_reveal_ms": 1300,
+          "cta_type": "search_app_store"
+        },
+        "hook_score": {
+          "band": "A",
+          "points": 95
+        },
+        "flow_score": {
+          "band": "A",
+          "points": 97
+        },
+        "qa": {
+          "verdict": "fail",
+          "suggested_reason_code": "music_not_licensed"
+        },
+        "checks": [
+          {
+            "check": "disclosure_audio",
+            "result": "pass"
+          },
+          {
+            "check": "disclosure_onscreen",
+            "result": "pass"
+          },
+          {
+            "check": "music_licence",
+            "result": "fail"
+          },
+          {
+            "check": "banned_claims",
+            "result": "pass"
+          },
+          {
+            "check": "ai_content",
+            "result": "fail"
+          },
+          {
+            "check": "duplicate",
+            "result": "pass"
+          },
+          {
+            "check": "watermark",
+            "result": "pass"
+          },
+          {
+            "check": "brief_beats",
+            "result": "pass"
+          },
+          {
+            "check": "safe_zone",
+            "result": "pass"
+          },
+          {
+            "check": "aspect_ratio",
+            "result": "pass"
+          },
+          {
+            "check": "length",
+            "result": "pass"
+          },
+          {
+            "check": "resolution",
+            "result": "pass"
+          },
+          {
+            "check": "audio_clarity",
+            "result": "pass"
+          },
+          {
+            "check": "moderation",
+            "result": "pass"
+          }
+        ]
+      }
+    },
+    {
+      "id": "watermark_competitor",
+      "description": "The fake adapters' 'watermark_competitor' scenario end to end.",
+      "in": {
+        "submission_id": "sub_0412",
+        "version": 1,
+        "video": {
+          "uri": "fake://watermark_competitor?seed=412"
+        },
+        "brief": {
+          "beats": [
+            {
+              "beat": "hook",
+              "required": true
+            },
+            {
+              "beat": "app_reveal",
+              "required": true
+            },
+            {
+              "beat": "demo",
+              "required": true
+            },
+            {
+              "beat": "cta",
+              "required": true
+            }
+          ],
+          "disclosure_text": "#ad Paid partnership with Lumi",
+          "banned_claims": [
+            "guaranteed results"
+          ],
+          "cta": "Link in bio",
+          "app_name": "Lumi",
+          "brand_name": "Lumi",
+          "min_duration_s": 15,
+          "max_duration_s": 60
+        },
+        "creator_median_views": 14200
+      },
+      "out": {
+        "id": "va_0412_v1",
+        "duration_ms": 26000,
+        "phash": "af72058f222ad78b",
+        "hook": {
+          "lands_at_ms": 300,
+          "face_at_ms": 500,
+          "app_at_ms": 1000,
+          "hook_type": "pov"
+        },
+        "tags": {
+          "format_id": null,
+          "hook_type": "pov",
+          "time_to_app_reveal_ms": 1000,
+          "cta_type": "link_in_bio"
+        },
+        "hook_score": {
+          "band": "A",
+          "points": 95
+        },
+        "flow_score": {
+          "band": "A",
+          "points": 97
+        },
+        "qa": {
+          "verdict": "fail",
+          "suggested_reason_code": "competitor_shown"
+        },
+        "checks": [
+          {
+            "check": "disclosure_audio",
+            "result": "pass"
+          },
+          {
+            "check": "disclosure_onscreen",
+            "result": "pass"
+          },
+          {
+            "check": "music_licence",
+            "result": "pass"
+          },
+          {
+            "check": "banned_claims",
+            "result": "pass"
+          },
+          {
+            "check": "ai_content",
+            "result": "pass"
+          },
+          {
+            "check": "duplicate",
+            "result": "pass"
+          },
+          {
+            "check": "watermark",
+            "result": "fail"
+          },
+          {
+            "check": "brief_beats",
+            "result": "pass"
+          },
+          {
+            "check": "safe_zone",
+            "result": "pass"
+          },
+          {
+            "check": "aspect_ratio",
+            "result": "pass"
+          },
+          {
+            "check": "length",
+            "result": "pass"
+          },
+          {
+            "check": "resolution",
+            "result": "pass"
+          },
+          {
+            "check": "audio_clarity",
+            "result": "pass"
+          },
+          {
+            "check": "moderation",
+            "result": "pass"
+          }
+        ]
+      }
+    },
+    {
+      "id": "long_landscape",
+      "description": "The fake adapters' 'long_landscape' scenario end to end.",
+      "in": {
+        "submission_id": "sub_0412",
+        "version": 1,
+        "video": {
+          "uri": "fake://long_landscape?seed=412"
+        },
+        "brief": {
+          "beats": [
+            {
+              "beat": "hook",
+              "required": true
+            },
+            {
+              "beat": "app_reveal",
+              "required": true
+            },
+            {
+              "beat": "demo",
+              "required": true
+            },
+            {
+              "beat": "cta",
+              "required": true
+            }
+          ],
+          "disclosure_text": "#ad Paid partnership with Lumi",
+          "banned_claims": [
+            "guaranteed results"
+          ],
+          "cta": "Link in bio",
+          "app_name": "Lumi",
+          "brand_name": "Lumi",
+          "min_duration_s": 15,
+          "max_duration_s": 60
+        },
+        "creator_median_views": 14200
+      },
+      "out": {
+        "id": "va_0412_v1",
+        "duration_ms": 58000,
+        "phash": "af72058f222ad78b",
+        "hook": {
+          "lands_at_ms": 500,
+          "face_at_ms": 500,
+          "app_at_ms": 9000,
+          "hook_type": null
+        },
+        "tags": {
+          "format_id": null,
+          "hook_type": null,
+          "time_to_app_reveal_ms": 9000,
+          "cta_type": null
+        },
+        "hook_score": {
+          "band": "C",
+          "points": 65
+        },
+        "flow_score": {
+          "band": "D",
+          "points": 49
+        },
+        "qa": {
+          "verdict": "fail",
+          "suggested_reason_code": "missing_disclosure"
+        },
+        "checks": [
+          {
+            "check": "disclosure_audio",
+            "result": "fail"
+          },
+          {
+            "check": "disclosure_onscreen",
+            "result": "fail"
+          },
+          {
+            "check": "music_licence",
+            "result": "pass"
+          },
+          {
+            "check": "banned_claims",
+            "result": "pass"
+          },
+          {
+            "check": "ai_content",
+            "result": "pass"
+          },
+          {
+            "check": "duplicate",
+            "result": "pass"
+          },
+          {
+            "check": "watermark",
+            "result": "pass"
+          },
+          {
+            "check": "brief_beats",
+            "result": "warn"
+          },
+          {
+            "check": "safe_zone",
+            "result": "pass"
+          },
+          {
+            "check": "aspect_ratio",
+            "result": "fail"
+          },
+          {
+            "check": "length",
+            "result": "pass"
+          },
+          {
+            "check": "resolution",
+            "result": "pass"
+          },
+          {
+            "check": "audio_clarity",
+            "result": "fail"
+          },
+          {
+            "check": "moderation",
+            "result": "pass"
+          }
+        ]
+      }
+    },
+    {
+      "id": "unsafe_content",
+      "description": "The fake adapters' 'unsafe_content' scenario end to end.",
+      "in": {
+        "submission_id": "sub_0412",
+        "version": 1,
+        "video": {
+          "uri": "fake://unsafe_content?seed=412"
+        },
+        "brief": {
+          "beats": [
+            {
+              "beat": "hook",
+              "required": true
+            },
+            {
+              "beat": "app_reveal",
+              "required": true
+            },
+            {
+              "beat": "demo",
+              "required": true
+            },
+            {
+              "beat": "cta",
+              "required": true
+            }
+          ],
+          "disclosure_text": "#ad Paid partnership with Lumi",
+          "banned_claims": [
+            "guaranteed results"
+          ],
+          "cta": "Link in bio",
+          "app_name": "Lumi",
+          "brand_name": "Lumi",
+          "min_duration_s": 15,
+          "max_duration_s": 60
+        },
+        "creator_median_views": 14200
+      },
+      "out": {
+        "id": "va_0412_v1",
+        "duration_ms": 18000,
+        "phash": "af72058f222ad78b",
+        "hook": {
+          "lands_at_ms": 300,
+          "face_at_ms": 500,
+          "app_at_ms": 1100,
+          "hook_type": "confession"
+        },
+        "tags": {
+          "format_id": "tmpl_screen_reaction",
+          "hook_type": "confession",
+          "time_to_app_reveal_ms": 1100,
+          "cta_type": "link_in_bio"
+        },
+        "hook_score": {
+          "band": "A",
+          "points": 100
+        },
+        "flow_score": {
+          "band": "A",
+          "points": 98
+        },
+        "qa": {
+          "verdict": "fail",
+          "suggested_reason_code": "brand_safety"
+        },
+        "checks": [
+          {
+            "check": "disclosure_audio",
+            "result": "pass"
+          },
+          {
+            "check": "disclosure_onscreen",
+            "result": "pass"
+          },
+          {
+            "check": "music_licence",
+            "result": "pass"
+          },
+          {
+            "check": "banned_claims",
+            "result": "pass"
+          },
+          {
+            "check": "ai_content",
+            "result": "pass"
+          },
+          {
+            "check": "duplicate",
+            "result": "pass"
+          },
+          {
+            "check": "watermark",
+            "result": "pass"
+          },
+          {
+            "check": "brief_beats",
+            "result": "pass"
+          },
+          {
+            "check": "safe_zone",
+            "result": "pass"
+          },
+          {
+            "check": "aspect_ratio",
+            "result": "pass"
+          },
+          {
+            "check": "length",
+            "result": "pass"
+          },
+          {
+            "check": "resolution",
+            "result": "pass"
+          },
+          {
+            "check": "audio_clarity",
+            "result": "pass"
+          },
+          {
+            "check": "moderation",
+            "result": "fail"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,341 @@
+{
+  "schema": "flowd.testvectors/1",
+  "suite": "beats",
+  "description": "Beat detection and format-order inference (keyword rules over transcript, on-screen text and scenes).",
+  "contract_version": "1.0.0",
+  "parity": "reference",
+  "compare": {
+    "objects": "subset",
+    "arrays": "same length, element-wise subset",
+    "numbers": "exact",
+    "null": "must be null"
+  },
+  "reference": "services/ml/src/flowd_ml/qa/beats.py",
+  "generated_by": "services/ml/scripts/export_vectors.py (do not edit by hand)",
+  "cases": [
+    {
+      "id": "locate_hook",
+      "description": "Where the hook beat is found in the clean QA video.",
+      "in": {
+        "fn": "locate_beat",
+        "beat": "hook",
+        "context": "qa_clean_video"
+      },
+      "out": {
+        "t_ms": 300
+      }
+    },
+    {
+      "id": "locate_app_reveal",
+      "description": "Where the app_reveal beat is found in the clean QA video.",
+      "in": {
+        "fn": "locate_beat",
+        "beat": "app_reveal",
+        "context": "qa_clean_video"
+      },
+      "out": {
+        "t_ms": 1200
+      }
+    },
+    {
+      "id": "locate_demo",
+      "description": "Where the demo beat is found in the clean QA video.",
+      "in": {
+        "fn": "locate_beat",
+        "beat": "demo",
+        "context": "qa_clean_video"
+      },
+      "out": {
+        "t_ms": 1200
+      }
+    },
+    {
+      "id": "locate_cta",
+      "description": "Where the cta beat is found in the clean QA video.",
+      "in": {
+        "fn": "locate_beat",
+        "beat": "cta",
+        "context": "qa_clean_video"
+      },
+      "out": {
+        "t_ms": 20400
+      }
+    },
+    {
+      "id": "locate_win_state",
+      "description": "Where the win_state beat is found in the clean QA video.",
+      "in": {
+        "fn": "locate_beat",
+        "beat": "win_state",
+        "context": "qa_clean_video"
+      },
+      "out": {
+        "t_ms": null
+      }
+    },
+    {
+      "id": "locate_reaction",
+      "description": "Where the reaction beat is found in the clean QA video.",
+      "in": {
+        "fn": "locate_beat",
+        "beat": "reaction",
+        "context": "qa_clean_video"
+      },
+      "out": {
+        "t_ms": 9600
+      }
+    },
+    {
+      "id": "locate_offer",
+      "description": "Where the offer beat is found in the clean QA video.",
+      "in": {
+        "fn": "locate_beat",
+        "beat": "offer",
+        "context": "qa_clean_video"
+      },
+      "out": {
+        "t_ms": 20400
+      }
+    },
+    {
+      "id": "locate_problem",
+      "description": "Where the problem beat is found in the clean QA video.",
+      "in": {
+        "fn": "locate_beat",
+        "beat": "problem",
+        "context": "qa_clean_video"
+      },
+      "out": {
+        "t_ms": null
+      }
+    },
+    {
+      "id": "order_in_order_screen_reaction",
+      "description": "Format order for tmpl_screen_reaction.",
+      "in": {
+        "fn": "infer_format_order",
+        "format_id": "tmpl_screen_reaction",
+        "hits": [
+          {
+            "beat": "hook",
+            "found": true,
+            "t_ms": 300
+          },
+          {
+            "beat": "app_reveal",
+            "found": true,
+            "t_ms": 1200
+          },
+          {
+            "beat": "demo",
+            "found": true,
+            "t_ms": 5000
+          },
+          {
+            "beat": "reaction",
+            "found": true,
+            "t_ms": 9600
+          },
+          {
+            "beat": "payoff",
+            "found": true,
+            "t_ms": 14200
+          },
+          {
+            "beat": "cta",
+            "found": true,
+            "t_ms": 20400
+          }
+        ]
+      },
+      "out": {
+        "format_order": "in_order"
+      }
+    },
+    {
+      "id": "order_one_off",
+      "description": "Format order for tmpl_screen_reaction.",
+      "in": {
+        "fn": "infer_format_order",
+        "format_id": "tmpl_screen_reaction",
+        "hits": [
+          {
+            "beat": "hook",
+            "found": true,
+            "t_ms": 300
+          },
+          {
+            "beat": "demo",
+            "found": true,
+            "t_ms": 1200
+          },
+          {
+            "beat": "app_reveal",
+            "found": true,
+            "t_ms": 5000
+          },
+          {
+            "beat": "reaction",
+            "found": true,
+            "t_ms": 9600
+          },
+          {
+            "beat": "payoff",
+            "found": true,
+            "t_ms": 14200
+          },
+          {
+            "beat": "cta",
+            "found": true,
+            "t_ms": 20400
+          }
+        ]
+      },
+      "out": {
+        "format_order": "one_off"
+      }
+    },
+    {
+      "id": "order_out_of_order",
+      "description": "Format order for tmpl_screen_reaction.",
+      "in": {
+        "fn": "infer_format_order",
+        "format_id": "tmpl_screen_reaction",
+        "hits": [
+          {
+            "beat": "cta",
+            "found": true,
+            "t_ms": 300
+          },
+          {
+            "beat": "payoff",
+            "found": true,
+            "t_ms": 1200
+          },
+          {
+            "beat": "reaction",
+            "found": true,
+            "t_ms": 5000
+          },
+          {
+            "beat": "demo",
+            "found": true,
+            "t_ms": 9600
+          },
+          {
+            "beat": "app_reveal",
+            "found": true,
+            "t_ms": 14200
+          },
+          {
+            "beat": "hook",
+            "found": true,
+            "t_ms": 20400
+          }
+        ]
+      },
+      "out": {
+        "format_order": "out_of_order"
+      }
+    },
+    {
+      "id": "order_missing_beats_ignored",
+      "description": "Format order for tmpl_hidden_gem.",
+      "in": {
+        "fn": "infer_format_order",
+        "format_id": "tmpl_hidden_gem",
+        "hits": [
+          {
+            "beat": "hook",
+            "found": true,
+            "t_ms": 300
+          },
+          {
+            "beat": "cta",
+            "found": true,
+            "t_ms": 20400
+          }
+        ]
+      },
+      "out": {
+        "format_order": "in_order"
+      }
+    },
+    {
+      "id": "order_generic_order",
+      "description": "Format order for no chosen format.",
+      "in": {
+        "fn": "infer_format_order",
+        "format_id": null,
+        "hits": [
+          {
+            "beat": "hook",
+            "found": true,
+            "t_ms": 300
+          },
+          {
+            "beat": "problem",
+            "found": true,
+            "t_ms": 2000
+          },
+          {
+            "beat": "demo",
+            "found": true,
+            "t_ms": 6000
+          },
+          {
+            "beat": "payoff",
+            "found": true,
+            "t_ms": 12000
+          },
+          {
+            "beat": "cta",
+            "found": true,
+            "t_ms": 20000
+          }
+        ]
+      },
+      "out": {
+        "format_order": "in_order"
+      }
+    },
+    {
+      "id": "detect_brief_beats",
+      "description": "detect_beats over a four-beat brief.",
+      "in": {
+        "fn": "detect_beats",
+        "brief_beats": [
+          "hook",
+          "app_reveal",
+          "offer",
+          "proof"
+        ],
+        "context": "qa_clean_video"
+      },
+      "out": {
+        "beats": [
+          {
+            "beat": "hook",
+            "found": true,
+            "t_ms": 300
+          },
+          {
+            "beat": "app_reveal",
+            "found": true,
+            "t_ms": 1200
+          },
+          {
+            "beat": "offer",
+            "found": true,
+            "t_ms": 20400
+          },
+          {
+            "beat": "proof",
+            "found": true,
+            "t_ms": 9600
+          }
+        ]
+      }
+    }
+  ]
+}

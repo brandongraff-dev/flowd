@@ -1,0 +1,151 @@
+@import "tailwindcss";
+/* Order matters: tokens (generated theme + --fd-* vars) -> web theme additions -> glass/aurora/control recipes.
+   tokens.css already contains the @theme block, so the synced tailwind-tokens.css copy is not imported (it is identical). */
+@import "../styles/tokens.css";
+@import "../styles/theme.css";
+@import "../styles/glass.css";
+
+/* dark:/light: follow <html data-theme>, not the OS setting. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+@custom-variant light (&:where([data-theme="light"], [data-theme="light"] *));
+
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--fd-rim);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    scroll-padding-top: 5rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--fd-rim-strong) transparent;
+  }
+
+  body {
+    min-height: 100dvh;
+    /* clip (not hidden) so blurred aurora orbs never cause sideways scroll and sticky still works */
+    overflow-x: clip;
+    background-color: var(--fd-bg);
+    color: var(--fd-fg);
+    font-family: var(--fd-font-text);
+    font-size: var(--fd-text-body-size);
+    line-height: var(--fd-text-body-lh);
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--fd-font-display);
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  p,
+  li {
+    text-wrap: pretty;
+  }
+
+  /* 2px ring, 2px offset, >= 3:1 on bg, surface and glass (BRAND.md 17). Components keep this; they do not set outline-none. */
+  :focus-visible {
+    outline: 2px solid var(--fd-focus-ring);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: color-mix(in oklab, var(--fd-accent-bright) 40%, transparent);
+  }
+
+  /* Underlines come from the font's own metrics. */
+  a {
+    text-decoration-thickness: from-font;
+    text-underline-position: from-font;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  summary {
+    cursor: pointer;
+  }
+}
+
+/* Sonner default toasts (toast.success() etc.): L2 glass from tokens. Colours come from the style prop in app-toaster.tsx.
+   Design-system toasts use notify.* from components/ui/toast, which renders <Glass layer={2}> through toast.custom. */
+:root [data-sonner-toaster] {
+  font-family: var(--fd-font-text);
+}
+
+:root [data-sonner-toaster] [data-sonner-toast][data-styled="true"] {
+  -webkit-backdrop-filter: blur(var(--fd-glass-2-blur)) saturate(var(--fd-glass-2-saturate));
+  backdrop-filter: blur(var(--fd-glass-2-blur)) saturate(var(--fd-glass-2-saturate));
+  box-shadow:
+    inset 0 1px 0 var(--fd-glass-2-highlight),
+    0 0 0 1px var(--fd-glass-2-edge),
+    var(--fd-glass-2-shadow);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  /* Movement stops; opacity-only fades and loading spinners are kept (they carry meaning without vestibular motion).
+     Components that need a fade under reduced motion set their own !important duration with a more specific selector. */
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .fd-spinner {
+    animation-duration: 1.2s !important;
+    animation-iteration-count: infinite !important;
+  }
+}
+
+/* Reduced transparency (OS media query or the in-app "Reduce glass" switch): solid, opaque surfaces; no blur anywhere.
+   Glass surfaces switch through the --fd-glass-* tokens; this blanket also catches ad-hoc backdrop-blur utilities and Sonner. */
+@media (prefers-reduced-transparency: reduce) {
+  *,
+  ::before,
+  ::after {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  :root [data-sonner-toaster] [data-sonner-toast][data-styled="true"] {
+    background: var(--fd-glass-2-solid);
+  }
+}
+
+:root[data-transparency="reduce"] *,
+:root[data-transparency="reduce"] ::before,
+:root[data-transparency="reduce"] ::after {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+:root[data-transparency="reduce"] [data-sonner-toaster] [data-sonner-toast][data-styled="true"] {
+  background: var(--fd-glass-2-solid);
+}
+
+/* Increased contrast: stronger rims (glass rims are switched in tokens.css), no muted-on-muted text. */
+@media (prefers-contrast: more) {
+  :root:root:root {
+    --fd-rim: var(--fd-rim-strong);
+    --fd-divider: var(--fd-rim);
+    --fd-fg-muted: var(--fd-fg);
+    --fd-fg-subtle: var(--fd-fg-muted);
+  }
+}

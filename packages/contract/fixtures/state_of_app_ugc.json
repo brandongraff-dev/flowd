@@ -1,0 +1,214 @@
+{
+  "quarter": "2026-Q3",
+  "quarters": [
+    "2026-Q3",
+    "2026-Q4"
+  ],
+  "published_at": "2026-10-01T10:00:00Z",
+  "title": "State of App UGC: Q3 2026",
+  "settled_posts": 372,
+  "total_views": 14757981,
+  "total_paid_cents": 2541964,
+  "categories": [
+    {
+      "category": "ai_photo",
+      "clearing_cpm_cents": 228,
+      "median_views": 24256,
+      "install_to_trial": 0.0701,
+      "trial_to_paid": 0.3579,
+      "median_fill_hours": 31.35,
+      "settled_posts": 102
+    },
+    {
+      "category": "ai_assistant",
+      "clearing_cpm_cents": 257,
+      "median_views": 23040,
+      "install_to_trial": 0.0526,
+      "trial_to_paid": 0.3737,
+      "median_fill_hours": 36.3,
+      "settled_posts": 34
+    },
+    {
+      "category": "fitness",
+      "clearing_cpm_cents": 208,
+      "median_views": 22755,
+      "install_to_trial": 0.0724,
+      "trial_to_paid": 0.3397,
+      "median_fill_hours": 28.25,
+      "settled_posts": 38
+    },
+    {
+      "category": "language",
+      "clearing_cpm_cents": 188,
+      "median_views": 21569,
+      "install_to_trial": 0.0777,
+      "trial_to_paid": 0.3325,
+      "median_fill_hours": 40.25,
+      "settled_posts": 22
+    },
+    {
+      "category": "productivity",
+      "clearing_cpm_cents": 198,
+      "median_views": 11546,
+      "install_to_trial": 0.0501,
+      "trial_to_paid": 0.3419,
+      "median_fill_hours": 37.25,
+      "settled_posts": 106
+    },
+    {
+      "category": "finance",
+      "clearing_cpm_cents": 268,
+      "median_views": 20406,
+      "install_to_trial": 0.0615,
+      "trial_to_paid": 0.3257,
+      "median_fill_hours": 42.65,
+      "settled_posts": 17
+    },
+    {
+      "category": "sleep_mind",
+      "clearing_cpm_cents": 184,
+      "median_views": 28623,
+      "install_to_trial": 0.0663,
+      "trial_to_paid": 0.3784,
+      "median_fill_hours": 32.45,
+      "settled_posts": 36
+    },
+    {
+      "category": "music_audio",
+      "clearing_cpm_cents": 167,
+      "median_views": 18758,
+      "install_to_trial": 0.0625,
+      "trial_to_paid": 0.3233,
+      "median_fill_hours": 46.75,
+      "settled_posts": 7
+    },
+    {
+      "category": "lifestyle",
+      "clearing_cpm_cents": 175,
+      "median_views": 15929,
+      "install_to_trial": 0.055,
+      "trial_to_paid": 0.253,
+      "median_fill_hours": 41.9,
+      "settled_posts": 10
+    }
+  ],
+  "hooks": [
+    {
+      "hook_type": "confession",
+      "share_of_posts": 0.1586,
+      "median_views": 24548,
+      "trial_rate": 0.0703
+    },
+    {
+      "hook_type": "curiosity_gap",
+      "share_of_posts": 0.2957,
+      "median_views": 18290,
+      "trial_rate": 0.0568
+    },
+    {
+      "hook_type": "specific_number",
+      "share_of_posts": 0.1935,
+      "median_views": 18404,
+      "trial_rate": 0.062
+    },
+    {
+      "hook_type": "pov",
+      "share_of_posts": 0.0887,
+      "median_views": 18142,
+      "trial_rate": 0.0618
+    },
+    {
+      "hook_type": "direct_question",
+      "share_of_posts": 0.2339,
+      "median_views": 19997,
+      "trial_rate": 0.0655
+    },
+    {
+      "hook_type": "risk_reversal",
+      "share_of_posts": 0.0296,
+      "median_views": 22524,
+      "trial_rate": 0.0741
+    },
+    {
+      "hook_type": "pattern_interrupt",
+      "share_of_posts": 0,
+      "median_views": 19966,
+      "trial_rate": 0.0638
+    }
+  ],
+  "formats": [
+    {
+      "format_id": "tmpl_screen_reaction",
+      "share_of_posts": 0.1263,
+      "median_views": 20207,
+      "trial_rate": 0.0635
+    },
+    {
+      "format_id": "tmpl_hidden_gem",
+      "share_of_posts": 0.1909,
+      "median_views": 20734,
+      "trial_rate": 0.0638
+    },
+    {
+      "format_id": "tmpl_confession",
+      "share_of_posts": 0.0887,
+      "median_views": 23746,
+      "trial_rate": 0.0595
+    },
+    {
+      "format_id": "tmpl_problem_solution",
+      "share_of_posts": 0.1425,
+      "median_views": 15281,
+      "trial_rate": 0.0585
+    },
+    {
+      "format_id": "tmpl_faceless_slideshow",
+      "share_of_posts": 0.1263,
+      "median_views": 12546,
+      "trial_rate": 0.0676
+    },
+    {
+      "format_id": "tmpl_green_screen",
+      "share_of_posts": 0.0968,
+      "median_views": 30768,
+      "trial_rate": 0.0535
+    },
+    {
+      "format_id": "tmpl_results_update",
+      "share_of_posts": 0.043,
+      "median_views": 19012,
+      "trial_rate": 0.0844
+    },
+    {
+      "format_id": "tmpl_identity_shift",
+      "share_of_posts": 0,
+      "median_views": 19966,
+      "trial_rate": 0.0625
+    },
+    {
+      "format_id": "tmpl_free_trial_lead",
+      "share_of_posts": 0.0457,
+      "median_views": 37364,
+      "trial_rate": 0.0701
+    },
+    {
+      "format_id": "tmpl_reply_comment",
+      "share_of_posts": 0.1129,
+      "median_views": 22758,
+      "trial_rate": 0.0696
+    },
+    {
+      "format_id": "tmpl_carousel_video",
+      "share_of_posts": 0.0269,
+      "median_views": 10178,
+      "trial_rate": 0.0357
+    }
+  ],
+  "methodology": "Clearing CPMs are the median CPM of bounties that filled or are live and receiving submissions in the quarter. View-to-trial rates are tracked (link and code) conversions per verified view on settled posts; estimated conversions are excluded. Hook types and formats are tagged by the video-understanding model and checked by a human on a 5% sample. Figures are from flowd data only, in the demo from the fixtures, and are labelled estimates where they are modelled.",
+  "caveats": [
+    "Demo data: all numbers come from the demo fixtures.",
+    "Small samples (under 8 bounties) are marked as thin and excluded from rankings.",
+    "Checklist scores are not a prediction of results.",
+    "Q4 2026 is a partial quarter (to 3 October) and is not published yet."
+  ]
+}

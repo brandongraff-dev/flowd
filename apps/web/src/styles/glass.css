@@ -1,0 +1,956 @@
+/*
+ * flowd Liquid Glass material, aurora and control recipes (web-owned).
+ * Source of truth for numbers: packages/tokens (--fd-glass-*, --fd-aurora*), BRAND.md sections 9-11.
+ * React wrappers: src/components/glass (Glass, GlassCard, GlassBar, GlassPill, GlassPanel, Aurora, LiquidLens).
+ *
+ * Rules baked in here:
+ *   L1 quiet content glass, L2 floating controls, L3 sheets/popovers. Glass never samples glass: a glass element
+ *   inside another glass element gets data-flat (set by <Glass>) and drops to a fill.
+ *   Never put opacity/filter/mask/clip-path/mix-blend-mode/will-change on an ANCESTOR of glass (it kills the backdrop).
+ *   Reduce glass (html[data-transparency=reduce], prefers-reduced-transparency) -> opaque solids, no blur, no sheen.
+ */
+
+/* Pointer-hover amount for L2/L3 interactive glass. Registered so it can transition; inherits so ::before/::after see it. */
+@property --fd-hot {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@layer components {
+  /* =========================================================================================================
+     1. The material
+     ========================================================================================================= */
+  .glass {
+    --_blur: var(--fd-glass-1-blur);
+    --_sat: var(--fd-glass-1-saturate);
+    --_fill: var(--fd-glass-1-fill);
+    --_fill-media: var(--fd-glass-1-fill-media);
+    --_sheen: var(--fd-glass-1-sheen);
+    --_rim: var(--fd-glass-1-rim);
+    --_rim-w: var(--fd-glass-1-rim-width);
+    --_hi: var(--fd-glass-1-highlight);
+    --_lo: var(--fd-glass-1-lowlight);
+    --_edge: var(--fd-glass-1-edge);
+    --_shadow: var(--fd-glass-1-shadow);
+    --_solid: var(--fd-glass-1-solid);
+    --_tint: transparent;
+    --_radius: var(--fd-radius-2xl);
+    --fd-hot: 0;
+
+    position: relative;
+    isolation: isolate;
+    border-radius: var(--glass-radius, var(--_radius));
+    color: var(--fd-fg);
+    /* top to bottom: tint, sheen, fill (the fill is the legibility scrim) */
+    background: linear-gradient(var(--_tint), var(--_tint)), var(--_sheen), var(--_fill);
+    -webkit-backdrop-filter: blur(var(--_blur)) saturate(var(--_sat));
+    backdrop-filter: blur(var(--_blur)) saturate(var(--_sat));
+    box-shadow:
+      inset 0 1px 0 var(--_hi),
+      inset 0 -1px 0 var(--_lo),
+      0 0 0 1px var(--_edge),
+      var(--_shadow);
+  }
+
+  .glass[data-layer="2"] {
+    --_blur: var(--fd-glass-2-blur);
+    --_sat: var(--fd-glass-2-saturate);
+    --_fill: var(--fd-glass-2-fill);
+    --_fill-media: var(--fd-glass-2-fill-media);
+    --_sheen: var(--fd-glass-2-sheen);
+    --_rim: var(--fd-glass-2-rim);
+    --_rim-w: var(--fd-glass-2-rim-width);
+    --_hi: var(--fd-glass-2-highlight);
+    --_lo: var(--fd-glass-2-lowlight);
+    --_edge: var(--fd-glass-2-edge);
+    --_shadow: var(--fd-glass-2-shadow);
+    --_solid: var(--fd-glass-2-solid);
+    --_radius: var(--fd-radius-pill);
+  }
+
+  .glass[data-layer="3"] {
+    --_blur: var(--fd-glass-3-blur);
+    --_sat: var(--fd-glass-3-saturate);
+    --_fill: var(--fd-glass-3-fill);
+    --_fill-media: var(--fd-glass-3-fill-media);
+    --_sheen: var(--fd-glass-3-sheen);
+    --_rim: var(--fd-glass-3-rim);
+    --_rim-w: var(--fd-glass-3-rim-width);
+    --_hi: var(--fd-glass-3-highlight);
+    --_lo: var(--fd-glass-3-lowlight);
+    --_edge: var(--fd-glass-3-edge);
+    --_shadow: var(--fd-glass-3-shadow);
+    --_solid: var(--fd-glass-3-solid);
+    --_radius: var(--fd-radius-3xl);
+  }
+
+  /* Toasts (notify.* in components/ui/toast.tsx): Sonner owns the <li>, so the L2 material goes on it via className="glass fd-toast".
+     Same variables as data-layer="2" (the toast is a floating control), 20px radius so a 12px-padded row keeps a concentric 8px icon disc. */
+  .glass.fd-toast {
+    --_blur: var(--fd-glass-2-blur);
+    --_sat: var(--fd-glass-2-saturate);
+    --_fill: var(--fd-glass-2-fill);
+    --_fill-media: var(--fd-glass-2-fill-media);
+    --_sheen: var(--fd-glass-2-sheen);
+    --_rim: var(--fd-glass-2-rim);
+    --_rim-w: var(--fd-glass-2-rim-width);
+    --_hi: var(--fd-glass-2-highlight);
+    --_lo: var(--fd-glass-2-lowlight);
+    --_edge: var(--fd-glass-2-edge);
+    --_shadow: var(--fd-glass-2-shadow);
+    --_solid: var(--fd-glass-2-solid);
+    --glass-radius: 20px;
+  }
+
+  /* Sonner hides the content of back-of-the-stack toasts only for its own styled toasts; custom ones must do it themselves,
+     otherwise older toasts bleed through the translucent front one ("glass sampling glass"). */
+  .fd-toast[data-sonner-toast][data-expanded="false"][data-front="false"] > * {
+    opacity: 0;
+  }
+  .fd-toast[data-sonner-toast] > * {
+    transition: opacity var(--fd-dur-base) var(--fd-ease-standard);
+  }
+
+  /* Over media or when blur is reduced (lens): heavier fill instead of less blur (BRAND.md 9.1 legibility rule). */
+  .glass[data-media],
+  .glass[data-lens] {
+    --_fill: var(--_fill-media);
+  }
+
+  /* Tint the glass, never the label. Soft tokens over the scrim keep AA (checked in /dev/design). */
+  .glass[data-tint="accent"] { --_tint: var(--fd-accent-soft); }
+  .glass[data-tint="flow"]   { --_tint: var(--fd-gradient-flowSoft); }
+  .glass[data-tint="violet"] { --_tint: var(--fd-violet-soft); }
+  .glass[data-tint="mint"]   { --_tint: var(--fd-mint-soft); }
+  .glass[data-tint="ember"]  { --_tint: var(--fd-ember-soft); }
+  .glass[data-tint="sun"]    { --_tint: var(--fd-sun-soft); }
+  .glass[data-tint="rose"]   { --_tint: var(--fd-rose-soft); }
+  .glass[data-tint="info"]   { --_tint: var(--fd-info-soft); }
+  /* linear-gradient tints cannot be a bare colour layer; wrap them */
+  .glass[data-tint="flow"] { background: var(--_tint), var(--_sheen), var(--_fill); }
+
+  /* Clear glass (L2 only, ONLY over media under large bold content, never body text). The dim is part of the material. */
+  .glass[data-clear] {
+    --_blur: var(--fd-glass-clear-blur);
+    --_sat: var(--fd-glass-clear-saturate);
+    background: linear-gradient(var(--fd-glass-clear-dim), var(--fd-glass-clear-dim)), var(--fd-glass-clear-tint);
+    color: #fff;
+  }
+  .glass[data-clear]::before {
+    background: var(--fd-glass-clear-rim);
+  }
+
+  /* Specular rim: bright top-left, dim bottom-right, drawn as a masked 1px gradient ring.
+     For interactive glass a radial hot spot follows the pointer. */
+  .glass::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+    padding: var(--_rim-w);
+    pointer-events: none;
+    background:
+      radial-gradient(
+        200px circle at var(--mx, 50%) var(--my, 0%),
+        rgb(255 255 255 / calc(var(--fd-hot) * 0.8)),
+        transparent 70%
+      ),
+      var(--_rim);
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+  }
+
+  /* Pointer sheen: under the content (z -1 inside the isolated stack), 240px radial highlight. */
+  .glass::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    background: var(--fd-glass-pointer-sheen);
+    opacity: var(--fd-hot);
+  }
+
+  .glass[data-interactive] {
+    transition: --fd-hot var(--fd-dur-base) var(--fd-ease-standard);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .glass[data-interactive]:hover,
+    .glass[data-interactive][data-force="hover"] {
+      --fd-hot: 1;
+    }
+  }
+  .glass[data-interactive]:focus-visible {
+    --fd-hot: 1;
+  }
+
+  /* Chromium-only lens (set by <Glass lens>): the url() only ever appears after the engine gate and a successful map build. */
+  .glass[data-lens] {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: var(--glass-lens) blur(calc(var(--_blur) / 6)) saturate(var(--_sat));
+  }
+
+  /* Glass inside glass is a fill, not more glass (the stack would collapse into a flat tint anyway). */
+  .glass[data-flat],
+  .glass[data-flat][data-lens] {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: linear-gradient(var(--_tint), var(--_tint)), var(--_sheen), var(--fd-surface-field);
+    box-shadow:
+      inset 0 1px 0 var(--_hi),
+      0 0 0 1px var(--fd-rim);
+  }
+  .glass[data-flat][data-tint="flow"] {
+    background: var(--_tint), var(--_sheen), var(--fd-surface-field);
+  }
+  .glass[data-flat]::after {
+    display: none;
+  }
+
+  /* Tooltip surface: L3 material, smaller shadow, lighter blur. Not a layer of its own for the stacking rule. */
+  .glass[data-compact] {
+    --_blur: var(--fd-glass-2-blur);
+    --_shadow: var(--fd-elevation-2);
+  }
+
+  /* ---- Fallbacks (mandatory, BRAND.md 9.4) ---- */
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .glass {
+      background: var(--_solid);
+    }
+  }
+
+  /* Reduce glass. Tokens already turn blur to 0, fills to solids and sheens to none; here we also drop the backdrop
+     filter entirely (a 0px blur still creates a backdrop root and costs GPU) and the pointer sheen. */
+  @media (prefers-reduced-transparency: reduce) {
+    .glass,
+    .glass[data-lens] {
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+    .glass::after {
+      display: none;
+    }
+    .glass[data-clear] {
+      background: var(--_solid);
+      color: var(--fd-fg);
+    }
+  }
+  :root[data-transparency="reduce"] .glass,
+  :root[data-transparency="reduce"] .glass[data-lens] {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  :root[data-transparency="reduce"] .glass::after {
+    display: none;
+  }
+  :root[data-transparency="reduce"] .glass[data-clear] {
+    background: var(--_solid);
+    color: var(--fd-fg);
+  }
+  /* Solid surfaces need a visible edge (the blur no longer separates them from the page). */
+  :root[data-transparency="reduce"] .glass:not([data-flat]) {
+    box-shadow:
+      inset 0 1px 0 var(--_hi),
+      0 0 0 1px var(--fd-rim-strong),
+      var(--_shadow);
+  }
+
+  @media (prefers-contrast: more) {
+    .glass {
+      box-shadow:
+        inset 0 0 0 1px var(--fd-rim-strong),
+        var(--_shadow);
+    }
+  }
+
+  @media (forced-colors: active) {
+    .glass {
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      background: Canvas;
+      color: CanvasText;
+      border: 1px solid CanvasText;
+      box-shadow: none;
+    }
+    .glass::before,
+    .glass::after {
+      display: none;
+    }
+  }
+
+  /* =========================================================================================================
+     2. Aurora (L0)
+     ========================================================================================================= */
+  .fd-aurora {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    isolation: isolate;
+    background: var(--fd-aurora-vignette), var(--fd-bg);
+  }
+  .fd-aurora[data-variant="contained"] {
+    position: absolute;
+    z-index: 0;
+  }
+  .fd-aurora::before {
+    content: "";
+    position: absolute;
+    inset: -12%;
+    background: var(--fd-aurora);
+    animation: fd-aurora-drift var(--fd-aurora-drift) var(--fd-aurora-ease) infinite alternate;
+  }
+  .fd-aurora::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: var(--fd-noise);
+    background-size: 160px 160px;
+    opacity: var(--fd-aurora-noise);
+    mix-blend-mode: overlay;
+  }
+  /* Dense data screens: the aurora recedes (BRAND.md 10). */
+  .fd-aurora[data-intensity="calm"]::before {
+    opacity: 0.6;
+  }
+  .fd-aurora[data-static]::before {
+    animation: none;
+  }
+  @keyframes fd-aurora-drift {
+    from {
+      transform: translate3d(-2vw, -1vw, 0) scale(1);
+    }
+    to {
+      transform: translate3d(2vw, 1.5vw, 0) scale(1.06);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .fd-aurora::before {
+      animation: none;
+    }
+  }
+
+  /* The WebGL canvas sits above the CSS aurora (which stays as first paint and as the fallback). */
+  .fd-aurora-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    opacity: 0;
+    transition: opacity var(--fd-dur-slower) var(--fd-ease-standard);
+  }
+  .fd-aurora-canvas[data-ready] {
+    opacity: 1;
+  }
+  /* Grain stays above the canvas (the CSS aurora's own grain sits underneath it). */
+  .fd-aurora-grain {
+    position: absolute;
+    inset: 0;
+    background-image: var(--fd-noise);
+    background-size: 160px 160px;
+    opacity: var(--fd-aurora-noise);
+    mix-blend-mode: overlay;
+  }
+
+  /* =========================================================================================================
+     3. Controls (recipes; layout, size and typography live in the React components)
+     ========================================================================================================= */
+
+  /* ---- Buttons ---- */
+  /* Press: scale 0.96 on press-down in 100 ms (respond on the down, not on release), a spring back on release.
+     The transition that runs is the destination state's, so pressing and releasing use different curves. */
+  .fd-btn {
+    touch-action: manipulation;
+    transition:
+      transform var(--fd-spring-tap-dur) var(--fd-spring-tap),
+      filter var(--fd-dur-fast) var(--fd-ease-standard),
+      background-color var(--fd-dur-fast) var(--fd-ease-standard),
+      box-shadow var(--fd-dur-base) var(--fd-ease-standard),
+      color var(--fd-dur-fast) var(--fd-ease-standard),
+      --fd-hot var(--fd-dur-base) var(--fd-ease-standard);
+  }
+  .fd-btn:is(:active, [data-force="active"]):not(:disabled, [aria-disabled="true"]) {
+    transform: scale(0.96);
+    transition:
+      transform 100ms cubic-bezier(0.23, 1, 0.32, 1),
+      filter var(--fd-dur-fast) var(--fd-ease-standard),
+      background-color var(--fd-dur-instant) var(--fd-ease-standard),
+      box-shadow var(--fd-dur-base) var(--fd-ease-standard),
+      color var(--fd-dur-fast) var(--fd-ease-standard),
+      --fd-hot var(--fd-dur-base) var(--fd-ease-standard);
+  }
+  .fd-btn[data-loading] {
+    cursor: progress;
+  }
+  .fd-btn-primary {
+    color: var(--fd-on-accent);
+    background: var(--fd-gradient-flowButton);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.38),
+      inset 0 -1px 0 rgb(0 0 0 / 0.18),
+      0 12px 32px -10px rgb(48 125 253 / 0.7),
+      0 2px 6px rgb(1 4 20 / 0.25);
+  }
+  .fd-btn-ember {
+    color: var(--fd-on-ember);
+    background: var(--fd-gradient-ember);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.5),
+      0 12px 32px -10px rgb(254 122 67 / 0.7);
+  }
+  .fd-btn-mint {
+    color: var(--fd-on-mint);
+    background: var(--fd-gradient-money);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.5),
+      0 12px 32px -10px rgb(24 223 155 / 0.6);
+  }
+  /* Secondary: the L2 look without a live backdrop (cheap enough to use ten times on a page). */
+  .fd-btn-secondary {
+    color: var(--fd-fg);
+    background: var(--fd-glass-2-sheen), var(--fd-glass-2-fill);
+    box-shadow:
+      inset 0 1px 0 var(--fd-glass-2-highlight),
+      inset 0 0 0 1px var(--fd-rim),
+      0 6px 18px -8px rgb(1 4 20 / 0.45);
+  }
+  :root[data-theme="light"] .fd-btn-secondary {
+    box-shadow:
+      inset 0 1px 0 var(--fd-glass-2-highlight),
+      inset 0 0 0 1px var(--fd-rim),
+      0 6px 18px -8px rgb(22 38 96 / 0.18);
+  }
+  /* The material itself comes from .glass (data-layer 2) applied by <Button variant="glass">. */
+  .fd-btn-glass {
+    color: var(--fd-fg);
+  }
+  .fd-btn-ghost {
+    color: var(--fd-fg);
+    background: transparent;
+    box-shadow: inset 0 0 0 1px var(--fd-rim-strong);
+  }
+  .fd-btn-plain {
+    color: var(--fd-fg-muted);
+    background: transparent;
+  }
+  .fd-btn-danger {
+    color: var(--fd-rose);
+    background: var(--fd-rose-soft);
+    box-shadow: inset 0 0 0 1px var(--fd-rose-soft);
+  }
+  .fd-btn-destructive {
+    color: var(--fd-on-rose);
+    background: var(--fd-rose-solid);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.3),
+      0 10px 26px -10px rgb(253 81 112 / 0.6);
+  }
+  .fd-btn-link {
+    color: var(--fd-accent);
+    background: transparent;
+    text-decoration: underline;
+    text-decoration-thickness: from-font;
+    text-underline-offset: 0.22em;
+    text-decoration-color: color-mix(in oklab, currentColor 45%, transparent);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .fd-btn-primary:is(:hover, [data-force="hover"]):not(:disabled, [aria-disabled="true"]),
+    .fd-btn-ember:is(:hover, [data-force="hover"]):not(:disabled, [aria-disabled="true"]),
+    .fd-btn-mint:is(:hover, [data-force="hover"]):not(:disabled, [aria-disabled="true"]),
+    .fd-btn-destructive:is(:hover, [data-force="hover"]):not(:disabled, [aria-disabled="true"]) {
+      filter: brightness(1.1) saturate(1.05);
+    }
+    .fd-btn-secondary:is(:hover, [data-force="hover"]):not(:disabled, [aria-disabled="true"]) {
+      background: linear-gradient(var(--fd-surface-hover), var(--fd-surface-hover)), var(--fd-glass-2-sheen), var(--fd-glass-2-fill);
+      box-shadow:
+        inset 0 1px 0 var(--fd-glass-2-highlight),
+        inset 0 0 0 1px var(--fd-rim-strong),
+        0 8px 22px -8px rgb(1 4 20 / 0.5);
+    }
+    .fd-btn-ghost:is(:hover, [data-force="hover"]):not(:disabled, [aria-disabled="true"]) {
+      background: var(--fd-surface-hover);
+    }
+    .fd-btn-plain:is(:hover, [data-force="hover"]):not(:disabled, [aria-disabled="true"]) {
+      background: var(--fd-surface-hover);
+      color: var(--fd-fg);
+    }
+    .fd-btn-danger:is(:hover, [data-force="hover"]):not(:disabled, [aria-disabled="true"]) {
+      background: color-mix(in oklab, var(--fd-rose) 20%, transparent);
+    }
+    /* Light theme: lighter filled buttons keep white labels above 4.5:1 by darkening on hover instead of brightening; the soft danger
+     wash stays light enough for the rose label. */
+  :root[data-theme="light"] .fd-btn-destructive:is(:hover, [data-force="hover"]):not(:disabled, [aria-disabled="true"]) {
+    filter: brightness(0.92);
+  }
+  :root[data-theme="light"] .fd-btn-danger:is(:hover, [data-force="hover"]):not(:disabled, [aria-disabled="true"]) {
+    background: color-mix(in oklab, var(--fd-rose) 14%, transparent);
+  }
+  .fd-btn-link:is(:hover, [data-force="hover"]):not(:disabled, [aria-disabled="true"]) {
+      text-decoration-color: currentColor;
+    }
+  }
+  .fd-btn-secondary:is(:active, [data-force="active"]):not(:disabled, [aria-disabled="true"]),
+  .fd-btn-ghost:is(:active, [data-force="active"]):not(:disabled, [aria-disabled="true"]),
+  .fd-btn-plain:is(:active, [data-force="active"]):not(:disabled, [aria-disabled="true"]) {
+    background-color: var(--fd-surface-active);
+  }
+  .fd-btn-primary:is(:active, [data-force="active"]):not(:disabled, [aria-disabled="true"]) {
+    filter: brightness(0.94);
+  }
+  [data-force="focus"] {
+    outline: 2px solid var(--fd-focus-ring);
+    outline-offset: 2px;
+  }
+
+  /* Disabled: flat, quiet, no colour surprise (WCAG exempts disabled controls; the cursor and shape still say why). */
+  .fd-btn:is(:disabled, [aria-disabled="true"]:not([data-loading])) {
+    color: var(--fd-fg-disabled);
+    background: var(--fd-surface-field);
+    box-shadow: inset 0 0 0 1px var(--fd-divider);
+    cursor: not-allowed;
+    filter: none;
+    transform: none;
+    text-decoration: none;
+  }
+
+  /* ---- Fields (Input, Textarea, Select trigger) ---- */
+  .fd-field {
+    background: var(--fd-surface-field);
+    box-shadow:
+      inset 0 0 0 1px var(--fd-rim),
+      inset 0 1px 2px rgb(1 4 20 / 0.18);
+    transition:
+      box-shadow var(--fd-dur-fast) var(--fd-ease-standard),
+      background-color var(--fd-dur-fast) var(--fd-ease-standard);
+  }
+  :root[data-theme="light"] .fd-field {
+    box-shadow:
+      inset 0 0 0 1px var(--fd-rim),
+      inset 0 1px 2px rgb(22 38 96 / 0.07);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .fd-field:is(:hover, [data-force="hover"]):not([data-disabled], [data-invalid]) {
+      box-shadow:
+        inset 0 0 0 1px var(--fd-rim-strong),
+        inset 0 1px 2px rgb(1 4 20 / 0.18);
+    }
+  }
+  .fd-field:is(:has(:focus-visible), :focus-visible, [data-force="focus"]):not([data-invalid]) {
+    box-shadow:
+      inset 0 0 0 1.5px var(--fd-focus-ring),
+      0 0 0 4px var(--fd-accent-soft);
+  }
+  .fd-field[data-invalid] {
+    box-shadow:
+      inset 0 0 0 1.5px var(--fd-rose),
+      0 0 0 0 transparent;
+  }
+  /* Invalid + focused keeps the rose border and adds the standard focus ring (2px, offset 2px): a rose-on-rose halo alone is not a
+     visible focus indicator. */
+  .fd-field[data-invalid]:is(:has(:focus-visible), :focus-visible, [data-force="focus"]) {
+    box-shadow:
+      inset 0 0 0 1.5px var(--fd-rose),
+      0 0 0 2px var(--fd-bg),
+      0 0 0 4px var(--fd-focus-ring);
+  }
+  .fd-field[data-disabled] {
+    background: var(--fd-surface-field);
+    box-shadow: inset 0 0 0 1px var(--fd-divider);
+    color: var(--fd-fg-disabled);
+    cursor: not-allowed;
+  }
+
+  /* ---- Checkbox, radio, switch: unselected = a field fill with a strong rim; selected = the Flow button gradient ---- */
+  .fd-checkbox,
+  .fd-radio,
+  .fd-switch {
+    background: var(--fd-surface-field);
+    box-shadow: inset 0 0 0 1.5px var(--fd-rim-strong);
+    transition:
+      background-color var(--fd-dur-fast) var(--fd-ease-standard),
+      box-shadow var(--fd-dur-fast) var(--fd-ease-standard),
+      transform var(--fd-spring-tap-dur) var(--fd-spring-tap);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .fd-checkbox:hover:not(:disabled, [data-state="checked"], [data-state="indeterminate"]),
+    .fd-radio:hover:not(:disabled, [data-state="checked"]),
+    .fd-switch:hover:not(:disabled, [data-state="checked"]) {
+      box-shadow: inset 0 0 0 1.5px var(--fd-fg-subtle);
+    }
+  }
+  .fd-checkbox:is([data-state="checked"], [data-state="indeterminate"]),
+  .fd-radio[data-state="checked"] {
+    background: var(--fd-gradient-flowButton);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.35),
+      0 4px 12px -4px rgb(48 125 253 / 0.6);
+  }
+  .fd-switch[data-state="checked"] {
+    background: var(--fd-accent-solid);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.28),
+      inset 0 0 0 1px rgb(255 255 255 / 0.12);
+  }
+  .fd-checkbox:active:not(:disabled),
+  .fd-radio:active:not(:disabled) {
+    transform: scale(0.94);
+    transition-duration: 100ms;
+  }
+  .fd-checkbox[aria-invalid="true"],
+  .fd-radio[aria-invalid="true"] {
+    box-shadow: inset 0 0 0 1.5px var(--fd-rose);
+  }
+  /* Radio as a card (plan, payout speed): the whole tile is the target and lights up when selected. */
+  .fd-radio-card {
+    background: var(--fd-surface-field);
+    box-shadow: inset 0 0 0 1px var(--fd-rim);
+    transition:
+      background-color var(--fd-dur-fast) var(--fd-ease-standard),
+      box-shadow var(--fd-dur-fast) var(--fd-ease-standard);
+  }
+  .fd-radio-card:has([data-state="checked"]) {
+    background: var(--fd-accent-soft);
+    box-shadow: inset 0 0 0 1.5px color-mix(in oklab, var(--fd-accent-bright) 60%, transparent);
+  }
+  .fd-radio-card:has(:focus-visible) {
+    outline: 2px solid var(--fd-focus-ring);
+    outline-offset: 2px;
+  }
+  .fd-radio-card .fd-radio:focus-visible {
+    outline: none;
+  }
+  .fd-check-draw {
+    stroke-dashoffset: 0;
+    animation: fd-check-draw 200ms var(--fd-ease-emphasized) both;
+  }
+  @keyframes fd-check-draw {
+    from {
+      stroke-dashoffset: 1;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  /* ---- Slider ---- */
+  .fd-track {
+    box-shadow: inset 0 0 0 1px var(--fd-rim);
+  }
+  .fd-thumb {
+    box-shadow:
+      0 1px 2px rgb(1 4 20 / 0.45),
+      0 4px 12px -2px rgb(1 4 20 / 0.4),
+      inset 0 0 0 1px rgb(255 255 255 / 0.6);
+  }
+  .fd-bubble {
+    box-shadow:
+      0 0 0 1px var(--fd-rim),
+      0 8px 20px -8px rgb(1 4 20 / 0.6);
+  }
+  :root[data-theme="light"] .fd-thumb {
+    box-shadow:
+      0 1px 2px rgb(22 38 96 / 0.3),
+      0 4px 12px -2px rgb(22 38 96 / 0.25),
+      inset 0 0 0 1px rgb(22 38 96 / 0.08);
+  }
+
+  /* ---- Chips (toggle / filter) ---- */
+  .fd-chip {
+    color: var(--fd-fg-muted);
+    background: var(--fd-surface-field);
+    box-shadow: inset 0 0 0 1px var(--fd-rim);
+    transition:
+      background-color var(--fd-dur-fast) var(--fd-ease-standard),
+      color var(--fd-dur-fast) var(--fd-ease-standard),
+      box-shadow var(--fd-dur-fast) var(--fd-ease-standard),
+      transform var(--fd-dur-fast) var(--fd-ease-standard);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .fd-chip:is(:hover, [data-force="hover"]):not(:disabled, [aria-pressed="true"]) {
+      color: var(--fd-fg);
+      background: var(--fd-surface-active);
+    }
+  }
+  .fd-chip[aria-pressed="true"] {
+    color: var(--fd-accent);
+    background: var(--fd-accent-soft);
+    box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--fd-accent-bright) 55%, transparent);
+  }
+  .fd-chip:disabled {
+    color: var(--fd-fg-disabled);
+    cursor: not-allowed;
+  }
+
+  /* ---- Segmented/tabs lens: the active indicator (a flat fill, not a third glass layer) ---- */
+  .fd-seg-track {
+    background: var(--fd-surface-field);
+    box-shadow: inset 0 0 0 1px var(--fd-rim);
+  }
+  .fd-seg-lens {
+    background: var(--fd-surface-active);
+    box-shadow:
+      inset 0 0 0 1px var(--fd-rim),
+      inset 0 1px 0 var(--fd-glass-2-highlight),
+      0 2px 8px -2px rgb(1 4 20 / 0.35);
+  }
+  :root[data-theme="light"] .fd-seg-lens {
+    background: var(--fd-surface);
+    box-shadow:
+      inset 0 0 0 1px var(--fd-rim),
+      0 2px 8px -2px rgb(22 38 96 / 0.16);
+  }
+
+  /* ---- Menu rows ---- */
+  .fd-menu-item {
+    transition: background-color var(--fd-dur-instant) var(--fd-ease-standard);
+  }
+  .fd-menu-item:is([data-highlighted], [data-selected="true"]) {
+    background: var(--fd-surface-active);
+  }
+  .fd-menu-item[data-disabled] {
+    color: var(--fd-fg-disabled);
+    pointer-events: none;
+  }
+
+  /* =========================================================================================================
+     4. Loading, skeletons
+     ========================================================================================================= */
+  .fd-spinner {
+    animation: fd-spin 0.8s linear infinite;
+  }
+  @keyframes fd-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* Glass shimmer: a highlight band sweeps across (transform only), stops under reduced motion. */
+  .fd-skeleton {
+    --_shine: var(--fd-surface-active);
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    background: var(--fd-surface-hover);
+    border-radius: var(--fd-radius-md);
+  }
+  :root[data-theme="light"] .fd-skeleton {
+    --_shine: rgb(255 255 255 / 0.75);
+  }
+  .fd-skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(100deg, transparent 20%, var(--_shine) 50%, transparent 80%);
+    animation: fd-shimmer 1.4s linear infinite;
+  }
+  @keyframes fd-shimmer {
+    to {
+      transform: translateX(100%);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .fd-skeleton::after {
+      animation: none;
+      opacity: 0;
+    }
+  }
+
+  /* Live dot: a soft ring that pings outward. Frozen (ring hidden) under reduced motion. */
+  .fd-pulse::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    background: currentColor;
+    opacity: 0.55;
+    animation: fd-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+  @keyframes fd-ping {
+    75%,
+    100% {
+      transform: scale(2.4);
+      opacity: 0;
+    }
+  }
+
+  /* Linear progress, indeterminate */
+  @keyframes fd-indeterminate {
+    0% {
+      transform: translateX(-110%);
+    }
+    100% {
+      transform: translateX(260%);
+    }
+  }
+
+  /* Pending money and bars: hatched, so state survives without colour or transparency. */
+  .fd-hatched {
+    background-image: repeating-linear-gradient(
+      135deg,
+      transparent 0 5px,
+      rgb(255 255 255 / 0.28) 5px 7px
+    );
+    background-size: auto;
+  }
+
+  /* =========================================================================================================
+     5. Overlays: popper, dialog, accordion (Radix data-state drives Presence, so these are keyframes)
+     ========================================================================================================= */
+  .fd-pop {
+    transform-origin: var(--radix-popper-transform-origin, 50% 50%);
+    --fd-pop-x: 0px;
+    --fd-pop-y: 0px;
+  }
+  .fd-pop[data-side="top"] { --fd-pop-y: 4px; }
+  .fd-pop[data-side="bottom"] { --fd-pop-y: -4px; }
+  .fd-pop[data-side="left"] { --fd-pop-x: 4px; }
+  .fd-pop[data-side="right"] { --fd-pop-x: -4px; }
+
+  .fd-pop[data-state="open"],
+  .fd-pop[data-state="delayed-open"] {
+    animation: fd-pop-in 180ms var(--fd-ease-emphasized) both;
+  }
+  .fd-pop[data-state="closed"] {
+    animation: fd-pop-out 120ms var(--fd-ease-standard) both;
+  }
+  /* Tooltips: after the first one opens, neighbours appear instantly (no delay, no animation). */
+  .fd-pop[data-state="instant-open"] {
+    animation: none;
+  }
+  @keyframes fd-pop-in {
+    from {
+      opacity: 0;
+      transform: translate(var(--fd-pop-x), var(--fd-pop-y)) scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes fd-pop-out {
+    from {
+      opacity: 1;
+      transform: none;
+    }
+    to {
+      opacity: 0;
+      transform: scale(0.97);
+    }
+  }
+
+  .fd-overlay[data-state="open"] {
+    animation: fd-fade-in 200ms var(--fd-ease-standard) both;
+  }
+  .fd-overlay[data-state="closed"] {
+    animation: fd-fade-out 150ms var(--fd-ease-standard) both;
+  }
+  /* Modals are not anchored to a trigger: they stay centred and grow from 0.96. */
+  .fd-dialog[data-state="open"] {
+    animation: fd-dialog-in 240ms var(--fd-ease-emphasized) both;
+  }
+  .fd-dialog[data-state="closed"] {
+    animation: fd-dialog-out 150ms var(--fd-ease-standard) both;
+  }
+  @keyframes fd-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes fd-fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+  @keyframes fd-dialog-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px) scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes fd-dialog-out {
+    from {
+      opacity: 1;
+      transform: none;
+    }
+    to {
+      opacity: 0;
+      transform: translateY(4px) scale(0.98);
+    }
+  }
+
+  .fd-accordion-content[data-state="open"] {
+    animation: fd-accordion-down 240ms var(--fd-ease-emphasized) both;
+  }
+  .fd-accordion-content[data-state="closed"] {
+    animation: fd-accordion-up 180ms var(--fd-ease-standard) both;
+  }
+  @keyframes fd-accordion-down {
+    from { height: 0; opacity: 0; }
+    to { height: var(--radix-accordion-content-height); opacity: 1; }
+  }
+  @keyframes fd-accordion-up {
+    from { height: var(--radix-accordion-content-height); opacity: 1; }
+    to { height: 0; opacity: 0; }
+  }
+
+  /* Reduced motion: no scale or slide, only short cross-fades that carry meaning. */
+  @media (prefers-reduced-motion: reduce) {
+    .fd-pop[data-state="open"],
+    .fd-pop[data-state="delayed-open"],
+    .fd-overlay[data-state="open"],
+    .fd-dialog[data-state="open"] {
+      animation: fd-fade-in 150ms linear both !important;
+    }
+    .fd-pop[data-state="closed"],
+    .fd-overlay[data-state="closed"],
+    .fd-dialog[data-state="closed"] {
+      animation: fd-fade-out 100ms linear both !important;
+    }
+    .fd-accordion-content[data-state="open"],
+    .fd-accordion-content[data-state="closed"] {
+      animation: none !important;
+    }
+  }
+
+  /* Money flash for reduced-motion count-ups (a calm wash instead of a roll). */
+  .fd-flash {
+    animation: fd-flash 400ms var(--fd-ease-standard) both;
+  }
+  @keyframes fd-flash {
+    from { background-color: var(--fd-mint-soft); }
+    to { background-color: transparent; }
+  }
+
+  /* =========================================================================================================
+     6. Decorative loops (illustrations only; the reduced-motion blanket in globals.css freezes them)
+     ========================================================================================================= */
+  .fd-float {
+    animation: fd-float var(--fd-float-dur, 7s) ease-in-out var(--fd-float-delay, 0s) infinite alternate;
+  }
+  @keyframes fd-float {
+    from { transform: translate3d(0, -3px, 0); }
+    to { transform: translate3d(0, 5px, 0); }
+  }
+  .fd-orbit {
+    animation: fd-orbit var(--fd-orbit-dur, 36s) linear infinite;
+  }
+  @keyframes fd-orbit {
+    to { transform: rotate(360deg); }
+  }
+}

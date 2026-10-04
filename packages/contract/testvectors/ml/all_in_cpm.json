@@ -1,0 +1,68 @@
+{
+  "schema": "flowd.testvectors/1",
+  "suite": "all_in_cpm",
+  "description": "All-in effective CPM = round(card_charge x cpm / budget).",
+  "contract_version": "1.0.0",
+  "parity": "required",
+  "compare": {
+    "objects": "subset",
+    "arrays": "same length, element-wise subset",
+    "numbers": "exact",
+    "null": "must be null"
+  },
+  "reference": "packages/contract/schema/formulas.mjs: allInCpm",
+  "generated_by": "services/ml/scripts/export_vectors.py (do not edit by hand)",
+  "function": "allInCpm(args)",
+  "cases": [
+    {
+      "id": "contract_free_5000",
+      "description": "$2.00 CPM on a $5,000 Free-plan pool (all-in $2.31).",
+      "in": {
+        "cpm_cents": 200,
+        "budget_cents": 500000,
+        "card_charge_cents": 576270
+      },
+      "out": 231
+    },
+    {
+      "id": "contract_first_bounty",
+      "description": "$2.00 CPM, first bounty (all-in $1.54).",
+      "in": {
+        "cpm_cents": 200,
+        "budget_cents": 200000,
+        "card_charge_cents": 154380
+      },
+      "out": 154
+    },
+    {
+      "id": "zero_cpm",
+      "description": "CPM 0 returns 0.",
+      "in": {
+        "cpm_cents": 0,
+        "budget_cents": 500000,
+        "card_charge_cents": 576270
+      },
+      "out": 0
+    },
+    {
+      "id": "zero_budget",
+      "description": "Budget 0 returns 0.",
+      "in": {
+        "cpm_cents": 200,
+        "budget_cents": 0,
+        "card_charge_cents": 0
+      },
+      "out": 0
+    },
+    {
+      "id": "rounds_half_up",
+      "description": "Half rounds up.",
+      "in": {
+        "cpm_cents": 250,
+        "budget_cents": 100000,
+        "card_charge_cents": 111000
+      },
+      "out": 278
+    }
+  ]
+}

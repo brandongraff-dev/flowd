@@ -1,0 +1,370 @@
+{
+  "schema": "flowd.testvectors/1",
+  "suite": "fatigue",
+  "description": "Fatigue rule: trailing 3-day median rate down >= 30% from its peak is an alert; 20-30% is a watch; fewer than 7 usable days is insufficient data.",
+  "contract_version": "1.0.0",
+  "parity": "reference",
+  "compare": {
+    "objects": "subset",
+    "arrays": "same length, element-wise subset",
+    "numbers": "exact",
+    "null": "must be null"
+  },
+  "reference": "services/ml/src/flowd_ml/fatigue/detect.py",
+  "generated_by": "services/ml/scripts/export_vectors.py (do not edit by hand)",
+  "endpoint": "/v1/fatigue",
+  "cases": [
+    {
+      "id": "fatigued_36_percent",
+      "description": "Trial-start rate falls from a 7.8% smoothed peak to 5.0%: fatigued.",
+      "in": {
+        "metric": "trial_rate",
+        "series": [
+          {
+            "date": "2026-09-01",
+            "value": 0.071,
+            "volume": 90
+          },
+          {
+            "date": "2026-09-02",
+            "value": 0.074,
+            "volume": 90
+          },
+          {
+            "date": "2026-09-03",
+            "value": 0.078,
+            "volume": 90
+          },
+          {
+            "date": "2026-09-04",
+            "value": 0.08,
+            "volume": 90
+          },
+          {
+            "date": "2026-09-05",
+            "value": 0.077,
+            "volume": 90
+          },
+          {
+            "date": "2026-09-06",
+            "value": 0.072,
+            "volume": 90
+          },
+          {
+            "date": "2026-09-07",
+            "value": 0.066,
+            "volume": 90
+          },
+          {
+            "date": "2026-09-08",
+            "value": 0.061,
+            "volume": 90
+          },
+          {
+            "date": "2026-09-09",
+            "value": 0.056,
+            "volume": 90
+          },
+          {
+            "date": "2026-09-10",
+            "value": 0.052,
+            "volume": 90
+          },
+          {
+            "date": "2026-09-11",
+            "value": 0.05,
+            "volume": 90
+          },
+          {
+            "date": "2026-09-12",
+            "value": 0.049,
+            "volume": 90
+          }
+        ]
+      },
+      "out": {
+        "state": "fatigued",
+        "drop_ratio": 0.36,
+        "peak_on": "2026-09-04",
+        "peak_value": 0.078,
+        "current_value": 0.05
+      }
+    },
+    {
+      "id": "watch_22_percent",
+      "description": "A 22% drop: watch, no alert yet.",
+      "in": {
+        "metric": "trial_rate",
+        "series": [
+          {
+            "date": "2026-09-01",
+            "value": 0.07,
+            "volume": 90
+          },
+          {
+            "date": "2026-09-02",
+            "value": 0.072,
+            "volume": 90
+          },
+          {
+            "date": "2026-09-03",
+            "value": 0.074,
+            "volume": 90
+          },
+          {
+            "date": "2026-09-04",
+            "value": 0.073,
+            "volume": 90
+          },
+          {
+            "date": "2026-09-05",
+            "value": 0.068,
+            "volume": 90
+          },
+          {
+            "date": "2026-09-06",
+            "value": 0.062,
+            "volume": 90
+          },
+          {
+            "date": "2026-09-07",
+            "value": 0.058,
+            "volume": 90
+          },
+          {
+            "date": "2026-09-08",
+            "value": 0.056,
+            "volume": 90
+          },
+          {
+            "date": "2026-09-09",
+            "value": 0.057,
+            "volume": 90
+          },
+          {
+            "date": "2026-09-10",
+            "value": 0.058,
+            "volume": 90
+          }
+        ]
+      },
+      "out": {
+        "state": "watch",
+        "drop_ratio": 0.22,
+        "peak_on": "2026-09-04",
+        "peak_value": 0.073,
+        "current_value": 0.057
+      }
+    },
+    {
+      "id": "healthy_rising",
+      "description": "Still rising: healthy.",
+      "in": {
+        "metric": "ctr",
+        "series": [
+          {
+            "date": "2026-09-01",
+            "value": 0.01,
+            "volume": 90
+          },
+          {
+            "date": "2026-09-02",
+            "value": 0.011,
+            "volume": 90
+          },
+          {
+            "date": "2026-09-03",
+            "value": 0.012,
+            "volume": 90
+          },
+          {
+            "date": "2026-09-04",
+            "value": 0.012,
+            "volume": 90
+          },
+          {
+            "date": "2026-09-05",
+            "value": 0.013,
+            "volume": 90
+          },
+          {
+            "date": "2026-09-06",
+            "value": 0.014,
+            "volume": 90
+          },
+          {
+            "date": "2026-09-07",
+            "value": 0.014,
+            "volume": 90
+          },
+          {
+            "date": "2026-09-08",
+            "value": 0.015,
+            "volume": 90
+          }
+        ]
+      },
+      "out": {
+        "state": "healthy",
+        "drop_ratio": 0.0,
+        "peak_on": "2026-09-07",
+        "peak_value": 0.014,
+        "current_value": 0.014
+      }
+    },
+    {
+      "id": "insufficient_days",
+      "description": "Five days of data: not enough.",
+      "in": {
+        "metric": "trial_rate",
+        "series": [
+          {
+            "date": "2026-09-01",
+            "value": 0.07,
+            "volume": 90
+          },
+          {
+            "date": "2026-09-02",
+            "value": 0.07,
+            "volume": 90
+          },
+          {
+            "date": "2026-09-03",
+            "value": 0.06,
+            "volume": 90
+          },
+          {
+            "date": "2026-09-04",
+            "value": 0.06,
+            "volume": 90
+          },
+          {
+            "date": "2026-09-05",
+            "value": 0.05,
+            "volume": 90
+          }
+        ]
+      },
+      "out": {
+        "state": "insufficient_data",
+        "drop_ratio": null,
+        "peak_on": null,
+        "peak_value": null,
+        "current_value": null
+      }
+    },
+    {
+      "id": "noisy_days_ignored",
+      "description": "Days under the volume floor are ignored.",
+      "in": {
+        "metric": "install_rate",
+        "min_volume": 100,
+        "series": [
+          {
+            "date": "2026-09-01",
+            "value": 1.9,
+            "volume": 40
+          },
+          {
+            "date": "2026-09-02",
+            "value": 2.0,
+            "volume": 40
+          },
+          {
+            "date": "2026-09-03",
+            "value": 2.1,
+            "volume": 40
+          },
+          {
+            "date": "2026-09-04",
+            "value": 2.0,
+            "volume": 40
+          },
+          {
+            "date": "2026-09-05",
+            "value": 2.0,
+            "volume": 40
+          },
+          {
+            "date": "2026-09-06",
+            "value": 1.9,
+            "volume": 40
+          },
+          {
+            "date": "2026-09-07",
+            "value": 2.0,
+            "volume": 40
+          },
+          {
+            "date": "2026-09-08",
+            "value": 2.1,
+            "volume": 40
+          }
+        ]
+      },
+      "out": {
+        "state": "insufficient_data",
+        "drop_ratio": null,
+        "peak_on": null,
+        "peak_value": null,
+        "current_value": null
+      }
+    },
+    {
+      "id": "exactly_30_percent",
+      "description": "Exactly a 30% drop alerts (>= 0.30).",
+      "in": {
+        "metric": "trial_rate",
+        "series": [
+          {
+            "date": "2026-09-01",
+            "value": 0.1,
+            "volume": 90
+          },
+          {
+            "date": "2026-09-02",
+            "value": 0.1,
+            "volume": 90
+          },
+          {
+            "date": "2026-09-03",
+            "value": 0.1,
+            "volume": 90
+          },
+          {
+            "date": "2026-09-04",
+            "value": 0.1,
+            "volume": 90
+          },
+          {
+            "date": "2026-09-05",
+            "value": 0.08,
+            "volume": 90
+          },
+          {
+            "date": "2026-09-06",
+            "value": 0.07,
+            "volume": 90
+          },
+          {
+            "date": "2026-09-07",
+            "value": 0.07,
+            "volume": 90
+          },
+          {
+            "date": "2026-09-08",
+            "value": 0.07,
+            "volume": 90
+          }
+        ]
+      },
+      "out": {
+        "state": "fatigued",
+        "drop_ratio": 0.3,
+        "peak_on": "2026-09-03",
+        "peak_value": 0.1,
+        "current_value": 0.07
+      }
+    }
+  ]
+}

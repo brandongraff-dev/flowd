@@ -1,0 +1,132 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "flowd-ml"
+version = "1.0.0"
+description = "flowd ML service: day-one pretrained + rules models (hook/flow score, auto-QA, fraud, matching, pricing, video understanding) behind a FastAPI app. Money follows what works."
+readme = "README.md"
+requires-python = ">=3.12"  # numpy 2.5 (train, real, dev extras) needs 3.12; the Docker and Modal images run 3.12
+license = { text = "Proprietary" }
+authors = [{ name = "flowd, Inc.", email = "hello@joinflowd.io" }]
+keywords = ["flowd", "ugc", "scoring", "fraud", "fastapi"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Framework :: FastAPI",
+  "Typing :: Typed",
+]
+
+# Runtime is deliberately tiny: the whole day-one service (scores, QA, fraud, matching, pricing,
+# perceptual hashing, fake adapters) is pure Python so it runs on a laptop and in CI with zero GPU.
+# Versions verified on PyPI on 2026-10-03.
+dependencies = [
+  "fastapi==0.142.2",
+  "pydantic==2.13.5",
+  "pydantic-settings==2.15.0",
+  "uvicorn==0.54.0",
+]
+
+[project.optional-dependencies]
+# Learned scorer training (LightGBM on settled-post exports), evaluation, calibration plots.
+train = [
+  "numpy==2.5.3",
+  "lightgbm==4.7.0",
+]
+# Real video-understanding adapters (GPU worker image). All imports are lazy; install only on the worker.
+real = [
+  "faster-whisper>=1.2.1,<2",
+  "scenedetect[opencv-headless]>=0.7.1,<0.8",
+  "transformers>=5.18,<6",
+  "torch>=2.14,<3",
+  "anthropic>=1.11,<2",
+  "Pillow==12.3.0",
+  "numpy==2.5.3",
+]
+# Deployment on Modal (see modal_app.py).
+modal = [
+  "modal>=1.6.1,<2",
+]
+dev = [
+  "modal==1.6.1",           # so the deployment tests (modal_app.py imports, scheduled jobs) run in dev and CI
+  "pytest==9.1.1",
+  "pytest-cov==7.1.0",
+  "httpx2==2.13.1",
+  "ruff==0.16.10",
+  "numpy==2.5.3",
+  "lightgbm==4.7.0",
+  "Pillow==12.3.0",
+]
+
+[project.scripts]
+flowd-ml = "flowd_ml.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/flowd_ml"]
+
+[tool.pytest.ini_options]
+minversion = "9.0"
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-ra -q --strict-markers"
+markers = [
+  "contract: parity tests against packages/contract (skipped when node or the contract is unavailable)",
+  "slow: trains models or runs larger synthetic workloads",
+]
+filterwarnings = [
+  "error::DeprecationWarning:flowd_ml.*",
+]
+
+[tool.coverage.run]
+source = ["src/flowd_ml"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:", "raise NotImplementedError", "\\.\\.\\."]
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+src = ["src", "tests", "scripts"]
+extend-exclude = [".venv", "build", "dist", "models"]
+
+[tool.ruff.lint]
+select = [
+  "E", "F", "W",   # pycodestyle + pyflakes
+  "I",             # isort
+  "B",             # bugbear
+  "UP",            # pyupgrade
+  "SIM",           # simplify
+  "C4",            # comprehensions
+  "RUF",           # ruff-specific
+  "PL",            # pylint subset
+  "PT",            # pytest style
+  "S",             # bandit (security)
+  "T20",           # no print in library code
+  "N",             # naming
+]
+ignore = [
+  "E501",    # `ruff format` owns line wrapping; what it cannot wrap is user-facing copy and regexes, kept whole so they stay greppable
+  "PLR0911", "PLR0912", "PLR0913", "PLR0915", "PLR0917", "PLR2004",  # scoring code is naturally branchy with explicit thresholds
+  "S101",    # asserts are fine in tests; library code does not use them for validation
+  "RUF001", "RUF002", "RUF003",  # copy uses plain ASCII, but quotes inside docstrings are fine
+  "PLC0415", # lazy imports are the point of the adapter layer
+  "S311",    # random is used for deterministic synthetic data, never for security
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S", "T20", "PLR", "N", "B011", "SIM117", "E501"]
+"scripts/**" = ["T20", "S603", "S607"]
+"src/flowd_ml/cli.py" = ["T20"]
+"modal_app.py" = ["T20"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["flowd_ml"]
+
+[tool.ruff.format]
+quote-style = "double"

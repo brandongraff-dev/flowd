@@ -1,0 +1,98 @@
+/*
+ * Web-owned Tailwind v4 additions on top of the generated tokens.
+ *
+ * Import order (src/app/globals.css):  tailwindcss -> tokens.css -> theme.css -> glass.css
+ *
+ * tokens.css (generated, packages/tokens) already carries the whole semantic theme: colours (bg, surface,
+ * surface-glass-1..3, fg*, rim*, mint/ember/sun/rose/info/violet/accent + *-solid/*-soft/on-*), the type scale
+ * (text-display-*, text-figure-*, text-body*...), radii, shadows (shadow-rest|raised|float|overlay|glow-*) and
+ * easings (ease-standard|emphasized|spring-*). This file must NOT redefine any of those: it only adds what the
+ * web needs on top (utilities, variants, a few legacy aliases for the Wave 1 scaffold).
+ *
+ * Utilities that come from tokens.css (verified to compile):
+ *   bg-bg bg-bg-elevated bg-bg-sunken bg-surface bg-surface-raised bg-surface-field bg-surface-hover bg-surface-active
+ *   bg-surface-glass-1|2|3 bg-scrim text-fg text-fg-muted text-fg-subtle text-fg-disabled border-rim border-rim-strong
+ *   border-divider text-accent bg-accent-solid text-on-accent bg-accent-soft text-mint bg-mint-solid text-on-mint
+ *   bg-mint-soft text-ember text-sun text-rose text-info text-violet (and -solid/-soft/on-*)
+ *   font-display font-sans font-mono text-display-2xl..sm text-title-lg..sm text-body-lg|body|body-sm text-caption
+ *   text-micro text-overline text-button text-figure-hero..sm text-code rounded-sm..3xl rounded-pill
+ *   shadow-rest shadow-raised shadow-float shadow-overlay shadow-glow-flow|mint|ember|sun|violet
+ *   ease-standard ease-emphasized ease-decelerate ease-accelerate ease-in-out ease-spring-tap|snappy|smooth|sheet|gentle|bouncy
+ *   breakpoints xs 360 sm 640 md 768 lg 1024 xl 1280 2xl 1536 3xl 1920
+ */
+
+/* Legacy utility names the Wave 1 scaffold files still use. Aliases only; new code uses the names above. */
+@theme inline {
+  --ease-glass: var(--fd-ease-emphasized);
+  --ease-spring: var(--fd-spring-snappy);
+}
+
+/* ---------- Token gaps (report to the brand agent; remove when packages/tokens catches up) ---------- */
+/* Light fg-subtle (#5B6684) measures 4.3 to 4.5:1 for 12-13px helper text and placeholders on L1 glass over the violet orb in the
+   rendered gallery (BRAND.md 6.3 claims 5.0+). abyss-600 is the next ramp step and clears 5:1 on the same pixels. */
+:root[data-theme="light"] {
+  --fd-fg-subtle: var(--fd-abyss-600);
+}
+
+/* ---------- Custom variants ---------- */
+/* In-app "Reduce glass" (html[data-transparency="reduce"]) or the OS media query. Use sparingly: tokens already switch
+   every glass surface to its solid fallback; this is for bespoke decoration (glows, gradients) that must go quiet too. */
+@custom-variant reduce-glass (&:where(:root[data-transparency="reduce"] *));
+@custom-variant glass-ok (&:where(:root:not([data-transparency="reduce"]) *));
+
+/* ---------- Utilities ---------- */
+
+/* Money and counts: Bricolage with tabular numerals (BRAND.md 7.1). Never Geist Mono for figures. */
+@utility fd-figure {
+  font-family: var(--fd-font-display);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+  font-optical-sizing: auto;
+}
+
+/* Small uppercase label (eyebrow, table header). Positive tracking because it is small and capitalised. */
+@utility fd-eyebrow {
+  font-family: var(--fd-font-text);
+  font-size: var(--fd-text-overline-size);
+  line-height: var(--fd-text-overline-lh);
+  font-weight: var(--fd-text-overline-weight);
+  letter-spacing: var(--fd-text-overline-tracking);
+  text-transform: uppercase;
+}
+
+/* One gradient word or phrase per view (BRAND.md 6.7). Never body text, never the cyan end under small text. */
+@utility fd-gradient-text {
+  background-image: var(--fd-gradient-flow);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Text on generated thumbnails/media must sit on this scrim (AA gate, BRAND.md 6.6). */
+@utility fd-media-scrim {
+  background: linear-gradient(to top, rgb(2 5 16 / 0.8) 0%, rgb(2 5 16 / 0.45) 45%, rgb(2 5 16 / 0) 100%);
+}
+
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Soft fade at the scroll edges instead of a hard divider. Do not put glass inside the masked element (mask kills backdrop-filter). */
+@utility fd-scroll-fade-y {
+  mask-image: linear-gradient(to bottom, transparent 0, #000 16px, #000 calc(100% - 16px), transparent 100%);
+}
+@utility fd-scroll-fade-x {
+  mask-image: linear-gradient(to right, transparent 0, #000 16px, #000 calc(100% - 16px), transparent 100%);
+}
+
+/* Safe-area padding for floating glass bars and sheets. */
+@utility pb-safe {
+  padding-bottom: max(env(safe-area-inset-bottom), 0px);
+}
+@utility pt-safe {
+  padding-top: max(env(safe-area-inset-top), 0px);
+}

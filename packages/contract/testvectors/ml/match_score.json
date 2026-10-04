@@ -1,0 +1,246 @@
+{
+  "schema": "flowd.testvectors/1",
+  "suite": "match_score",
+  "description": "Match score 0-100 = niche 40 + platform 15 + region 15 + price 15 + brand reliability 10 + recency 5 (recency halves every 14 days; price fit = min(ratio, 1.5) / 1.5); null when any gate fails.",
+  "contract_version": "1.0.0",
+  "parity": "required",
+  "compare": {
+    "objects": "subset",
+    "arrays": "same length, element-wise subset",
+    "numbers": "exact",
+    "null": "must be null"
+  },
+  "reference": "packages/contract/schema/formulas.mjs: matchScore",
+  "generated_by": "services/ml/scripts/export_vectors.py (do not edit by hand)",
+  "function": "matchScore(inputs)",
+  "cases": [
+    {
+      "id": "contract_maya_fresh_bounty",
+      "description": "The contract's example: Maya x a fresh stacked AI-photo bounty (96).",
+      "in": {
+        "gates": {
+          "tier": true
+        },
+        "niche_overlap": 1,
+        "platform_fit": 1,
+        "region_fit": 1,
+        "price_ratio": 1.2,
+        "brand_reliability": 94,
+        "bounty_age_days": 2
+      },
+      "out": 96
+    },
+    {
+      "id": "contract_gate_failed",
+      "description": "Any failed gate returns null.",
+      "in": {
+        "gates": {
+          "tier": false
+        },
+        "niche_overlap": 1,
+        "platform_fit": 1,
+        "region_fit": 1,
+        "price_ratio": 1.2,
+        "brand_reliability": 94,
+        "bounty_age_days": 2
+      },
+      "out": null
+    },
+    {
+      "id": "contract_weak_match",
+      "description": "Half niche, 0.6 region, price 0.7, brand 60, 20 days old (59).",
+      "in": {
+        "gates": {
+          "tier": true
+        },
+        "niche_overlap": 0.5,
+        "platform_fit": 1,
+        "region_fit": 0.6,
+        "price_ratio": 0.7,
+        "brand_reliability": 60,
+        "bounty_age_days": 20
+      },
+      "out": 59
+    },
+    {
+      "id": "perfect_fresh",
+      "description": "Everything 1, age 0: 40 + 15 + 15 + 15 + 10 + 5 = 100.",
+      "in": {
+        "gates": {
+          "eligibility_tier": true,
+          "country": true,
+          "platform_account_linked": true,
+          "funded": true,
+          "not_already_submitted": true
+        },
+        "niche_overlap": 1,
+        "platform_fit": 1,
+        "region_fit": 1,
+        "price_ratio": 1.5,
+        "brand_reliability": 100,
+        "bounty_age_days": 0
+      },
+      "out": 100
+    },
+    {
+      "id": "price_ratio_capped",
+      "description": "A price ratio of 3 is capped at 1.5, same as 1.5.",
+      "in": {
+        "gates": {
+          "eligibility_tier": true,
+          "country": true,
+          "platform_account_linked": true,
+          "funded": true,
+          "not_already_submitted": true
+        },
+        "niche_overlap": 1,
+        "platform_fit": 1,
+        "region_fit": 1,
+        "price_ratio": 3,
+        "brand_reliability": 90,
+        "bounty_age_days": 0
+      },
+      "out": 99
+    },
+    {
+      "id": "price_ratio_zero",
+      "description": "Price ratio 0 earns no price points.",
+      "in": {
+        "gates": {
+          "eligibility_tier": true,
+          "country": true,
+          "platform_account_linked": true,
+          "funded": true,
+          "not_already_submitted": true
+        },
+        "niche_overlap": 1,
+        "platform_fit": 1,
+        "region_fit": 1,
+        "price_ratio": 0,
+        "brand_reliability": 90,
+        "bounty_age_days": 0
+      },
+      "out": 84
+    },
+    {
+      "id": "recency_half_life",
+      "description": "A 14-day-old bounty keeps half its recency points.",
+      "in": {
+        "gates": {
+          "eligibility_tier": true,
+          "country": true,
+          "platform_account_linked": true,
+          "funded": true,
+          "not_already_submitted": true
+        },
+        "niche_overlap": 0.5,
+        "platform_fit": 0.7,
+        "region_fit": 1,
+        "price_ratio": 1,
+        "brand_reliability": 80,
+        "bounty_age_days": 14
+      },
+      "out": 66
+    },
+    {
+      "id": "recency_28_days",
+      "description": "Two half-lives: a quarter of the recency points.",
+      "in": {
+        "gates": {
+          "eligibility_tier": true,
+          "country": true,
+          "platform_account_linked": true,
+          "funded": true,
+          "not_already_submitted": true
+        },
+        "niche_overlap": 0.5,
+        "platform_fit": 0.7,
+        "region_fit": 1,
+        "price_ratio": 1,
+        "brand_reliability": 80,
+        "bounty_age_days": 28
+      },
+      "out": 65
+    },
+    {
+      "id": "rounds_half_up",
+      "description": "A sum landing exactly on .5 rounds up.",
+      "in": {
+        "gates": {
+          "eligibility_tier": true,
+          "country": true,
+          "platform_account_linked": true,
+          "funded": true,
+          "not_already_submitted": true
+        },
+        "niche_overlap": 1,
+        "platform_fit": 0,
+        "region_fit": 0,
+        "price_ratio": 0,
+        "brand_reliability": 50,
+        "bounty_age_days": 70000
+      },
+      "out": 45
+    },
+    {
+      "id": "funded_gate",
+      "description": "Not funded: null.",
+      "in": {
+        "gates": {
+          "eligibility_tier": true,
+          "country": true,
+          "platform_account_linked": true,
+          "funded": false,
+          "not_already_submitted": true
+        },
+        "niche_overlap": 1,
+        "platform_fit": 1,
+        "region_fit": 1,
+        "price_ratio": 1,
+        "brand_reliability": 90,
+        "bounty_age_days": 1
+      },
+      "out": null
+    },
+    {
+      "id": "already_submitted_gate",
+      "description": "Already submitted: null.",
+      "in": {
+        "gates": {
+          "eligibility_tier": true,
+          "country": true,
+          "platform_account_linked": true,
+          "funded": true,
+          "not_already_submitted": false
+        },
+        "niche_overlap": 1,
+        "platform_fit": 1,
+        "region_fit": 1,
+        "price_ratio": 1,
+        "brand_reliability": 90,
+        "bounty_age_days": 1
+      },
+      "out": null
+    },
+    {
+      "id": "brand_reliability_clamped",
+      "description": "Reliability above 100 clamps to 1.",
+      "in": {
+        "gates": {
+          "eligibility_tier": true,
+          "country": true,
+          "platform_account_linked": true,
+          "funded": true,
+          "not_already_submitted": true
+        },
+        "niche_overlap": 0,
+        "platform_fit": 0,
+        "region_fit": 0,
+        "price_ratio": 0,
+        "brand_reliability": 140,
+        "bounty_age_days": 70000
+      },
+      "out": 10
+    }
+  ]
+}

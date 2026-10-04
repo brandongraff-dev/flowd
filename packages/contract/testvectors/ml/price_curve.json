@@ -1,0 +1,283 @@
+{
+  "schema": "flowd.testvectors/1",
+  "suite": "price_curve",
+  "description": "Price vs fill time: six points at 0.6x/0.8x/1.0x/1.2x/1.5x/2.0x of the clearing CPM; p50 = max(6, H x (clearing/cpm)^1.6), p80 = p50 x 1.8, confidence = n/(n+20) x (1 - min(0.5, |ln(cpm/clearing)|)).",
+  "contract_version": "1.0.0",
+  "parity": "required",
+  "compare": {
+    "objects": "subset",
+    "arrays": "same length, element-wise subset",
+    "numbers": "exact",
+    "null": "must be null"
+  },
+  "reference": "packages/contract/schema/formulas.mjs: priceCurve",
+  "generated_by": "services/ml/scripts/export_vectors.py (do not edit by hand)",
+  "function": "priceCurve(args)",
+  "cases": [
+    {
+      "id": "contract_ai_photo_38",
+      "description": "The contract's example: AI photo & video, $2.40, 31 h, 38 comparable bounties.",
+      "in": {
+        "clearing_cpm_cents": 240,
+        "median_fill_hours": 31,
+        "sample_n": 38
+      },
+      "out": [
+        {
+          "cpm_cents": 144,
+          "fill_hours_p50": 70.2,
+          "fill_hours_p80": 126.35,
+          "confidence": 0.33,
+          "sample_n": 38
+        },
+        {
+          "cpm_cents": 192,
+          "fill_hours_p50": 44.3,
+          "fill_hours_p80": 79.74,
+          "confidence": 0.51,
+          "sample_n": 38
+        },
+        {
+          "cpm_cents": 240,
+          "fill_hours_p50": 31.0,
+          "fill_hours_p80": 55.8,
+          "confidence": 0.66,
+          "sample_n": 38
+        },
+        {
+          "cpm_cents": 288,
+          "fill_hours_p50": 23.16,
+          "fill_hours_p80": 41.68,
+          "confidence": 0.54,
+          "sample_n": 38
+        },
+        {
+          "cpm_cents": 360,
+          "fill_hours_p50": 16.2,
+          "fill_hours_p80": 29.17,
+          "confidence": 0.39,
+          "sample_n": 38
+        },
+        {
+          "cpm_cents": 480,
+          "fill_hours_p50": 10.23,
+          "fill_hours_p80": 18.41,
+          "confidence": 0.33,
+          "sample_n": 38
+        }
+      ]
+    },
+    {
+      "id": "contract_thin_market_6",
+      "description": "The contract's thin-market example: 6 comparable bounties.",
+      "in": {
+        "clearing_cpm_cents": 170,
+        "median_fill_hours": 52,
+        "sample_n": 6
+      },
+      "out": [
+        {
+          "cpm_cents": 102,
+          "fill_hours_p50": 117.75,
+          "fill_hours_p80": 211.95,
+          "confidence": 0.12,
+          "sample_n": 6
+        },
+        {
+          "cpm_cents": 136,
+          "fill_hours_p50": 74.31,
+          "fill_hours_p80": 133.76,
+          "confidence": 0.18,
+          "sample_n": 6
+        },
+        {
+          "cpm_cents": 170,
+          "fill_hours_p50": 52.0,
+          "fill_hours_p80": 93.6,
+          "confidence": 0.23,
+          "sample_n": 6
+        },
+        {
+          "cpm_cents": 204,
+          "fill_hours_p50": 38.84,
+          "fill_hours_p80": 69.92,
+          "confidence": 0.19,
+          "sample_n": 6
+        },
+        {
+          "cpm_cents": 255,
+          "fill_hours_p50": 27.18,
+          "fill_hours_p80": 48.92,
+          "confidence": 0.14,
+          "sample_n": 6
+        },
+        {
+          "cpm_cents": 340,
+          "fill_hours_p50": 17.15,
+          "fill_hours_p80": 30.88,
+          "confidence": 0.12,
+          "sample_n": 6
+        }
+      ]
+    },
+    {
+      "id": "fitness_default",
+      "description": "A mid-market category.",
+      "in": {
+        "clearing_cpm_cents": 190,
+        "median_fill_hours": 28,
+        "sample_n": 120
+      },
+      "out": [
+        {
+          "cpm_cents": 114,
+          "fill_hours_p50": 63.4,
+          "fill_hours_p80": 114.13,
+          "confidence": 0.43,
+          "sample_n": 120
+        },
+        {
+          "cpm_cents": 152,
+          "fill_hours_p50": 40.01,
+          "fill_hours_p80": 72.03,
+          "confidence": 0.67,
+          "sample_n": 120
+        },
+        {
+          "cpm_cents": 190,
+          "fill_hours_p50": 28.0,
+          "fill_hours_p80": 50.4,
+          "confidence": 0.86,
+          "sample_n": 120
+        },
+        {
+          "cpm_cents": 228,
+          "fill_hours_p50": 20.92,
+          "fill_hours_p80": 37.65,
+          "confidence": 0.7,
+          "sample_n": 120
+        },
+        {
+          "cpm_cents": 285,
+          "fill_hours_p50": 14.64,
+          "fill_hours_p80": 26.34,
+          "confidence": 0.51,
+          "sample_n": 120
+        },
+        {
+          "cpm_cents": 380,
+          "fill_hours_p50": 9.24,
+          "fill_hours_p80": 16.63,
+          "confidence": 0.43,
+          "sample_n": 120
+        }
+      ]
+    },
+    {
+      "id": "tiny_clearing_floor_hours",
+      "description": "Fast category: the 6-hour fill floor binds at the top of the curve.",
+      "in": {
+        "clearing_cpm_cents": 100,
+        "median_fill_hours": 7,
+        "sample_n": 25
+      },
+      "out": [
+        {
+          "cpm_cents": 60,
+          "fill_hours_p50": 15.85,
+          "fill_hours_p80": 28.53,
+          "confidence": 0.28,
+          "sample_n": 25
+        },
+        {
+          "cpm_cents": 80,
+          "fill_hours_p50": 10.0,
+          "fill_hours_p80": 18.01,
+          "confidence": 0.43,
+          "sample_n": 25
+        },
+        {
+          "cpm_cents": 100,
+          "fill_hours_p50": 7.0,
+          "fill_hours_p80": 12.6,
+          "confidence": 0.56,
+          "sample_n": 25
+        },
+        {
+          "cpm_cents": 120,
+          "fill_hours_p50": 6.0,
+          "fill_hours_p80": 10.8,
+          "confidence": 0.45,
+          "sample_n": 25
+        },
+        {
+          "cpm_cents": 150,
+          "fill_hours_p50": 6.0,
+          "fill_hours_p80": 10.8,
+          "confidence": 0.33,
+          "sample_n": 25
+        },
+        {
+          "cpm_cents": 200,
+          "fill_hours_p50": 6.0,
+          "fill_hours_p80": 10.8,
+          "confidence": 0.28,
+          "sample_n": 25
+        }
+      ]
+    },
+    {
+      "id": "no_samples",
+      "description": "Zero comparable bounties: confidence 0, thin market.",
+      "in": {
+        "clearing_cpm_cents": 200,
+        "median_fill_hours": 30,
+        "sample_n": 0
+      },
+      "out": [
+        {
+          "cpm_cents": 120,
+          "fill_hours_p50": 67.93,
+          "fill_hours_p80": 122.28,
+          "confidence": 0.0,
+          "sample_n": 0
+        },
+        {
+          "cpm_cents": 160,
+          "fill_hours_p50": 42.87,
+          "fill_hours_p80": 77.17,
+          "confidence": 0.0,
+          "sample_n": 0
+        },
+        {
+          "cpm_cents": 200,
+          "fill_hours_p50": 30.0,
+          "fill_hours_p80": 54.0,
+          "confidence": 0.0,
+          "sample_n": 0
+        },
+        {
+          "cpm_cents": 240,
+          "fill_hours_p50": 22.41,
+          "fill_hours_p80": 40.34,
+          "confidence": 0.0,
+          "sample_n": 0
+        },
+        {
+          "cpm_cents": 300,
+          "fill_hours_p50": 15.68,
+          "fill_hours_p80": 28.23,
+          "confidence": 0.0,
+          "sample_n": 0
+        },
+        {
+          "cpm_cents": 400,
+          "fill_hours_p50": 9.9,
+          "fill_hours_p80": 17.81,
+          "confidence": 0.0,
+          "sample_n": 0
+        }
+      ]
+    }
+  ]
+}

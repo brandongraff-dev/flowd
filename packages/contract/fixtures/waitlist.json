@@ -1,0 +1,187 @@
+{
+  "totals": {
+    "creators": 18412,
+    "brands": 1347,
+    "invites_accepted": 2222,
+    "updated_at": "2026-10-03T13:51:00Z"
+  },
+  "leaders": [
+    {
+      "position": 1,
+      "kind": "creator",
+      "handle": "theo.tests.apps",
+      "referrals": 168,
+      "joined_at": "2026-04-15T07:00:00Z"
+    },
+    {
+      "position": 2,
+      "kind": "creator",
+      "handle": "pixel.priya",
+      "referrals": 152,
+      "joined_at": "2026-04-17T19:00:00Z"
+    },
+    {
+      "position": 3,
+      "kind": "creator",
+      "handle": "sleepy.sasha",
+      "referrals": 128,
+      "joined_at": "2026-04-20T20:00:00Z"
+    },
+    {
+      "position": 4,
+      "kind": "brand",
+      "handle": "sparkloop.studio",
+      "referrals": 112,
+      "joined_at": "2026-04-24T02:00:00Z"
+    },
+    {
+      "position": 5,
+      "kind": "creator",
+      "handle": "ravi.reviews",
+      "referrals": 90,
+      "joined_at": "2026-04-26T15:00:00Z"
+    },
+    {
+      "position": 6,
+      "kind": "creator",
+      "handle": "nina.noted",
+      "referrals": 81,
+      "joined_at": "2026-04-29T18:00:00Z"
+    },
+    {
+      "position": 7,
+      "kind": "creator",
+      "handle": "omar.on.screen",
+      "referrals": 64,
+      "joined_at": "2026-05-02T16:00:00Z"
+    },
+    {
+      "position": 8,
+      "kind": "creator",
+      "handle": "amara.edits",
+      "referrals": 52,
+      "joined_at": "2026-05-05T22:00:00Z"
+    },
+    {
+      "position": 9,
+      "kind": "creator",
+      "handle": "ines.in.frame",
+      "referrals": 45,
+      "joined_at": "2026-05-08T18:00:00Z"
+    },
+    {
+      "position": 10,
+      "kind": "brand",
+      "handle": "tidepool.growth",
+      "referrals": 40,
+      "joined_at": "2026-05-11T18:00:00Z"
+    },
+    {
+      "position": 11,
+      "kind": "creator",
+      "handle": "milo.makes.mornings",
+      "referrals": 35,
+      "joined_at": "2026-05-14T17:00:00Z"
+    },
+    {
+      "position": 12,
+      "kind": "creator",
+      "handle": "gus.gadgets",
+      "referrals": 30,
+      "joined_at": "2026-05-17T23:00:00Z"
+    },
+    {
+      "position": 13,
+      "kind": "creator",
+      "handle": "jax.jots",
+      "referrals": 25,
+      "joined_at": "2026-05-20T15:00:00Z"
+    },
+    {
+      "position": 14,
+      "kind": "creator",
+      "handle": "kira.kitchen",
+      "referrals": 20,
+      "joined_at": "2026-05-24T08:00:00Z"
+    },
+    {
+      "position": 15,
+      "kind": "creator",
+      "handle": "luca.lifts",
+      "referrals": 18,
+      "joined_at": "2026-05-26T19:00:00Z"
+    },
+    {
+      "position": 16,
+      "kind": "creator",
+      "handle": "nico.nights",
+      "referrals": 14,
+      "joined_at": "2026-05-30T01:00:00Z"
+    },
+    {
+      "position": 17,
+      "kind": "brand",
+      "handle": "nimbus.labs",
+      "referrals": 13,
+      "joined_at": "2026-06-01T21:00:00Z"
+    },
+    {
+      "position": 18,
+      "kind": "creator",
+      "handle": "sage.studies",
+      "referrals": 12,
+      "joined_at": "2026-06-05T03:00:00Z"
+    },
+    {
+      "position": 19,
+      "kind": "creator",
+      "handle": "uma.unboxes",
+      "referrals": 11,
+      "joined_at": "2026-06-08T04:00:00Z"
+    },
+    {
+      "position": 20,
+      "kind": "creator",
+      "handle": "willa.wellness",
+      "referrals": 10,
+      "joined_at": "2026-06-10T23:00:00Z"
+    },
+    {
+      "position": 21,
+      "kind": "creator",
+      "handle": "xander.zen",
+      "referrals": 9,
+      "joined_at": "2026-06-13T13:00:00Z"
+    },
+    {
+      "position": 22,
+      "kind": "brand",
+      "handle": "orchard.apps",
+      "referrals": 8,
+      "joined_at": "2026-06-16T15:00:00Z"
+    },
+    {
+      "position": 23,
+      "kind": "creator",
+      "handle": "eli.edits",
+      "referrals": 7,
+      "joined_at": "2026-06-19T18:00:00Z"
+    },
+    {
+      "position": 24,
+      "kind": "creator",
+      "handle": "flo.fitness.diary",
+      "referrals": 6,
+      "joined_at": "2026-06-22T23:00:00Z"
+    },
+    {
+      "position": 25,
+      "kind": "creator",
+      "handle": "isla.inks",
+      "referrals": 6,
+      "joined_at": "2026-06-26T00:00:00Z"
+    }
+  ],
+  "demo_position": 1284,
+  "demo_referrals": 3
+}

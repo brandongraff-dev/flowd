@@ -1,0 +1,290 @@
+{
+  "schema": "flowd.testvectors/1",
+  "suite": "bands",
+  "description": "Band thresholds A 85+, B 70-84, C 55-69, D 40-54, E under 40, and predicted views = round(median x band multiplier) with A 1.6, B 1.15, C 0.85, D 0.5, E 0.3.",
+  "contract_version": "1.0.0",
+  "parity": "required",
+  "compare": {
+    "objects": "subset",
+    "arrays": "same length, element-wise subset",
+    "numbers": "exact",
+    "null": "must be null"
+  },
+  "reference": "packages/contract/schema/formulas.mjs: bandFor, predictedViews",
+  "generated_by": "services/ml/scripts/export_vectors.py (do not edit by hand)",
+  "function": "fn(args...)",
+  "cases": [
+    {
+      "id": "band_0",
+      "description": "0 points",
+      "in": {
+        "fn": "band_for",
+        "args": [
+          0
+        ]
+      },
+      "out": "E"
+    },
+    {
+      "id": "band_1",
+      "description": "1 points",
+      "in": {
+        "fn": "band_for",
+        "args": [
+          1
+        ]
+      },
+      "out": "E"
+    },
+    {
+      "id": "band_39",
+      "description": "39 points",
+      "in": {
+        "fn": "band_for",
+        "args": [
+          39
+        ]
+      },
+      "out": "E"
+    },
+    {
+      "id": "band_39.99",
+      "description": "39.99 points",
+      "in": {
+        "fn": "band_for",
+        "args": [
+          39.99
+        ]
+      },
+      "out": "E"
+    },
+    {
+      "id": "band_40",
+      "description": "40 points",
+      "in": {
+        "fn": "band_for",
+        "args": [
+          40
+        ]
+      },
+      "out": "D"
+    },
+    {
+      "id": "band_54",
+      "description": "54 points",
+      "in": {
+        "fn": "band_for",
+        "args": [
+          54
+        ]
+      },
+      "out": "D"
+    },
+    {
+      "id": "band_54.99",
+      "description": "54.99 points",
+      "in": {
+        "fn": "band_for",
+        "args": [
+          54.99
+        ]
+      },
+      "out": "D"
+    },
+    {
+      "id": "band_55",
+      "description": "55 points",
+      "in": {
+        "fn": "band_for",
+        "args": [
+          55
+        ]
+      },
+      "out": "C"
+    },
+    {
+      "id": "band_69",
+      "description": "69 points",
+      "in": {
+        "fn": "band_for",
+        "args": [
+          69
+        ]
+      },
+      "out": "C"
+    },
+    {
+      "id": "band_69.99",
+      "description": "69.99 points",
+      "in": {
+        "fn": "band_for",
+        "args": [
+          69.99
+        ]
+      },
+      "out": "C"
+    },
+    {
+      "id": "band_70",
+      "description": "70 points",
+      "in": {
+        "fn": "band_for",
+        "args": [
+          70
+        ]
+      },
+      "out": "B"
+    },
+    {
+      "id": "band_84",
+      "description": "84 points",
+      "in": {
+        "fn": "band_for",
+        "args": [
+          84
+        ]
+      },
+      "out": "B"
+    },
+    {
+      "id": "band_84.99",
+      "description": "84.99 points",
+      "in": {
+        "fn": "band_for",
+        "args": [
+          84.99
+        ]
+      },
+      "out": "B"
+    },
+    {
+      "id": "band_85",
+      "description": "85 points",
+      "in": {
+        "fn": "band_for",
+        "args": [
+          85
+        ]
+      },
+      "out": "A"
+    },
+    {
+      "id": "band_92",
+      "description": "92 points",
+      "in": {
+        "fn": "band_for",
+        "args": [
+          92
+        ]
+      },
+      "out": "A"
+    },
+    {
+      "id": "band_100",
+      "description": "100 points",
+      "in": {
+        "fn": "band_for",
+        "args": [
+          100
+        ]
+      },
+      "out": "A"
+    },
+    {
+      "id": "views_14200_B",
+      "description": "predicted views for median 14200, band B",
+      "in": {
+        "fn": "predicted_views",
+        "args": [
+          14200,
+          "B"
+        ]
+      },
+      "out": 16330
+    },
+    {
+      "id": "views_14200_A",
+      "description": "predicted views for median 14200, band A",
+      "in": {
+        "fn": "predicted_views",
+        "args": [
+          14200,
+          "A"
+        ]
+      },
+      "out": 22720
+    },
+    {
+      "id": "views_14200_E",
+      "description": "predicted views for median 14200, band E",
+      "in": {
+        "fn": "predicted_views",
+        "args": [
+          14200,
+          "E"
+        ]
+      },
+      "out": 4260
+    },
+    {
+      "id": "views_9999_C",
+      "description": "predicted views for median 9999, band C",
+      "in": {
+        "fn": "predicted_views",
+        "args": [
+          9999,
+          "C"
+        ]
+      },
+      "out": 8499
+    },
+    {
+      "id": "views_5_D",
+      "description": "predicted views for median 5, band D",
+      "in": {
+        "fn": "predicted_views",
+        "args": [
+          5,
+          "D"
+        ]
+      },
+      "out": 3
+    },
+    {
+      "id": "views_0_A",
+      "description": "predicted views for median 0, band A",
+      "in": {
+        "fn": "predicted_views",
+        "args": [
+          0,
+          "A"
+        ]
+      },
+      "out": 0
+    },
+    {
+      "id": "views_1000000_A",
+      "description": "predicted views for median 1000000, band A",
+      "in": {
+        "fn": "predicted_views",
+        "args": [
+          1000000,
+          "A"
+        ]
+      },
+      "out": 1600000
+    },
+    {
+      "id": "views_333_B",
+      "description": "predicted views for median 333, band B",
+      "in": {
+        "fn": "predicted_views",
+        "args": [
+          333,
+          "B"
+        ]
+      },
+      "out": 383
+    }
+  ]
+}

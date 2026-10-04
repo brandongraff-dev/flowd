@@ -1,0 +1,161 @@
+// Request bodies, keyed "METHOD /path". Value: a field list in the contract grammar (see types.mjs parseFields), or { ref: 'Component' } to use an existing schema
+// as the whole body, or null when the call takes no body. Optional bodies carry { optional: true }.
+// Writes made with an API key are drafts by default; money movements need the financial scope (openapi.yaml, "Authentication").
+
+const BOUNTY_FIELDS = `
+  title:string;
+  type:enum:BountyType;
+  visibility?:enum:Visibility;
+  cpm_cents?:cents -- Cents per 1,000 verified views. Floor $0.50. Default $2.00.;
+  cpa_install_cents?:cents -- Default $0.40.;
+  cpa_trial_cents?:cents -- Default $1.50.;
+  cpa_paid_cents?:cents -- Default $4.00.;
+  flat_fee_cents?:cents -- Direct bounties only.;
+  per_video_cap_cents?:cents -- Default $250.;
+  per_creator_cap_cents?:cents;
+  budget_cents:cents -- The creator-pay pool. The fee reserve is added on top by the server.;
+  brief:obj:Brief;
+  rights_card?:obj:RightsCard -- Organic always included; paid-ad usage defaults to 90 days; AI likeness stays off.;
+  deliverables:obj:Deliverables;
+  eligibility?:obj:Eligibility;
+  format_ids?:enum:FormatId[];
+  starts_at?:iso;
+  ends_at?:iso;
+  review_sla_hours?:int -- 1 to 72. Default 72.;
+  ad_commission_rate?:ratio -- Default 10% for 60 days after the ad goes live.`;
+
+export const BODY_MODELS = {
+  BountyDraft: { doc: 'A bounty as the brand builder sends it. The server recomputes the take rate, the fee reserve and the all-in price: a client can never underprice its own fee.', fields: `app_id:ref:apps; ${BOUNTY_FIELDS}` },
+  BountyPatch: { doc: 'Editable fields of a bounty. A draft or awaiting_funding bounty may change anything; a live bounty may only extend its end date and raise its caps.', fields: BOUNTY_FIELDS.replace(/^\s*title:string;/, 'title?:string;').replace('type:enum:BountyType;', 'type?:enum:BountyType;').replace('budget_cents:cents', 'budget_cents?:cents').replace('brief:obj:Brief;', 'brief?:obj:Brief;').replace('deliverables:obj:Deliverables;', 'deliverables?:obj:Deliverables;') },
+  AnalyticsEvent: { doc: 'One analytics event. Rules for what may be sent are in PRODUCT_SPEC section 10 (no personal data, no earnings amounts).', fields: 'name:string; at:iso; props?:json; session_id?:string; path?:string' },
+  FloChatRequest: { doc: 'A message to Flo, the in-app copilot. The reply streams as Server-Sent Events; each completed suggestion is recorded as a flo_suggestions row.', fields: 'surface:enum:FloSurface; kind?:enum:FloKind -- What the creator wants: script, hook rewrite, brief TL;DR, caption ideas ...; prompt:string; context?:json -- bounty_id, submission_id or post_id the answer should use.; thread_id?:string' },
+  HookScoreInput: { doc: 'Observed timings of the first seconds of a video, or an uploaded clip. Provide either the observations or clip_asset_id.', fields: 'clip_asset_id?:string; lands_ms?:int -- When the hook line lands.; onscreen_ms?:int -- When the hook text appears on screen.; spoken_matches_onscreen?:bool; face_ms?:int; faceless?:bool; app_ms?:int -- When the app or product is first visible.; interrupt_ms?:int -- First pattern interrupt.; hook_type_known?:bool; hook_type_above_median?:bool; speech_ms?:int; captions_in_safe_zone?:bool; creator_median_views?:int' },
+  FlowScoreInput: { doc: 'Observations of a whole video against a brief and a format.', fields: 'hook_points:int; beats_found:int; beats_required:int; app_ms?:int; disclosure_audio:bool; disclosure_onscreen:bool; duration_s:number; captions_in_safe_zone:bool; single_cta:bool; ends_on_win_state:bool; audio_gaps:int; format_order:string -- in_order, one_out_of_order or out_of_order.; bounty_id?:ref:bounties; submission_id?:ref:submissions' },
+  EarningsInput: { doc: 'Earnings calculator inputs.', fields: 'base_median_views:int; cpm_cents:cents; cpa_install_cents?:cents; cpa_trial_cents?:cents; cpa_paid_cents?:cents; per_video_cap_cents?:cents' },
+  BudgetInput: { doc: 'Smart Budget planner inputs.', fields: 'budget_cents:cents; cpm_cents:cents; plan?:enum:Plan' },
+  PriceInput: { doc: 'All-in price calculator inputs.', fields: 'budget_cents:cents; cpm_cents:cents; bounty_type?:enum:BountyType; first_bounty?:bool' },
+  AuditInput: { doc: 'A free App UGC Audit request.', fields: 'store_url:url; email?:string -- To email the report; never stored without consent.' },
+  WaitlistInput: { doc: 'Join the waitlist.', fields: 'email:string; kind:string -- creator or brand.; referral_code?:string; app_store_url?:url; handle?:string' },
+  McpToolCall: { doc: 'Parameters of an MCP tools/call.', fields: 'name:string; arguments?:json' },
+};
+
+export const BODIES = {
+  'POST /auth/demo-login': 'role:enum:Role -- creator, brand_member or admin.; persona?:string -- A persona slug (maya.makes, lumi ...). Defaults to the role\'s hero persona.',
+  'POST /auth/logout': null,
+  'POST /events': 'events:obj:AnalyticsEvent[] -- Up to 50 events per call.',
+  'POST /apps': 'store_url:url -- The App Store URL; metadata is resolved from it.; name?:string; category?:enum:Category; mmp?:enum:MmpKind',
+  'POST /apps/lookup': 'store_url:url',
+  'PATCH /apps/{id}': 'name?:string; tagline?:string; category?:enum:Category; mmp?:enum:MmpKind; default_hashtags?:string[]; features?:string[]; pricing?:obj:AppPricing; brand_colors?:obj:BrandColors',
+  'PATCH /brands/{id}': 'name?:string; tagline?:string; website?:url; logo?:art; timeout_policy?:enum:TimeoutPolicy -- escalate (default) or approve_if_clean.; review_sla_hours?:int; compliance_defaults?:obj:ComplianceDefaults; billing?:obj:BillingProfile',
+  'POST /brands/{id}/members': 'email:string; role:enum:BrandMemberRole; client_approval_link?:bool -- Create a client-approval link instead of a seat.',
+  'PATCH /brands/{id}/members/{memberId}': 'role:enum:BrandMemberRole',
+  'POST /brands/{id}/lists': 'name:string; creator_ids?:ref:creators[]; note?:string',
+  'PATCH /brands/{id}/plan': 'plan:enum:Plan -- free (12%), pro (10%, $299/mo) or scale (8%, $999/mo).; payment_method_id?:string',
+  'POST /bounties': { ref: 'BountyDraft' },
+  'PATCH /bounties/{id}': { ref: 'BountyPatch' },
+  'POST /bounties/lint': 'bounty_id?:ref:bounties; draft?:obj:BountyDraft -- Lint an unsaved draft instead.',
+  'POST /bounties/price': 'draft:obj:BountyDraft; plan?:enum:Plan -- Defaults to the workspace plan.',
+  'POST /bounties/draft': 'store_url:url -- The App Store link the draft is built from.; goal?:string -- One sentence: what a good video does for the app.',
+  'POST /bounties/{id}/publish': null,
+  'POST /bounties/{id}/fund': null,
+  'POST /bounties/{id}/top-up': 'add_budget_cents:cents -- Budget to add. The fee on the addition is funded with it.',
+  'POST /bounties/{id}/pause': null,
+  'POST /bounties/{id}/resume': null,
+  'POST /bounties/{id}/close': null,
+  'POST /bounties/{id}/cancel': 'reason?:string',
+  'POST /bounties/{id}/feature': 'weeks:int -- Pinned to the top of the feed for this many weeks (flat weekly fee).',
+  'POST /drops/{id}/claim': 'bounty_id:ref:bounties -- The drop item to claim a spot on.',
+  'PUT /saves/{bountyId}': 'stage:enum:SaveStage -- saved, joined or submitted.',
+  'POST /submissions': 'bounty_id:ref:bounties; upload_asset_id:string -- The asset id from POST /uploads.; title:string; source:enum:SubmissionSource; format_id?:enum:FormatId; caption?:string; rights_accepted:bool -- The creator accepted the bounty\'s Rights Card.',
+  'POST /uploads': 'file_name:string; content_type:string; size_bytes:int; duration_ms?:int',
+  'POST /submissions/{id}/feedback': 'category:enum:FeedbackCategory; severity:enum:FeedbackSeverity -- must_fix, should_fix or nice_to_have.; text:string; t_ms?:int -- Timecode in the video.; evidence?:obj:Evidence',
+  'PATCH /feedback/{id}': 'status:enum:FeedbackStatus -- The creator resolves; the brand dismisses.; reason?:string',
+  'POST /submissions/{id}/decision': 'action:enum:DecisionAction; reason_code?:enum:ReasonCode -- Required to reject or to request changes.; evidence?:obj:Evidence -- Required to reject: a timecode, a QA check, a brief quote or a transcript line.; summary?:string',
+  'POST /submissions/{id}/revise': 'upload_asset_id:string; changes_summary?:string',
+  'POST /submissions/{id}/appeal': 'note:string; evidence?:obj:Evidence[]',
+  'POST /submissions/{id}/withdraw': null,
+  'POST /submissions/{id}/post': 'social_account_id:ref:social_accounts; platform:enum:Platform; url:url; platform_post_id?:string; caption:string -- Must carry the disclosure wording of the bounty.',
+  'PUT /review/rules/{id}': 'name:string; conditions:obj:AutoApproveConditions; scope:obj:AutoApproveScope; guardrails?:obj:RuleGuardrails; timeout_policy?:enum:TimeoutPolicy',
+  'POST /review/rules/dry-run': 'conditions:obj:AutoApproveConditions; scope?:obj:AutoApproveScope; last_n?:int -- Defaults to the last 50 submissions.',
+  'POST /review/rules/{id}/enable': null,
+  'POST /review/rules/{id}/kill': 'reason?:string',
+  'POST /score/hook': { ref: 'HookScoreInput' },
+  'POST /score/flow': { ref: 'FlowScoreInput' },
+  'POST /score/preflight': 'asset_id:string; bounty_id:ref:bounties; caption?:string',
+  'POST /posts/{id}/dispute': 'kind:enum:DisputeKind; reason:string; note:string; range_from?:iso -- Start of the snapshot range in question.; range_to?:iso; evidence?:obj:Evidence[]',
+  'POST /posts/{id}/remove': 'reason?:string',
+  'POST /wallet/topup': 'amount_cents:cents -- Wallet credit. The card is charged this plus processing at cost (2.9% + $0.30).; payment_method_id?:string; bounty_id?:ref:bounties -- Fund this bounty as soon as the money lands.',
+  'PUT /wallet/auto-topup': { ref: 'AutoTopUp' },
+  'POST /payouts/instant': 'confirm_fee_cents:cents -- The fee the creator saw in the preview. The call fails with conflict if it changed.',
+  'POST /payout-methods': 'kind:enum:PayoutMethodKind; connect_session_id:string -- Returned by the Stripe Connect onboarding sheet.',
+  'PATCH /invoices/{id}': 'po_number?:string; cost_center?:string; vat_id?:string',
+  'POST /proofs': 'kind:enum:ProofKind; payout_id?:ref:payouts; period_start?:date; period_end?:date; anonymous?:bool',
+  'POST /tax/w9': 'form?:enum:TaxForm; legal_name:string; entity_type:enum:TaxEntityType; tin_last4:string; tin:string -- The full TIN: sent once over TLS to the tax provider, never stored by flowd.; address:obj:Address; signed:bool',
+  'PATCH /tax/set-aside': 'set_aside_rate:ratio -- Share of earnings to set aside for tax (an estimate, not tax advice).',
+  'POST /offers': 'creator_id:ref:creators; kind:enum:OfferKind; app_id:ref:apps; title:string; amount_cents:cents; deliverables:obj:Deliverables; rights_card?:obj:RightsCard; turnaround_days:int; message:string; bounty_id?:ref:bounties; rate_card_id?:ref:rate_cards; rebuy_of_post_id?:ref:posts',
+  'POST /offers/{id}/messages': 'body:string -- In-app only: no phone numbers, links to payment or off-platform contact (Scam Shield screens it).',
+  'POST /offers/{id}/accept': null,
+  'POST /offers/{id}/counter': 'amount_cents:cents; message?:string -- At most 3 rounds.',
+  'POST /offers/{id}/decline': 'reason?:string',
+  'POST /offers/{id}/withdraw': null,
+  'PUT /rate-card': 'price_per_video_cents:cents; min_cpm_cents:cents; paid_usage_days:int; paid_usage_pct_per_30d:ratio; turnaround_days:int; max_videos_per_month:int; platforms:enum:Platform[]; format_ids?:enum:FormatId[]; categories_excluded?:enum:Category[]; accepts_direct_offers:bool; packages?:obj:RatePackage[]; status?:enum:RateCardStatus',
+  'POST /auctions': 'title:string; description:string; slots:int; reserve_cents:cents; deliverables:obj:Deliverables; rights_card?:obj:RightsCard; opens_at?:iso; closes_at:iso',
+  'POST /auctions/{id}/bids': 'amount_cents:cents -- A sealed maximum. The escrow hold is placed on the wallet; second price decides what is paid.; note?:string',
+  'POST /auctions/{id}/cancel': null,
+  'POST /specs': 'title:string; description:string; upload_asset_id:string; hook_text:string; price_cents:cents -- $15 to $500.; paid_ads_days?:int; exclusive?:bool; category?:enum:Category',
+  'POST /specs/{id}/score': null,
+  'POST /specs/{id}/license': 'paid_ads_days?:int; exclusive?:bool -- The licence price is the creator\'s; the take rate is added on top.',
+  'POST /market/suggest': 'category:enum:Category; budget_cents?:cents; cpm_cents?:cents; priority?:string -- fast_fill, balanced or lowest_price.; target_fill_hours?:int',
+  'POST /attribution/events': 'link_code:string; install_id:string -- A random per-install id; never an advertising id.; kind?:enum:ConversionKind -- install (default).; occurred_at?:iso; country?:enum:Country',
+  'POST /webhooks/revenuecat': { ref: 'RevenueCatWebhook' },
+  'POST /attribution/codes/rotate': 'sku?:string -- Rotate the pool of one subscription SKU; omit for all.',
+  'POST /attribution/test-event': 'kind:enum:ConversionKind; link_code?:string',
+  'POST /rights/{id}/renew': 'months?:int -- Renew in 30-day steps (25% of the base fee per 30 days).',
+  'POST /rights/{id}/permission': 'grant:bool; spark_code?:string; code_duration_days?:int -- 7, 30, 60 or 365.',
+  'POST /rights/{id}/revoke': 'reason:string -- Misuse beyond the Rights Card.',
+  'POST /promotions': 'post_id:ref:posts; platform:enum:AdPlatform; kind:enum:AdKind; daily_budget_cents:cents',
+  'POST /promotions/{id}/launch': 'external_ad_id?:string',
+  'POST /promotions/{id}/pause': 'resume?:bool -- true resumes a paused ad.',
+  'POST /promotions/{id}/stop': 'reason?:string',
+  'POST /fatigue-alerts/{id}/refresh': 'creator_ids?:ref:creators[]; budget_cents?:cents',
+  'POST /fatigue-alerts/{id}/dismiss': null,
+  'POST /test-plans': 'app_id:ref:apps; name:string; budget_cents:cents; hooks:obj:TestAxisItem[]; bodies:obj:TestAxisItem[]; ctas:enum:CtaType[]',
+  'POST /compliance/{id}/waive': 'reason:string -- Logged on the audit trail.',
+  'PATCH /me/profile': 'handle?:string; display_name?:string; bio?:string; niches?:enum:Niche[]; languages?:string[]; portfolio?:obj:PortfolioItem[]; storefront?:obj:Storefront; open_to_offers?:bool',
+  'POST /social-accounts': 'platform:enum:Platform; oauth_code:string -- The read-only OAuth authorisation code.; redirect_uri:url',
+  'POST /streaks/rest-week': 'iso_week:string -- e.g. 2026-W41.',
+  'POST /tournaments/{id}/entries': 'hook_text:string; submission_id?:ref:submissions',
+  'POST /crews': 'name:string; tagline:string; niche:enum:Niche; open?:bool',
+  'POST /crews/{id}/join': 'invite_code?:string',
+  'POST /crews/{id}/leave': null,
+  'POST /referrals': 'kind:enum:ReferralKind; channel?:string',
+  'POST /academy/{slug}/complete': 'answers:int[] -- The chosen option of each quiz question.',
+  'POST /threads/{id}/messages': 'body:string -- In-app only; Scam Shield screens it.; kind?:enum:MessageKind',
+  'POST /notifications/read': 'ids?:string[] -- Omit to mark everything read.',
+  'PUT /settings/notifications': 'push:bool; email_digest:bool; categories:map:bool; quiet_hours:obj:QuietHours; batch_non_cash:bool; drop_reminder:bool',
+  'PUT /settings/wellbeing': 'enabled:bool; quiet_hours:obj:QuietHours; numbers_off:obj:NumbersOff; pace_goal:obj:PaceGoal; paused_until?:iso; rest_weeks:string[]; leaderboard_opt_out:bool; slack_mode:bool',
+  'POST /verifications': 'kind:enum:VerificationKind; documents?:obj:DocRef[]',
+  'POST /flo/chat': { ref: 'FloChatRequest' },
+  'POST /tools/hook-score': { ref: 'HookScoreInput' },
+  'POST /tools/app-audit': { ref: 'AuditInput' },
+  'POST /tools/earnings': { ref: 'EarningsInput' },
+  'POST /tools/budget': { ref: 'BudgetInput' },
+  'POST /tools/price': { ref: 'PriceInput' },
+  'POST /reports': 'target_kind:enum:ReportTargetKind; target_id:string; reason:enum:ScamReason; description:string; evidence_refs?:string[]',
+  'POST /disputes/{id}/events': 'action:enum:DisputeAction; body?:string; evidence?:obj:Evidence[]',
+  'POST /api-keys': 'name:string; mode:enum:KeyMode -- live or test.; scopes:enum:ApiScope[] -- read, write and financial. Writes are drafts unless the key has financial scope.',
+  'POST /webhook-endpoints': 'url:url -- https only.; events:enum:WebhookEventType[]',
+  'POST /webhook-endpoints/{id}/test': 'event?:enum:WebhookEventType',
+  'POST /mcp': { ref: 'JsonRpcRequest' },
+  'POST /integrations/{kind}/connect': 'app_id?:ref:apps; credentials?:json -- An API key or OAuth code, depending on the kind. Sealed with AES-256-GCM, never returned.',
+  'POST /admin/fraud/{id}/decision': 'decision:string -- clear, hold, claw_back or ban.; reason:string -- Mandatory and audited.; invalid_views?:int -- With claw_back.',
+  'POST /admin/disputes/{id}/decision': 'outcome:enum:DisputeOutcome; reason:string; adjustment_cents?:cents -- Released to the creator\'s next payout.',
+  'POST /admin/verification/{id}/decision': 'decision:string -- approve, request_info or reject.; reason?:enum:VerificationReason; note?:string',
+  'POST /admin/payouts/{id}/release': 'note?:string',
+  'POST /admin/sla/{submissionId}/approve-if-clean': null,
+  'POST /admin/safety/{id}/action': 'action:string -- triage, confirm, takedown, strike or suspend.; reason:string',
+  'POST /admin/tier-override': 'creator_id:ref:creators; tier:enum:Tier; reason:string -- Mandatory and audited.',
+  'POST /admin/demo/advance': 'hours:int -- 24 or 72.',
+  'POST /admin/demo/reset': null,
+  'POST /public/waitlist': { ref: 'WaitlistInput' },
+};

@@ -1,0 +1,603 @@
+{
+  "schema": "flowd.testvectors/1",
+  "suite": "suggest_cpm",
+  "description": "Suggested CPM, the price-vs-fill curve with all-in prices, and the creator's expected pay at that price.",
+  "contract_version": "1.0.0",
+  "parity": "reference",
+  "compare": {
+    "objects": "subset",
+    "arrays": "same length, element-wise subset",
+    "numbers": "exact",
+    "null": "must be null"
+  },
+  "reference": "services/ml/src/flowd_ml/pricing/suggest.py",
+  "generated_by": "services/ml/scripts/export_vectors.py (do not edit by hand)",
+  "endpoint": "/v1/suggest-cpm",
+  "cases": [
+    {
+      "id": "balanced_pro_5000",
+      "description": "Balanced suggestion on Pro with a $5,000 pool and a candidate price.",
+      "in": {
+        "category": "ai_photo",
+        "market": {
+          "clearing_cpm_cents": 240,
+          "p25_cpm_cents": 190,
+          "p75_cpm_cents": 310,
+          "median_fill_hours": 31,
+          "sample_n": 38,
+          "median_views": 14200
+        },
+        "plan": "pro",
+        "budget_cents": 500000,
+        "cpa": {
+          "install_cents": 40,
+          "trial_cents": 150,
+          "paid_cents": 400
+        },
+        "candidate_cpm_cents": 192
+      },
+      "out": {
+        "source": "market",
+        "suggested_cpm_cents": 240,
+        "thin_market": false,
+        "fill": {
+          "p50_hours": 31.0,
+          "p80_hours": 55.8,
+          "confidence": 0.66
+        },
+        "curve": [
+          {
+            "cpm_cents": 144,
+            "fill_hours_p50": 70.2,
+            "all_in_cpm_cents": 163
+          },
+          {
+            "cpm_cents": 192,
+            "fill_hours_p50": 44.3,
+            "all_in_cpm_cents": 217
+          },
+          {
+            "cpm_cents": 240,
+            "fill_hours_p50": 31.0,
+            "all_in_cpm_cents": 272
+          },
+          {
+            "cpm_cents": 288,
+            "fill_hours_p50": 23.16,
+            "all_in_cpm_cents": 326
+          },
+          {
+            "cpm_cents": 360,
+            "fill_hours_p50": 16.2,
+            "all_in_cpm_cents": 408
+          },
+          {
+            "cpm_cents": 480,
+            "fill_hours_p50": 10.23,
+            "all_in_cpm_cents": 543
+          }
+        ],
+        "all_in": {
+          "card_charge_cents": 565980,
+          "all_in_cpm_cents": 272
+        },
+        "creator_pay": {
+          "p25_cents": 1926,
+          "median_cents": 4815,
+          "p75_cents": 12277
+        },
+        "warnings_count": 0
+      }
+    },
+    {
+      "id": "fastest",
+      "description": "Fastest: 1.5x the clearing price.",
+      "in": {
+        "category": "ai_photo",
+        "market": {
+          "clearing_cpm_cents": 240,
+          "p25_cpm_cents": 190,
+          "p75_cpm_cents": 310,
+          "median_fill_hours": 31,
+          "sample_n": 38,
+          "median_views": 14200
+        },
+        "priority": "fastest"
+      },
+      "out": {
+        "source": "market",
+        "suggested_cpm_cents": 360,
+        "thin_market": false,
+        "fill": {
+          "p50_hours": 16.2,
+          "p80_hours": 29.17,
+          "confidence": 0.39
+        },
+        "curve": [
+          {
+            "cpm_cents": 144,
+            "fill_hours_p50": 70.2,
+            "all_in_cpm_cents": null
+          },
+          {
+            "cpm_cents": 192,
+            "fill_hours_p50": 44.3,
+            "all_in_cpm_cents": null
+          },
+          {
+            "cpm_cents": 240,
+            "fill_hours_p50": 31.0,
+            "all_in_cpm_cents": null
+          },
+          {
+            "cpm_cents": 288,
+            "fill_hours_p50": 23.16,
+            "all_in_cpm_cents": null
+          },
+          {
+            "cpm_cents": 360,
+            "fill_hours_p50": 16.2,
+            "all_in_cpm_cents": null
+          },
+          {
+            "cpm_cents": 480,
+            "fill_hours_p50": 10.23,
+            "all_in_cpm_cents": null
+          }
+        ],
+        "all_in": null,
+        "creator_pay": {
+          "p25_cents": 2045,
+          "median_cents": 5112,
+          "p75_cents": 13036
+        },
+        "warnings_count": 0
+      }
+    },
+    {
+      "id": "cheapest",
+      "description": "Cheapest: 0.8x the clearing price.",
+      "in": {
+        "category": "ai_photo",
+        "market": {
+          "clearing_cpm_cents": 240,
+          "p25_cpm_cents": 190,
+          "p75_cpm_cents": 310,
+          "median_fill_hours": 31,
+          "sample_n": 38,
+          "median_views": 14200
+        },
+        "priority": "cheapest"
+      },
+      "out": {
+        "source": "market",
+        "suggested_cpm_cents": 192,
+        "thin_market": false,
+        "fill": {
+          "p50_hours": 44.3,
+          "p80_hours": 79.74,
+          "confidence": 0.51
+        },
+        "curve": [
+          {
+            "cpm_cents": 144,
+            "fill_hours_p50": 70.2,
+            "all_in_cpm_cents": null
+          },
+          {
+            "cpm_cents": 192,
+            "fill_hours_p50": 44.3,
+            "all_in_cpm_cents": null
+          },
+          {
+            "cpm_cents": 240,
+            "fill_hours_p50": 31.0,
+            "all_in_cpm_cents": null
+          },
+          {
+            "cpm_cents": 288,
+            "fill_hours_p50": 23.16,
+            "all_in_cpm_cents": null
+          },
+          {
+            "cpm_cents": 360,
+            "fill_hours_p50": 16.2,
+            "all_in_cpm_cents": null
+          },
+          {
+            "cpm_cents": 480,
+            "fill_hours_p50": 10.23,
+            "all_in_cpm_cents": null
+          }
+        ],
+        "all_in": null,
+        "creator_pay": {
+          "p25_cents": 1091,
+          "median_cents": 2726,
+          "p75_cents": 6952
+        },
+        "warnings_count": 0
+      }
+    },
+    {
+      "id": "target_fill_12h",
+      "description": "Solve for a 12-hour fill.",
+      "in": {
+        "category": "ai_photo",
+        "market": {
+          "clearing_cpm_cents": 240,
+          "p25_cpm_cents": 190,
+          "p75_cpm_cents": 310,
+          "median_fill_hours": 31,
+          "sample_n": 38,
+          "median_views": 14200
+        },
+        "target_fill_hours": 12
+      },
+      "out": {
+        "source": "market",
+        "suggested_cpm_cents": 434,
+        "thin_market": false,
+        "fill": {
+          "p50_hours": 12.01,
+          "p80_hours": 21.63,
+          "confidence": 0.33
+        },
+        "curve": [
+          {
+            "cpm_cents": 144,
+            "fill_hours_p50": 70.2,
+            "all_in_cpm_cents": null
+          },
+          {
+            "cpm_cents": 192,
+            "fill_hours_p50": 44.3,
+            "all_in_cpm_cents": null
+          },
+          {
+            "cpm_cents": 240,
+            "fill_hours_p50": 31.0,
+            "all_in_cpm_cents": null
+          },
+          {
+            "cpm_cents": 288,
+            "fill_hours_p50": 23.16,
+            "all_in_cpm_cents": null
+          },
+          {
+            "cpm_cents": 360,
+            "fill_hours_p50": 16.2,
+            "all_in_cpm_cents": null
+          },
+          {
+            "cpm_cents": 480,
+            "fill_hours_p50": 10.23,
+            "all_in_cpm_cents": null
+          }
+        ],
+        "all_in": null,
+        "creator_pay": {
+          "p25_cents": 2465,
+          "median_cents": 6163,
+          "p75_cents": 15715
+        },
+        "warnings_count": 0
+      }
+    },
+    {
+      "id": "target_fill_impossible",
+      "description": "A 3-hour target floors at 6 hours and is capped at 2x with a warning.",
+      "in": {
+        "category": "ai_photo",
+        "market": {
+          "clearing_cpm_cents": 240,
+          "p25_cpm_cents": 190,
+          "p75_cpm_cents": 310,
+          "median_fill_hours": 31,
+          "sample_n": 38,
+          "median_views": 14200
+        },
+        "target_fill_hours": 3
+      },
+      "out": {
+        "source": "market",
+        "suggested_cpm_cents": 480,
+        "thin_market": false,
+        "fill": {
+          "p50_hours": 10.23,
+          "p80_hours": 18.41,
+          "confidence": 0.33
+        },
+        "curve": [
+          {
+            "cpm_cents": 144,
+            "fill_hours_p50": 70.2,
+            "all_in_cpm_cents": null
+          },
+          {
+            "cpm_cents": 192,
+            "fill_hours_p50": 44.3,
+            "all_in_cpm_cents": null
+          },
+          {
+            "cpm_cents": 240,
+            "fill_hours_p50": 31.0,
+            "all_in_cpm_cents": null
+          },
+          {
+            "cpm_cents": 288,
+            "fill_hours_p50": 23.16,
+            "all_in_cpm_cents": null
+          },
+          {
+            "cpm_cents": 360,
+            "fill_hours_p50": 16.2,
+            "all_in_cpm_cents": null
+          },
+          {
+            "cpm_cents": 480,
+            "fill_hours_p50": 10.23,
+            "all_in_cpm_cents": null
+          }
+        ],
+        "all_in": null,
+        "creator_pay": {
+          "p25_cents": 2726,
+          "median_cents": 6816,
+          "p75_cents": 17381
+        },
+        "warnings_count": 2
+      }
+    },
+    {
+      "id": "thin_market",
+      "description": "Six comparable bounties: thin-market warning.",
+      "in": {
+        "category": "finance",
+        "market": {
+          "clearing_cpm_cents": 280,
+          "median_fill_hours": 40,
+          "sample_n": 6
+        }
+      },
+      "out": {
+        "source": "market",
+        "suggested_cpm_cents": 280,
+        "thin_market": true,
+        "fill": {
+          "p50_hours": 40.0,
+          "p80_hours": 72.0,
+          "confidence": 0.23
+        },
+        "curve": [
+          {
+            "cpm_cents": 168,
+            "fill_hours_p50": 90.58,
+            "all_in_cpm_cents": null
+          },
+          {
+            "cpm_cents": 224,
+            "fill_hours_p50": 57.16,
+            "all_in_cpm_cents": null
+          },
+          {
+            "cpm_cents": 280,
+            "fill_hours_p50": 40.0,
+            "all_in_cpm_cents": null
+          },
+          {
+            "cpm_cents": 336,
+            "fill_hours_p50": 29.88,
+            "all_in_cpm_cents": null
+          },
+          {
+            "cpm_cents": 420,
+            "fill_hours_p50": 20.91,
+            "all_in_cpm_cents": null
+          },
+          {
+            "cpm_cents": 560,
+            "fill_hours_p50": 13.2,
+            "all_in_cpm_cents": null
+          }
+        ],
+        "all_in": null,
+        "creator_pay": {
+          "p25_cents": 1098,
+          "median_cents": 2744,
+          "p75_cents": 6997
+        },
+        "warnings_count": 1
+      }
+    },
+    {
+      "id": "category_default",
+      "description": "No market data: the day-one category default, labelled as such.",
+      "in": {
+        "category": "fitness"
+      },
+      "out": {
+        "source": "category_default",
+        "suggested_cpm_cents": 190,
+        "thin_market": true,
+        "fill": {
+          "p50_hours": 28.0,
+          "p80_hours": 50.4,
+          "confidence": 0.0
+        },
+        "curve": [
+          {
+            "cpm_cents": 114,
+            "fill_hours_p50": 63.4,
+            "all_in_cpm_cents": null
+          },
+          {
+            "cpm_cents": 152,
+            "fill_hours_p50": 40.01,
+            "all_in_cpm_cents": null
+          },
+          {
+            "cpm_cents": 190,
+            "fill_hours_p50": 28.0,
+            "all_in_cpm_cents": null
+          },
+          {
+            "cpm_cents": 228,
+            "fill_hours_p50": 20.92,
+            "all_in_cpm_cents": null
+          },
+          {
+            "cpm_cents": 285,
+            "fill_hours_p50": 14.64,
+            "all_in_cpm_cents": null
+          },
+          {
+            "cpm_cents": 380,
+            "fill_hours_p50": 9.24,
+            "all_in_cpm_cents": null
+          }
+        ],
+        "all_in": null,
+        "creator_pay": {
+          "p25_cents": 1254,
+          "median_cents": 3135,
+          "p75_cents": 7994
+        },
+        "warnings_count": 1
+      }
+    },
+    {
+      "id": "first_bounty_matched",
+      "description": "First bounty on Pro: fee waived, flowd matches $500.",
+      "in": {
+        "category": "ai_photo",
+        "market": {
+          "clearing_cpm_cents": 240,
+          "p25_cpm_cents": 190,
+          "p75_cpm_cents": 310,
+          "median_fill_hours": 31,
+          "sample_n": 38,
+          "median_views": 14200
+        },
+        "plan": "pro",
+        "first_bounty": true,
+        "budget_cents": 150000
+      },
+      "out": {
+        "source": "market",
+        "suggested_cpm_cents": 240,
+        "thin_market": false,
+        "fill": {
+          "p50_hours": 31.0,
+          "p80_hours": 55.8,
+          "confidence": 0.66
+        },
+        "curve": [
+          {
+            "cpm_cents": 144,
+            "fill_hours_p50": 70.2,
+            "all_in_cpm_cents": 111
+          },
+          {
+            "cpm_cents": 192,
+            "fill_hours_p50": 44.3,
+            "all_in_cpm_cents": 148
+          },
+          {
+            "cpm_cents": 240,
+            "fill_hours_p50": 31.0,
+            "all_in_cpm_cents": 185
+          },
+          {
+            "cpm_cents": 288,
+            "fill_hours_p50": 23.16,
+            "all_in_cpm_cents": 222
+          },
+          {
+            "cpm_cents": 360,
+            "fill_hours_p50": 16.2,
+            "all_in_cpm_cents": 278
+          },
+          {
+            "cpm_cents": 480,
+            "fill_hours_p50": 10.23,
+            "all_in_cpm_cents": 371
+          }
+        ],
+        "all_in": {
+          "card_charge_cents": 154380,
+          "all_in_cpm_cents": 185
+        },
+        "creator_pay": {
+          "p25_cents": 1363,
+          "median_cents": 3408,
+          "p75_cents": 8690
+        },
+        "warnings_count": 0
+      }
+    },
+    {
+      "id": "low_pay_warning",
+      "description": "A cheap category with a low cap: the Brief Lint low-pay warning appears.",
+      "in": {
+        "category": "lifestyle",
+        "market": {
+          "clearing_cpm_cents": 60,
+          "median_fill_hours": 20,
+          "sample_n": 50,
+          "median_views": 6000
+        },
+        "per_video_cap_cents": 25000
+      },
+      "out": {
+        "source": "market",
+        "suggested_cpm_cents": 60,
+        "thin_market": false,
+        "fill": {
+          "p50_hours": 20.0,
+          "p80_hours": 36.0,
+          "confidence": 0.71
+        },
+        "curve": [
+          {
+            "cpm_cents": 36,
+            "fill_hours_p50": 45.29,
+            "all_in_cpm_cents": null
+          },
+          {
+            "cpm_cents": 48,
+            "fill_hours_p50": 28.58,
+            "all_in_cpm_cents": null
+          },
+          {
+            "cpm_cents": 60,
+            "fill_hours_p50": 20.0,
+            "all_in_cpm_cents": null
+          },
+          {
+            "cpm_cents": 72,
+            "fill_hours_p50": 14.94,
+            "all_in_cpm_cents": null
+          },
+          {
+            "cpm_cents": 90,
+            "fill_hours_p50": 10.45,
+            "all_in_cpm_cents": null
+          },
+          {
+            "cpm_cents": 120,
+            "fill_hours_p50": 6.6,
+            "all_in_cpm_cents": null
+          }
+        ],
+        "all_in": null,
+        "creator_pay": {
+          "p25_cents": 144,
+          "median_cents": 360,
+          "p75_cents": 918
+        },
+        "warnings_count": 1
+      }
+    }
+  ]
+}

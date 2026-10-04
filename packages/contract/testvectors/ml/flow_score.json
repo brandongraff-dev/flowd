@@ -1,0 +1,3852 @@
+{
+  "schema": "flowd.testvectors/1",
+  "suite": "flow_score",
+  "description": "Flow Score checklist (whole video): weights 30/25/10/10/5/5/5/5/5. The hook item is round(Hook Score x 0.30); beats are round(25 x found / required).",
+  "contract_version": "1.0.0",
+  "parity": "required",
+  "compare": {
+    "objects": "subset",
+    "arrays": "same length, element-wise subset",
+    "numbers": "exact",
+    "null": "must be null"
+  },
+  "reference": "packages/contract/schema/formulas.mjs: scoreFlow",
+  "generated_by": "services/ml/scripts/export_vectors.py (do not edit by hand)",
+  "endpoint": "/v1/flow-score",
+  "function": "scoreFlow(obs)",
+  "cases": [
+    {
+      "id": "contract_4_of_5_beats",
+      "description": "The contract's worked example: Hook 90, 4 of 5 beats, 24 s (92, band A).",
+      "in": {
+        "hook_points": 90,
+        "beats_found": 4,
+        "beats_required": 5,
+        "app_ms": 2800,
+        "disclosure_audio": true,
+        "disclosure_onscreen": true,
+        "duration_s": 24,
+        "captions_in_safe_zone": true,
+        "single_cta": true,
+        "ends_on_win_state": true,
+        "audio_gaps": 0,
+        "format_order": "in_order"
+      },
+      "out": {
+        "band": "A",
+        "points": 92,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 27,
+            "max": 30,
+            "passed": false,
+            "reason": "Hook Score 90 scaled to 30.",
+            "fix": "Fix the Hook Score items first."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 20,
+            "max": 25,
+            "passed": false,
+            "reason": "4 of 5 required beats found.",
+            "fix": "Add the missing beat from the shot checklist."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "App on screen at 2.8s."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "#ad spoken and on screen."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Length 24s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "One CTA, ends on a win."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Clear audio."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Follows the format."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "contract_weak_video",
+      "description": "The contract's weak example (25, band E).",
+      "in": {
+        "hook_points": 34,
+        "beats_found": 2,
+        "beats_required": 5,
+        "app_ms": 9000,
+        "disclosure_audio": false,
+        "disclosure_onscreen": true,
+        "duration_s": 52,
+        "captions_in_safe_zone": false,
+        "single_cta": false,
+        "ends_on_win_state": false,
+        "audio_gaps": 3,
+        "format_order": "out_of_order"
+      },
+      "out": {
+        "band": "E",
+        "points": 25,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 10,
+            "max": 30,
+            "passed": false,
+            "reason": "Hook Score 34 scaled to 30.",
+            "fix": "Fix the Hook Score items first."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 10,
+            "max": 25,
+            "passed": false,
+            "reason": "2 of 5 required beats found.",
+            "fix": "Add the missing beat from the shot checklist."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 0,
+            "max": 10,
+            "passed": false,
+            "reason": "App on screen at 9.0s.",
+            "fix": "Show the app by 3 seconds."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 5,
+            "max": 10,
+            "passed": false,
+            "reason": "#ad is only on screen.",
+            "fix": "Say and show #ad."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 0,
+            "max": 5,
+            "passed": false,
+            "reason": "Length 52s.",
+            "fix": "Aim for 15 to 30 seconds."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 0,
+            "max": 5,
+            "passed": false,
+            "reason": "Captions outside the safe zones.",
+            "fix": "Move captions above the platform UI."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 0,
+            "max": 5,
+            "passed": false,
+            "reason": "More than one CTA.",
+            "fix": "End on the win, then one CTA."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 0,
+            "max": 5,
+            "passed": false,
+            "reason": "3 dead-air gap(s) over 1s.",
+            "fix": "Cut the silences."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 0,
+            "max": 5,
+            "passed": false,
+            "reason": "Beats are out of order for the format.",
+            "fix": "Re-order to the format's beats."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "perfect",
+      "description": "Every item earned: 100, band A.",
+      "in": {
+        "hook_points": 100,
+        "beats_found": 5,
+        "beats_required": 5,
+        "app_ms": 1500,
+        "disclosure_audio": true,
+        "disclosure_onscreen": true,
+        "duration_s": 24,
+        "captions_in_safe_zone": true,
+        "single_cta": true,
+        "ends_on_win_state": true,
+        "audio_gaps": 0,
+        "format_order": "in_order"
+      },
+      "out": {
+        "band": "A",
+        "points": 100,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 30,
+            "max": 30,
+            "passed": true,
+            "reason": "Hook Score 100 scaled to 30."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 25,
+            "max": 25,
+            "passed": true,
+            "reason": "5 of 5 required beats found."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "App on screen at 1.5s."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "#ad spoken and on screen."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Length 24s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "One CTA, ends on a win."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Clear audio."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Follows the format."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "no_beats_required",
+      "description": "A brief with no required beats earns the full 25.",
+      "in": {
+        "hook_points": 100,
+        "beats_found": 0,
+        "beats_required": 0,
+        "app_ms": 1500,
+        "disclosure_audio": true,
+        "disclosure_onscreen": true,
+        "duration_s": 24,
+        "captions_in_safe_zone": true,
+        "single_cta": true,
+        "ends_on_win_state": true,
+        "audio_gaps": 0,
+        "format_order": "in_order"
+      },
+      "out": {
+        "band": "A",
+        "points": 100,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 30,
+            "max": 30,
+            "passed": true,
+            "reason": "Hook Score 100 scaled to 30."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 25,
+            "max": 25,
+            "passed": true,
+            "reason": "0 of 0 required beats found."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "App on screen at 1.5s."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "#ad spoken and on screen."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Length 24s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "One CTA, ends on a win."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Clear audio."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Follows the format."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "beats_1_of_2_half_up",
+      "description": "1 of 2 beats = 12.5, rounded half up to 13.",
+      "in": {
+        "hook_points": 100,
+        "beats_found": 1,
+        "beats_required": 2,
+        "app_ms": 1500,
+        "disclosure_audio": true,
+        "disclosure_onscreen": true,
+        "duration_s": 24,
+        "captions_in_safe_zone": true,
+        "single_cta": true,
+        "ends_on_win_state": true,
+        "audio_gaps": 0,
+        "format_order": "in_order"
+      },
+      "out": {
+        "band": "A",
+        "points": 88,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 30,
+            "max": 30,
+            "passed": true,
+            "reason": "Hook Score 100 scaled to 30."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 13,
+            "max": 25,
+            "passed": false,
+            "reason": "1 of 2 required beats found.",
+            "fix": "Add the missing beat from the shot checklist."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "App on screen at 1.5s."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "#ad spoken and on screen."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Length 24s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "One CTA, ends on a win."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Clear audio."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Follows the format."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "beats_1_of_3",
+      "description": "1 of 3 = 8.33 -> 8.",
+      "in": {
+        "hook_points": 100,
+        "beats_found": 1,
+        "beats_required": 3,
+        "app_ms": 1500,
+        "disclosure_audio": true,
+        "disclosure_onscreen": true,
+        "duration_s": 24,
+        "captions_in_safe_zone": true,
+        "single_cta": true,
+        "ends_on_win_state": true,
+        "audio_gaps": 0,
+        "format_order": "in_order"
+      },
+      "out": {
+        "band": "B",
+        "points": 83,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 30,
+            "max": 30,
+            "passed": true,
+            "reason": "Hook Score 100 scaled to 30."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 8,
+            "max": 25,
+            "passed": false,
+            "reason": "1 of 3 required beats found.",
+            "fix": "Add the missing beat from the shot checklist."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "App on screen at 1.5s."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "#ad spoken and on screen."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Length 24s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "One CTA, ends on a win."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Clear audio."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Follows the format."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "beats_2_of_3",
+      "description": "2 of 3 = 16.67 -> 17.",
+      "in": {
+        "hook_points": 100,
+        "beats_found": 2,
+        "beats_required": 3,
+        "app_ms": 1500,
+        "disclosure_audio": true,
+        "disclosure_onscreen": true,
+        "duration_s": 24,
+        "captions_in_safe_zone": true,
+        "single_cta": true,
+        "ends_on_win_state": true,
+        "audio_gaps": 0,
+        "format_order": "in_order"
+      },
+      "out": {
+        "band": "A",
+        "points": 92,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 30,
+            "max": 30,
+            "passed": true,
+            "reason": "Hook Score 100 scaled to 30."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 17,
+            "max": 25,
+            "passed": false,
+            "reason": "2 of 3 required beats found.",
+            "fix": "Add the missing beat from the shot checklist."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "App on screen at 1.5s."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "#ad spoken and on screen."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Length 24s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "One CTA, ends on a win."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Clear audio."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Follows the format."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "beats_3_of_8",
+      "description": "3 of 8 = 9.375 -> 9.",
+      "in": {
+        "hook_points": 100,
+        "beats_found": 3,
+        "beats_required": 8,
+        "app_ms": 1500,
+        "disclosure_audio": true,
+        "disclosure_onscreen": true,
+        "duration_s": 24,
+        "captions_in_safe_zone": true,
+        "single_cta": true,
+        "ends_on_win_state": true,
+        "audio_gaps": 0,
+        "format_order": "in_order"
+      },
+      "out": {
+        "band": "B",
+        "points": 84,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 30,
+            "max": 30,
+            "passed": true,
+            "reason": "Hook Score 100 scaled to 30."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 9,
+            "max": 25,
+            "passed": false,
+            "reason": "3 of 8 required beats found.",
+            "fix": "Add the missing beat from the shot checklist."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "App on screen at 1.5s."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "#ad spoken and on screen."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Length 24s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "One CTA, ends on a win."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Clear audio."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Follows the format."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "beats_none_found",
+      "description": "0 of 4.",
+      "in": {
+        "hook_points": 100,
+        "beats_found": 0,
+        "beats_required": 4,
+        "app_ms": 1500,
+        "disclosure_audio": true,
+        "disclosure_onscreen": true,
+        "duration_s": 24,
+        "captions_in_safe_zone": true,
+        "single_cta": true,
+        "ends_on_win_state": true,
+        "audio_gaps": 0,
+        "format_order": "in_order"
+      },
+      "out": {
+        "band": "B",
+        "points": 75,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 30,
+            "max": 30,
+            "passed": true,
+            "reason": "Hook Score 100 scaled to 30."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 0,
+            "max": 25,
+            "passed": false,
+            "reason": "0 of 4 required beats found.",
+            "fix": "Add the missing beat from the shot checklist."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "App on screen at 1.5s."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "#ad spoken and on screen."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Length 24s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "One CTA, ends on a win."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Clear audio."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Follows the format."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "hook_35_rounds_up",
+      "description": "Hook 35 x 0.3 = 10.5 -> 11.",
+      "in": {
+        "hook_points": 35,
+        "beats_found": 5,
+        "beats_required": 5,
+        "app_ms": 1500,
+        "disclosure_audio": true,
+        "disclosure_onscreen": true,
+        "duration_s": 24,
+        "captions_in_safe_zone": true,
+        "single_cta": true,
+        "ends_on_win_state": true,
+        "audio_gaps": 0,
+        "format_order": "in_order"
+      },
+      "out": {
+        "band": "B",
+        "points": 81,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 11,
+            "max": 30,
+            "passed": false,
+            "reason": "Hook Score 35 scaled to 30.",
+            "fix": "Fix the Hook Score items first."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 25,
+            "max": 25,
+            "passed": true,
+            "reason": "5 of 5 required beats found."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "App on screen at 1.5s."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "#ad spoken and on screen."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Length 24s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "One CTA, ends on a win."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Clear audio."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Follows the format."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "hook_45_rounds_up",
+      "description": "Hook 45 x 0.3 = 13.5 -> 14.",
+      "in": {
+        "hook_points": 45,
+        "beats_found": 5,
+        "beats_required": 5,
+        "app_ms": 1500,
+        "disclosure_audio": true,
+        "disclosure_onscreen": true,
+        "duration_s": 24,
+        "captions_in_safe_zone": true,
+        "single_cta": true,
+        "ends_on_win_state": true,
+        "audio_gaps": 0,
+        "format_order": "in_order"
+      },
+      "out": {
+        "band": "B",
+        "points": 84,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 14,
+            "max": 30,
+            "passed": false,
+            "reason": "Hook Score 45 scaled to 30.",
+            "fix": "Fix the Hook Score items first."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 25,
+            "max": 25,
+            "passed": true,
+            "reason": "5 of 5 required beats found."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "App on screen at 1.5s."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "#ad spoken and on screen."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Length 24s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "One CTA, ends on a win."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Clear audio."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Follows the format."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "hook_0",
+      "description": "Hook 0.",
+      "in": {
+        "hook_points": 0,
+        "beats_found": 5,
+        "beats_required": 5,
+        "app_ms": 1500,
+        "disclosure_audio": true,
+        "disclosure_onscreen": true,
+        "duration_s": 24,
+        "captions_in_safe_zone": true,
+        "single_cta": true,
+        "ends_on_win_state": true,
+        "audio_gaps": 0,
+        "format_order": "in_order"
+      },
+      "out": {
+        "band": "B",
+        "points": 70,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 0,
+            "max": 30,
+            "passed": false,
+            "reason": "Hook Score 0 scaled to 30.",
+            "fix": "Fix the Hook Score items first."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 25,
+            "max": 25,
+            "passed": true,
+            "reason": "5 of 5 required beats found."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "App on screen at 1.5s."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "#ad spoken and on screen."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Length 24s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "One CTA, ends on a win."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Clear audio."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Follows the format."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "app_3000_full",
+      "description": "App at 3.0 s: full 10.",
+      "in": {
+        "hook_points": 100,
+        "beats_found": 5,
+        "beats_required": 5,
+        "app_ms": 3000,
+        "disclosure_audio": true,
+        "disclosure_onscreen": true,
+        "duration_s": 24,
+        "captions_in_safe_zone": true,
+        "single_cta": true,
+        "ends_on_win_state": true,
+        "audio_gaps": 0,
+        "format_order": "in_order"
+      },
+      "out": {
+        "band": "A",
+        "points": 100,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 30,
+            "max": 30,
+            "passed": true,
+            "reason": "Hook Score 100 scaled to 30."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 25,
+            "max": 25,
+            "passed": true,
+            "reason": "5 of 5 required beats found."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "App on screen at 3.0s."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "#ad spoken and on screen."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Length 24s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "One CTA, ends on a win."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Clear audio."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Follows the format."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "app_3001_half",
+      "description": "App at 3.001 s: half 5.",
+      "in": {
+        "hook_points": 100,
+        "beats_found": 5,
+        "beats_required": 5,
+        "app_ms": 3001,
+        "disclosure_audio": true,
+        "disclosure_onscreen": true,
+        "duration_s": 24,
+        "captions_in_safe_zone": true,
+        "single_cta": true,
+        "ends_on_win_state": true,
+        "audio_gaps": 0,
+        "format_order": "in_order"
+      },
+      "out": {
+        "band": "A",
+        "points": 95,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 30,
+            "max": 30,
+            "passed": true,
+            "reason": "Hook Score 100 scaled to 30."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 25,
+            "max": 25,
+            "passed": true,
+            "reason": "5 of 5 required beats found."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 5,
+            "max": 10,
+            "passed": false,
+            "reason": "App on screen at 3.0s.",
+            "fix": "Show the app by 3 seconds."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "#ad spoken and on screen."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Length 24s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "One CTA, ends on a win."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Clear audio."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Follows the format."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "app_8000_half",
+      "description": "App at 8.0 s: half.",
+      "in": {
+        "hook_points": 100,
+        "beats_found": 5,
+        "beats_required": 5,
+        "app_ms": 8000,
+        "disclosure_audio": true,
+        "disclosure_onscreen": true,
+        "duration_s": 24,
+        "captions_in_safe_zone": true,
+        "single_cta": true,
+        "ends_on_win_state": true,
+        "audio_gaps": 0,
+        "format_order": "in_order"
+      },
+      "out": {
+        "band": "A",
+        "points": 95,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 30,
+            "max": 30,
+            "passed": true,
+            "reason": "Hook Score 100 scaled to 30."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 25,
+            "max": 25,
+            "passed": true,
+            "reason": "5 of 5 required beats found."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 5,
+            "max": 10,
+            "passed": false,
+            "reason": "App on screen at 8.0s.",
+            "fix": "Show the app by 3 seconds."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "#ad spoken and on screen."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Length 24s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "One CTA, ends on a win."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Clear audio."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Follows the format."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "app_8001_zero",
+      "description": "App at 8.001 s: zero.",
+      "in": {
+        "hook_points": 100,
+        "beats_found": 5,
+        "beats_required": 5,
+        "app_ms": 8001,
+        "disclosure_audio": true,
+        "disclosure_onscreen": true,
+        "duration_s": 24,
+        "captions_in_safe_zone": true,
+        "single_cta": true,
+        "ends_on_win_state": true,
+        "audio_gaps": 0,
+        "format_order": "in_order"
+      },
+      "out": {
+        "band": "A",
+        "points": 90,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 30,
+            "max": 30,
+            "passed": true,
+            "reason": "Hook Score 100 scaled to 30."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 25,
+            "max": 25,
+            "passed": true,
+            "reason": "5 of 5 required beats found."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 0,
+            "max": 10,
+            "passed": false,
+            "reason": "App on screen at 8.0s.",
+            "fix": "Show the app by 3 seconds."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "#ad spoken and on screen."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Length 24s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "One CTA, ends on a win."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Clear audio."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Follows the format."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "app_never",
+      "description": "App never appears.",
+      "in": {
+        "hook_points": 100,
+        "beats_found": 5,
+        "beats_required": 5,
+        "app_ms": null,
+        "disclosure_audio": true,
+        "disclosure_onscreen": true,
+        "duration_s": 24,
+        "captions_in_safe_zone": true,
+        "single_cta": true,
+        "ends_on_win_state": true,
+        "audio_gaps": 0,
+        "format_order": "in_order"
+      },
+      "out": {
+        "band": "A",
+        "points": 90,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 30,
+            "max": 30,
+            "passed": true,
+            "reason": "Hook Score 100 scaled to 30."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 25,
+            "max": 25,
+            "passed": true,
+            "reason": "5 of 5 required beats found."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 0,
+            "max": 10,
+            "passed": false,
+            "reason": "The app never appears.",
+            "fix": "Show the app by 3 seconds."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "#ad spoken and on screen."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Length 24s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "One CTA, ends on a win."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Clear audio."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Follows the format."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "disclosure_audio_only",
+      "description": "Only spoken: 5.",
+      "in": {
+        "hook_points": 100,
+        "beats_found": 5,
+        "beats_required": 5,
+        "app_ms": 1500,
+        "disclosure_audio": true,
+        "disclosure_onscreen": false,
+        "duration_s": 24,
+        "captions_in_safe_zone": true,
+        "single_cta": true,
+        "ends_on_win_state": true,
+        "audio_gaps": 0,
+        "format_order": "in_order"
+      },
+      "out": {
+        "band": "A",
+        "points": 95,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 30,
+            "max": 30,
+            "passed": true,
+            "reason": "Hook Score 100 scaled to 30."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 25,
+            "max": 25,
+            "passed": true,
+            "reason": "5 of 5 required beats found."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "App on screen at 1.5s."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 5,
+            "max": 10,
+            "passed": false,
+            "reason": "#ad is only spoken.",
+            "fix": "Say and show #ad."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Length 24s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "One CTA, ends on a win."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Clear audio."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Follows the format."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "disclosure_screen_only",
+      "description": "Only on screen: 5.",
+      "in": {
+        "hook_points": 100,
+        "beats_found": 5,
+        "beats_required": 5,
+        "app_ms": 1500,
+        "disclosure_audio": false,
+        "disclosure_onscreen": true,
+        "duration_s": 24,
+        "captions_in_safe_zone": true,
+        "single_cta": true,
+        "ends_on_win_state": true,
+        "audio_gaps": 0,
+        "format_order": "in_order"
+      },
+      "out": {
+        "band": "A",
+        "points": 95,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 30,
+            "max": 30,
+            "passed": true,
+            "reason": "Hook Score 100 scaled to 30."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 25,
+            "max": 25,
+            "passed": true,
+            "reason": "5 of 5 required beats found."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "App on screen at 1.5s."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 5,
+            "max": 10,
+            "passed": false,
+            "reason": "#ad is only on screen.",
+            "fix": "Say and show #ad."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Length 24s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "One CTA, ends on a win."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Clear audio."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Follows the format."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "disclosure_none",
+      "description": "Neither: 0, 'No #ad.'",
+      "in": {
+        "hook_points": 100,
+        "beats_found": 5,
+        "beats_required": 5,
+        "app_ms": 1500,
+        "disclosure_audio": false,
+        "disclosure_onscreen": false,
+        "duration_s": 24,
+        "captions_in_safe_zone": true,
+        "single_cta": true,
+        "ends_on_win_state": true,
+        "audio_gaps": 0,
+        "format_order": "in_order"
+      },
+      "out": {
+        "band": "A",
+        "points": 90,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 30,
+            "max": 30,
+            "passed": true,
+            "reason": "Hook Score 100 scaled to 30."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 25,
+            "max": 25,
+            "passed": true,
+            "reason": "5 of 5 required beats found."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "App on screen at 1.5s."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 0,
+            "max": 10,
+            "passed": false,
+            "reason": "No #ad.",
+            "fix": "Say and show #ad."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Length 24s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "One CTA, ends on a win."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Clear audio."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Follows the format."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "length_9_9",
+      "description": "9.9 s: zero.",
+      "in": {
+        "hook_points": 100,
+        "beats_found": 5,
+        "beats_required": 5,
+        "app_ms": 1500,
+        "disclosure_audio": true,
+        "disclosure_onscreen": true,
+        "duration_s": 9.9,
+        "captions_in_safe_zone": true,
+        "single_cta": true,
+        "ends_on_win_state": true,
+        "audio_gaps": 0,
+        "format_order": "in_order"
+      },
+      "out": {
+        "band": "A",
+        "points": 95,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 30,
+            "max": 30,
+            "passed": true,
+            "reason": "Hook Score 100 scaled to 30."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 25,
+            "max": 25,
+            "passed": true,
+            "reason": "5 of 5 required beats found."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "App on screen at 1.5s."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "#ad spoken and on screen."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 0,
+            "max": 5,
+            "passed": false,
+            "reason": "Length 10s.",
+            "fix": "Aim for 15 to 30 seconds."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "One CTA, ends on a win."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Clear audio."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Follows the format."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "length_10",
+      "description": "10 s: half (3).",
+      "in": {
+        "hook_points": 100,
+        "beats_found": 5,
+        "beats_required": 5,
+        "app_ms": 1500,
+        "disclosure_audio": true,
+        "disclosure_onscreen": true,
+        "duration_s": 10,
+        "captions_in_safe_zone": true,
+        "single_cta": true,
+        "ends_on_win_state": true,
+        "audio_gaps": 0,
+        "format_order": "in_order"
+      },
+      "out": {
+        "band": "A",
+        "points": 98,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 30,
+            "max": 30,
+            "passed": true,
+            "reason": "Hook Score 100 scaled to 30."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 25,
+            "max": 25,
+            "passed": true,
+            "reason": "5 of 5 required beats found."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "App on screen at 1.5s."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "#ad spoken and on screen."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 3,
+            "max": 5,
+            "passed": false,
+            "reason": "Length 10s.",
+            "fix": "Aim for 15 to 30 seconds."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "One CTA, ends on a win."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Clear audio."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Follows the format."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "length_14_99",
+      "description": "14.99 s: half.",
+      "in": {
+        "hook_points": 100,
+        "beats_found": 5,
+        "beats_required": 5,
+        "app_ms": 1500,
+        "disclosure_audio": true,
+        "disclosure_onscreen": true,
+        "duration_s": 14.99,
+        "captions_in_safe_zone": true,
+        "single_cta": true,
+        "ends_on_win_state": true,
+        "audio_gaps": 0,
+        "format_order": "in_order"
+      },
+      "out": {
+        "band": "A",
+        "points": 98,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 30,
+            "max": 30,
+            "passed": true,
+            "reason": "Hook Score 100 scaled to 30."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 25,
+            "max": 25,
+            "passed": true,
+            "reason": "5 of 5 required beats found."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "App on screen at 1.5s."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "#ad spoken and on screen."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 3,
+            "max": 5,
+            "passed": false,
+            "reason": "Length 15s.",
+            "fix": "Aim for 15 to 30 seconds."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "One CTA, ends on a win."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Clear audio."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Follows the format."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "length_15",
+      "description": "15 s: full.",
+      "in": {
+        "hook_points": 100,
+        "beats_found": 5,
+        "beats_required": 5,
+        "app_ms": 1500,
+        "disclosure_audio": true,
+        "disclosure_onscreen": true,
+        "duration_s": 15,
+        "captions_in_safe_zone": true,
+        "single_cta": true,
+        "ends_on_win_state": true,
+        "audio_gaps": 0,
+        "format_order": "in_order"
+      },
+      "out": {
+        "band": "A",
+        "points": 100,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 30,
+            "max": 30,
+            "passed": true,
+            "reason": "Hook Score 100 scaled to 30."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 25,
+            "max": 25,
+            "passed": true,
+            "reason": "5 of 5 required beats found."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "App on screen at 1.5s."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "#ad spoken and on screen."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Length 15s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "One CTA, ends on a win."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Clear audio."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Follows the format."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "length_30",
+      "description": "30 s: full.",
+      "in": {
+        "hook_points": 100,
+        "beats_found": 5,
+        "beats_required": 5,
+        "app_ms": 1500,
+        "disclosure_audio": true,
+        "disclosure_onscreen": true,
+        "duration_s": 30,
+        "captions_in_safe_zone": true,
+        "single_cta": true,
+        "ends_on_win_state": true,
+        "audio_gaps": 0,
+        "format_order": "in_order"
+      },
+      "out": {
+        "band": "A",
+        "points": 100,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 30,
+            "max": 30,
+            "passed": true,
+            "reason": "Hook Score 100 scaled to 30."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 25,
+            "max": 25,
+            "passed": true,
+            "reason": "5 of 5 required beats found."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "App on screen at 1.5s."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "#ad spoken and on screen."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Length 30s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "One CTA, ends on a win."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Clear audio."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Follows the format."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "length_30_01",
+      "description": "30.01 s: half.",
+      "in": {
+        "hook_points": 100,
+        "beats_found": 5,
+        "beats_required": 5,
+        "app_ms": 1500,
+        "disclosure_audio": true,
+        "disclosure_onscreen": true,
+        "duration_s": 30.01,
+        "captions_in_safe_zone": true,
+        "single_cta": true,
+        "ends_on_win_state": true,
+        "audio_gaps": 0,
+        "format_order": "in_order"
+      },
+      "out": {
+        "band": "A",
+        "points": 98,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 30,
+            "max": 30,
+            "passed": true,
+            "reason": "Hook Score 100 scaled to 30."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 25,
+            "max": 25,
+            "passed": true,
+            "reason": "5 of 5 required beats found."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "App on screen at 1.5s."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "#ad spoken and on screen."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 3,
+            "max": 5,
+            "passed": false,
+            "reason": "Length 30s.",
+            "fix": "Aim for 15 to 30 seconds."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "One CTA, ends on a win."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Clear audio."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Follows the format."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "length_45",
+      "description": "45 s: half.",
+      "in": {
+        "hook_points": 100,
+        "beats_found": 5,
+        "beats_required": 5,
+        "app_ms": 1500,
+        "disclosure_audio": true,
+        "disclosure_onscreen": true,
+        "duration_s": 45,
+        "captions_in_safe_zone": true,
+        "single_cta": true,
+        "ends_on_win_state": true,
+        "audio_gaps": 0,
+        "format_order": "in_order"
+      },
+      "out": {
+        "band": "A",
+        "points": 98,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 30,
+            "max": 30,
+            "passed": true,
+            "reason": "Hook Score 100 scaled to 30."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 25,
+            "max": 25,
+            "passed": true,
+            "reason": "5 of 5 required beats found."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "App on screen at 1.5s."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "#ad spoken and on screen."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 3,
+            "max": 5,
+            "passed": false,
+            "reason": "Length 45s.",
+            "fix": "Aim for 15 to 30 seconds."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "One CTA, ends on a win."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Clear audio."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Follows the format."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "length_45_01",
+      "description": "45.01 s: zero.",
+      "in": {
+        "hook_points": 100,
+        "beats_found": 5,
+        "beats_required": 5,
+        "app_ms": 1500,
+        "disclosure_audio": true,
+        "disclosure_onscreen": true,
+        "duration_s": 45.01,
+        "captions_in_safe_zone": true,
+        "single_cta": true,
+        "ends_on_win_state": true,
+        "audio_gaps": 0,
+        "format_order": "in_order"
+      },
+      "out": {
+        "band": "A",
+        "points": 95,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 30,
+            "max": 30,
+            "passed": true,
+            "reason": "Hook Score 100 scaled to 30."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 25,
+            "max": 25,
+            "passed": true,
+            "reason": "5 of 5 required beats found."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "App on screen at 1.5s."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "#ad spoken and on screen."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 0,
+            "max": 5,
+            "passed": false,
+            "reason": "Length 45s.",
+            "fix": "Aim for 15 to 30 seconds."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "One CTA, ends on a win."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Clear audio."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Follows the format."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "length_reason_rounds_half_up",
+      "description": "24.5 s prints as 'Length 25s.' (toFixed half up).",
+      "in": {
+        "hook_points": 100,
+        "beats_found": 5,
+        "beats_required": 5,
+        "app_ms": 1500,
+        "disclosure_audio": true,
+        "disclosure_onscreen": true,
+        "duration_s": 24.5,
+        "captions_in_safe_zone": true,
+        "single_cta": true,
+        "ends_on_win_state": true,
+        "audio_gaps": 0,
+        "format_order": "in_order"
+      },
+      "out": {
+        "band": "A",
+        "points": 100,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 30,
+            "max": 30,
+            "passed": true,
+            "reason": "Hook Score 100 scaled to 30."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 25,
+            "max": 25,
+            "passed": true,
+            "reason": "5 of 5 required beats found."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "App on screen at 1.5s."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "#ad spoken and on screen."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Length 25s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "One CTA, ends on a win."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Clear audio."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Follows the format."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "length_reason_11_5",
+      "description": "11.5 s prints 'Length 12s.'",
+      "in": {
+        "hook_points": 100,
+        "beats_found": 5,
+        "beats_required": 5,
+        "app_ms": 1500,
+        "disclosure_audio": true,
+        "disclosure_onscreen": true,
+        "duration_s": 11.5,
+        "captions_in_safe_zone": true,
+        "single_cta": true,
+        "ends_on_win_state": true,
+        "audio_gaps": 0,
+        "format_order": "in_order"
+      },
+      "out": {
+        "band": "A",
+        "points": 98,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 30,
+            "max": 30,
+            "passed": true,
+            "reason": "Hook Score 100 scaled to 30."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 25,
+            "max": 25,
+            "passed": true,
+            "reason": "5 of 5 required beats found."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "App on screen at 1.5s."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "#ad spoken and on screen."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 3,
+            "max": 5,
+            "passed": false,
+            "reason": "Length 12s.",
+            "fix": "Aim for 15 to 30 seconds."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "One CTA, ends on a win."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Clear audio."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Follows the format."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "captions_outside",
+      "description": "Captions outside the safe zones.",
+      "in": {
+        "hook_points": 100,
+        "beats_found": 5,
+        "beats_required": 5,
+        "app_ms": 1500,
+        "disclosure_audio": true,
+        "disclosure_onscreen": true,
+        "duration_s": 24,
+        "captions_in_safe_zone": false,
+        "single_cta": true,
+        "ends_on_win_state": true,
+        "audio_gaps": 0,
+        "format_order": "in_order"
+      },
+      "out": {
+        "band": "A",
+        "points": 95,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 30,
+            "max": 30,
+            "passed": true,
+            "reason": "Hook Score 100 scaled to 30."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 25,
+            "max": 25,
+            "passed": true,
+            "reason": "5 of 5 required beats found."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "App on screen at 1.5s."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "#ad spoken and on screen."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Length 24s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 0,
+            "max": 5,
+            "passed": false,
+            "reason": "Captions outside the safe zones.",
+            "fix": "Move captions above the platform UI."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "One CTA, ends on a win."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Clear audio."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Follows the format."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "cta_one_no_win",
+      "description": "One CTA but no win state: half (3).",
+      "in": {
+        "hook_points": 100,
+        "beats_found": 5,
+        "beats_required": 5,
+        "app_ms": 1500,
+        "disclosure_audio": true,
+        "disclosure_onscreen": true,
+        "duration_s": 24,
+        "captions_in_safe_zone": true,
+        "single_cta": true,
+        "ends_on_win_state": false,
+        "audio_gaps": 0,
+        "format_order": "in_order"
+      },
+      "out": {
+        "band": "A",
+        "points": 98,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 30,
+            "max": 30,
+            "passed": true,
+            "reason": "Hook Score 100 scaled to 30."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 25,
+            "max": 25,
+            "passed": true,
+            "reason": "5 of 5 required beats found."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "App on screen at 1.5s."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "#ad spoken and on screen."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Length 24s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 3,
+            "max": 5,
+            "passed": false,
+            "reason": "One CTA but no win state at the end.",
+            "fix": "End on the win, then one CTA."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Clear audio."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Follows the format."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "cta_many_win",
+      "description": "Win state but more than one CTA: half (3), reason 'More than one CTA.'",
+      "in": {
+        "hook_points": 100,
+        "beats_found": 5,
+        "beats_required": 5,
+        "app_ms": 1500,
+        "disclosure_audio": true,
+        "disclosure_onscreen": true,
+        "duration_s": 24,
+        "captions_in_safe_zone": true,
+        "single_cta": false,
+        "ends_on_win_state": true,
+        "audio_gaps": 0,
+        "format_order": "in_order"
+      },
+      "out": {
+        "band": "A",
+        "points": 98,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 30,
+            "max": 30,
+            "passed": true,
+            "reason": "Hook Score 100 scaled to 30."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 25,
+            "max": 25,
+            "passed": true,
+            "reason": "5 of 5 required beats found."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "App on screen at 1.5s."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "#ad spoken and on screen."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Length 24s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 3,
+            "max": 5,
+            "passed": false,
+            "reason": "More than one CTA.",
+            "fix": "End on the win, then one CTA."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Clear audio."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Follows the format."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "cta_many_no_win",
+      "description": "Neither: zero.",
+      "in": {
+        "hook_points": 100,
+        "beats_found": 5,
+        "beats_required": 5,
+        "app_ms": 1500,
+        "disclosure_audio": true,
+        "disclosure_onscreen": true,
+        "duration_s": 24,
+        "captions_in_safe_zone": true,
+        "single_cta": false,
+        "ends_on_win_state": false,
+        "audio_gaps": 0,
+        "format_order": "in_order"
+      },
+      "out": {
+        "band": "A",
+        "points": 95,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 30,
+            "max": 30,
+            "passed": true,
+            "reason": "Hook Score 100 scaled to 30."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 25,
+            "max": 25,
+            "passed": true,
+            "reason": "5 of 5 required beats found."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "App on screen at 1.5s."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "#ad spoken and on screen."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Length 24s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 0,
+            "max": 5,
+            "passed": false,
+            "reason": "More than one CTA.",
+            "fix": "End on the win, then one CTA."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Clear audio."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Follows the format."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "audio_1_gap",
+      "description": "One dead-air gap: half (3).",
+      "in": {
+        "hook_points": 100,
+        "beats_found": 5,
+        "beats_required": 5,
+        "app_ms": 1500,
+        "disclosure_audio": true,
+        "disclosure_onscreen": true,
+        "duration_s": 24,
+        "captions_in_safe_zone": true,
+        "single_cta": true,
+        "ends_on_win_state": true,
+        "audio_gaps": 1,
+        "format_order": "in_order"
+      },
+      "out": {
+        "band": "A",
+        "points": 98,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 30,
+            "max": 30,
+            "passed": true,
+            "reason": "Hook Score 100 scaled to 30."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 25,
+            "max": 25,
+            "passed": true,
+            "reason": "5 of 5 required beats found."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "App on screen at 1.5s."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "#ad spoken and on screen."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Length 24s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "One CTA, ends on a win."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 3,
+            "max": 5,
+            "passed": false,
+            "reason": "1 dead-air gap(s) over 1s.",
+            "fix": "Cut the silences."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Follows the format."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "audio_2_gaps",
+      "description": "Two gaps: zero.",
+      "in": {
+        "hook_points": 100,
+        "beats_found": 5,
+        "beats_required": 5,
+        "app_ms": 1500,
+        "disclosure_audio": true,
+        "disclosure_onscreen": true,
+        "duration_s": 24,
+        "captions_in_safe_zone": true,
+        "single_cta": true,
+        "ends_on_win_state": true,
+        "audio_gaps": 2,
+        "format_order": "in_order"
+      },
+      "out": {
+        "band": "A",
+        "points": 95,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 30,
+            "max": 30,
+            "passed": true,
+            "reason": "Hook Score 100 scaled to 30."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 25,
+            "max": 25,
+            "passed": true,
+            "reason": "5 of 5 required beats found."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "App on screen at 1.5s."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "#ad spoken and on screen."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Length 24s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "One CTA, ends on a win."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 0,
+            "max": 5,
+            "passed": false,
+            "reason": "2 dead-air gap(s) over 1s.",
+            "fix": "Cut the silences."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Follows the format."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "format_one_off",
+      "description": "One beat out of order: half (3).",
+      "in": {
+        "hook_points": 100,
+        "beats_found": 5,
+        "beats_required": 5,
+        "app_ms": 1500,
+        "disclosure_audio": true,
+        "disclosure_onscreen": true,
+        "duration_s": 24,
+        "captions_in_safe_zone": true,
+        "single_cta": true,
+        "ends_on_win_state": true,
+        "audio_gaps": 0,
+        "format_order": "one_off"
+      },
+      "out": {
+        "band": "A",
+        "points": 98,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 30,
+            "max": 30,
+            "passed": true,
+            "reason": "Hook Score 100 scaled to 30."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 25,
+            "max": 25,
+            "passed": true,
+            "reason": "5 of 5 required beats found."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "App on screen at 1.5s."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "#ad spoken and on screen."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Length 24s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "One CTA, ends on a win."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Clear audio."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 3,
+            "max": 5,
+            "passed": false,
+            "reason": "Beats are out of order for the format.",
+            "fix": "Re-order to the format's beats."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "format_out_of_order",
+      "description": "Out of order: zero.",
+      "in": {
+        "hook_points": 100,
+        "beats_found": 5,
+        "beats_required": 5,
+        "app_ms": 1500,
+        "disclosure_audio": true,
+        "disclosure_onscreen": true,
+        "duration_s": 24,
+        "captions_in_safe_zone": true,
+        "single_cta": true,
+        "ends_on_win_state": true,
+        "audio_gaps": 0,
+        "format_order": "out_of_order"
+      },
+      "out": {
+        "band": "A",
+        "points": 95,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 30,
+            "max": 30,
+            "passed": true,
+            "reason": "Hook Score 100 scaled to 30."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 25,
+            "max": 25,
+            "passed": true,
+            "reason": "5 of 5 required beats found."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "App on screen at 1.5s."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 10,
+            "max": 10,
+            "passed": true,
+            "reason": "#ad spoken and on screen."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Length 24s."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Captions inside the safe zones."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "One CTA, ends on a win."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 5,
+            "max": 5,
+            "passed": true,
+            "reason": "Clear audio."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 0,
+            "max": 5,
+            "passed": false,
+            "reason": "Beats are out of order for the format.",
+            "fix": "Re-order to the format's beats."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    },
+    {
+      "id": "nothing",
+      "description": "Everything missing.",
+      "in": {
+        "hook_points": 0,
+        "beats_found": 0,
+        "beats_required": 5,
+        "app_ms": null,
+        "disclosure_audio": false,
+        "disclosure_onscreen": false,
+        "duration_s": 0,
+        "captions_in_safe_zone": false,
+        "single_cta": false,
+        "ends_on_win_state": false,
+        "audio_gaps": 4,
+        "format_order": "out_of_order"
+      },
+      "out": {
+        "band": "E",
+        "points": 0,
+        "items": [
+          {
+            "id": "hook_score",
+            "label": "Hook Score (scaled)",
+            "points": 0,
+            "max": 30,
+            "passed": false,
+            "reason": "Hook Score 0 scaled to 30.",
+            "fix": "Fix the Hook Score items first."
+          },
+          {
+            "id": "required_beats",
+            "label": "Required beats covered",
+            "points": 0,
+            "max": 25,
+            "passed": false,
+            "reason": "0 of 5 required beats found.",
+            "fix": "Add the missing beat from the shot checklist."
+          },
+          {
+            "id": "app_visible_early",
+            "label": "App on screen early",
+            "points": 0,
+            "max": 10,
+            "passed": false,
+            "reason": "The app never appears.",
+            "fix": "Show the app by 3 seconds."
+          },
+          {
+            "id": "disclosure",
+            "label": "Disclosure present (audio and on-screen)",
+            "points": 0,
+            "max": 10,
+            "passed": false,
+            "reason": "No #ad.",
+            "fix": "Say and show #ad."
+          },
+          {
+            "id": "length_ok",
+            "label": "Length 15 to 30 seconds",
+            "points": 0,
+            "max": 5,
+            "passed": false,
+            "reason": "Length 0s.",
+            "fix": "Aim for 15 to 30 seconds."
+          },
+          {
+            "id": "captions_safe_zone",
+            "label": "Captions inside safe zones",
+            "points": 0,
+            "max": 5,
+            "passed": false,
+            "reason": "Captions outside the safe zones.",
+            "fix": "Move captions above the platform UI."
+          },
+          {
+            "id": "single_cta_win_state",
+            "label": "One CTA, ends on a win state",
+            "points": 0,
+            "max": 5,
+            "passed": false,
+            "reason": "More than one CTA.",
+            "fix": "End on the win, then one CTA."
+          },
+          {
+            "id": "audio_clear",
+            "label": "Audio clear, no dead air",
+            "points": 0,
+            "max": 5,
+            "passed": false,
+            "reason": "4 dead-air gap(s) over 1s.",
+            "fix": "Cut the silences."
+          },
+          {
+            "id": "format_fit",
+            "label": "Follows the chosen format's beats",
+            "points": 0,
+            "max": 5,
+            "passed": false,
+            "reason": "Beats are out of order for the format.",
+            "fix": "Re-order to the format's beats."
+          }
+        ],
+        "label": "Checklist score. It gets smarter as bounties settle."
+      }
+    }
+  ]
+}

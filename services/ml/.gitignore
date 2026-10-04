@@ -1,0 +1,23 @@
+# python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+*.egg-info/
+build/
+dist/
+
+# environments (create venvs OUTSIDE the repo, e.g. the OS temp dir)
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+
+# artifacts produced by training and calibration jobs
+models/
+data/
+reports/

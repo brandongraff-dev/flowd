@@ -1,0 +1,843 @@
+{
+  "as_of": "2026-10-03T14:00:00Z",
+  "targets": [
+    {
+      "id": "first_dollar_hours",
+      "label": "Median time to a creator's first dollar",
+      "target": 72,
+      "op": "lt",
+      "unit": "hours",
+      "actual": 58,
+      "status": "achieved",
+      "series": [
+        {
+          "date": "2026-07-11",
+          "value": 103.1
+        },
+        {
+          "date": "2026-07-18",
+          "value": 99.8
+        },
+        {
+          "date": "2026-07-25",
+          "value": 89
+        },
+        {
+          "date": "2026-08-01",
+          "value": 83.4
+        },
+        {
+          "date": "2026-08-08",
+          "value": 89.3
+        },
+        {
+          "date": "2026-08-15",
+          "value": 84.4
+        },
+        {
+          "date": "2026-08-22",
+          "value": 79.2
+        },
+        {
+          "date": "2026-08-29",
+          "value": 69.8
+        },
+        {
+          "date": "2026-09-05",
+          "value": 64.9
+        },
+        {
+          "date": "2026-09-12",
+          "value": 63.4
+        },
+        {
+          "date": "2026-09-19",
+          "value": 71.2
+        },
+        {
+          "date": "2026-09-26",
+          "value": 65.7
+        },
+        {
+          "date": "2026-10-03",
+          "value": 58
+        }
+      ]
+    },
+    {
+      "id": "filled_48h_ratio",
+      "label": "Bounties filled within 48 hours",
+      "target": 0.8,
+      "op": "gt",
+      "unit": "ratio",
+      "actual": 0.79,
+      "status": "at_risk",
+      "series": [
+        {
+          "date": "2026-07-11",
+          "value": 0.53
+        },
+        {
+          "date": "2026-07-18",
+          "value": 0.532
+        },
+        {
+          "date": "2026-07-25",
+          "value": 0.55
+        },
+        {
+          "date": "2026-08-01",
+          "value": 0.566
+        },
+        {
+          "date": "2026-08-08",
+          "value": 0.589
+        },
+        {
+          "date": "2026-08-15",
+          "value": 0.613
+        },
+        {
+          "date": "2026-08-22",
+          "value": 0.647
+        },
+        {
+          "date": "2026-08-29",
+          "value": 0.68
+        },
+        {
+          "date": "2026-09-05",
+          "value": 0.702
+        },
+        {
+          "date": "2026-09-12",
+          "value": 0.749
+        },
+        {
+          "date": "2026-09-19",
+          "value": 0.767
+        },
+        {
+          "date": "2026-09-26",
+          "value": 0.779
+        },
+        {
+          "date": "2026-10-03",
+          "value": 0.79
+        }
+      ]
+    },
+    {
+      "id": "second_bounty_ratio",
+      "label": "Brands funding a second bounty",
+      "target": 0.6,
+      "op": "gt",
+      "unit": "ratio",
+      "actual": 0.64,
+      "status": "achieved",
+      "series": [
+        {
+          "date": "2026-07-11",
+          "value": 0.222
+        },
+        {
+          "date": "2026-07-18",
+          "value": 0.244
+        },
+        {
+          "date": "2026-07-25",
+          "value": 0.299
+        },
+        {
+          "date": "2026-08-01",
+          "value": 0.334
+        },
+        {
+          "date": "2026-08-08",
+          "value": 0.365
+        },
+        {
+          "date": "2026-08-15",
+          "value": 0.433
+        },
+        {
+          "date": "2026-08-22",
+          "value": 0.436
+        },
+        {
+          "date": "2026-08-29",
+          "value": 0.468
+        },
+        {
+          "date": "2026-09-05",
+          "value": 0.483
+        },
+        {
+          "date": "2026-09-12",
+          "value": 0.557
+        },
+        {
+          "date": "2026-09-19",
+          "value": 0.548
+        },
+        {
+          "date": "2026-09-26",
+          "value": 0.586
+        },
+        {
+          "date": "2026-10-03",
+          "value": 0.64
+        }
+      ]
+    },
+    {
+      "id": "repost_30d_ratio",
+      "label": "Creators posting again within 30 days",
+      "target": 0.35,
+      "op": "gt",
+      "unit": "ratio",
+      "actual": 0.38,
+      "status": "achieved",
+      "series": [
+        {
+          "date": "2026-07-11",
+          "value": 0.2
+        },
+        {
+          "date": "2026-07-18",
+          "value": 0.235
+        },
+        {
+          "date": "2026-07-25",
+          "value": 0.233
+        },
+        {
+          "date": "2026-08-01",
+          "value": 0.283
+        },
+        {
+          "date": "2026-08-08",
+          "value": 0.275
+        },
+        {
+          "date": "2026-08-15",
+          "value": 0.266
+        },
+        {
+          "date": "2026-08-22",
+          "value": 0.322
+        },
+        {
+          "date": "2026-08-29",
+          "value": 0.304
+        },
+        {
+          "date": "2026-09-05",
+          "value": 0.305
+        },
+        {
+          "date": "2026-09-12",
+          "value": 0.318
+        },
+        {
+          "date": "2026-09-19",
+          "value": 0.334
+        },
+        {
+          "date": "2026-09-26",
+          "value": 0.392
+        },
+        {
+          "date": "2026-10-03",
+          "value": 0.38
+        }
+      ]
+    },
+    {
+      "id": "invites_per_creator",
+      "label": "Accepted invites per new creator",
+      "target": 0.5,
+      "op": "gt",
+      "unit": "count",
+      "actual": 0.41,
+      "status": "at_risk",
+      "series": [
+        {
+          "date": "2026-07-11",
+          "value": 0.109
+        },
+        {
+          "date": "2026-07-18",
+          "value": 0.135
+        },
+        {
+          "date": "2026-07-25",
+          "value": 0.165
+        },
+        {
+          "date": "2026-08-01",
+          "value": 0.188
+        },
+        {
+          "date": "2026-08-08",
+          "value": 0.222
+        },
+        {
+          "date": "2026-08-15",
+          "value": 0.256
+        },
+        {
+          "date": "2026-08-22",
+          "value": 0.269
+        },
+        {
+          "date": "2026-08-29",
+          "value": 0.286
+        },
+        {
+          "date": "2026-09-05",
+          "value": 0.301
+        },
+        {
+          "date": "2026-09-12",
+          "value": 0.344
+        },
+        {
+          "date": "2026-09-19",
+          "value": 0.379
+        },
+        {
+          "date": "2026-09-26",
+          "value": 0.392
+        },
+        {
+          "date": "2026-10-03",
+          "value": 0.41
+        }
+      ]
+    },
+    {
+      "id": "creators_per_live_bounty",
+      "label": "Active creators per live bounty",
+      "target": 20,
+      "target_max": 50,
+      "op": "between",
+      "unit": "count",
+      "actual": 31,
+      "status": "achieved",
+      "series": [
+        {
+          "date": "2026-07-06",
+          "value": 13
+        },
+        {
+          "date": "2026-07-07",
+          "value": 10
+        },
+        {
+          "date": "2026-07-08",
+          "value": 14
+        },
+        {
+          "date": "2026-07-09",
+          "value": 12
+        },
+        {
+          "date": "2026-07-10",
+          "value": 13
+        },
+        {
+          "date": "2026-07-11",
+          "value": 13
+        },
+        {
+          "date": "2026-07-12",
+          "value": 15
+        },
+        {
+          "date": "2026-07-13",
+          "value": 16
+        },
+        {
+          "date": "2026-07-14",
+          "value": 15
+        },
+        {
+          "date": "2026-07-15",
+          "value": 12
+        },
+        {
+          "date": "2026-07-16",
+          "value": 14
+        },
+        {
+          "date": "2026-07-17",
+          "value": 13
+        },
+        {
+          "date": "2026-07-18",
+          "value": 16
+        },
+        {
+          "date": "2026-07-19",
+          "value": 16
+        },
+        {
+          "date": "2026-07-20",
+          "value": 17
+        },
+        {
+          "date": "2026-07-21",
+          "value": 16
+        },
+        {
+          "date": "2026-07-22",
+          "value": 16
+        },
+        {
+          "date": "2026-07-23",
+          "value": 15
+        },
+        {
+          "date": "2026-07-24",
+          "value": 17
+        },
+        {
+          "date": "2026-07-25",
+          "value": 19
+        },
+        {
+          "date": "2026-07-26",
+          "value": 17
+        },
+        {
+          "date": "2026-07-27",
+          "value": 18
+        },
+        {
+          "date": "2026-07-28",
+          "value": 18
+        },
+        {
+          "date": "2026-07-29",
+          "value": 19
+        },
+        {
+          "date": "2026-07-30",
+          "value": 20
+        },
+        {
+          "date": "2026-07-31",
+          "value": 19
+        },
+        {
+          "date": "2026-08-01",
+          "value": 20
+        },
+        {
+          "date": "2026-08-02",
+          "value": 21
+        },
+        {
+          "date": "2026-08-03",
+          "value": 19
+        },
+        {
+          "date": "2026-08-04",
+          "value": 20
+        },
+        {
+          "date": "2026-08-05",
+          "value": 19
+        },
+        {
+          "date": "2026-08-06",
+          "value": 20
+        },
+        {
+          "date": "2026-08-07",
+          "value": 20
+        },
+        {
+          "date": "2026-08-08",
+          "value": 20
+        },
+        {
+          "date": "2026-08-09",
+          "value": 20
+        },
+        {
+          "date": "2026-08-10",
+          "value": 22
+        },
+        {
+          "date": "2026-08-11",
+          "value": 20
+        },
+        {
+          "date": "2026-08-12",
+          "value": 21
+        },
+        {
+          "date": "2026-08-13",
+          "value": 21
+        },
+        {
+          "date": "2026-08-14",
+          "value": 23
+        },
+        {
+          "date": "2026-08-15",
+          "value": 22
+        },
+        {
+          "date": "2026-08-16",
+          "value": 22
+        },
+        {
+          "date": "2026-08-17",
+          "value": 24
+        },
+        {
+          "date": "2026-08-18",
+          "value": 24
+        },
+        {
+          "date": "2026-08-19",
+          "value": 21
+        },
+        {
+          "date": "2026-08-20",
+          "value": 22
+        },
+        {
+          "date": "2026-08-21",
+          "value": 21
+        },
+        {
+          "date": "2026-08-22",
+          "value": 23
+        },
+        {
+          "date": "2026-08-23",
+          "value": 24
+        },
+        {
+          "date": "2026-08-24",
+          "value": 24
+        },
+        {
+          "date": "2026-08-25",
+          "value": 24
+        },
+        {
+          "date": "2026-08-26",
+          "value": 24
+        },
+        {
+          "date": "2026-08-27",
+          "value": 26
+        },
+        {
+          "date": "2026-08-28",
+          "value": 24
+        },
+        {
+          "date": "2026-08-29",
+          "value": 24
+        },
+        {
+          "date": "2026-08-30",
+          "value": 24
+        },
+        {
+          "date": "2026-08-31",
+          "value": 24
+        },
+        {
+          "date": "2026-09-01",
+          "value": 26
+        },
+        {
+          "date": "2026-09-02",
+          "value": 24
+        },
+        {
+          "date": "2026-09-03",
+          "value": 27
+        },
+        {
+          "date": "2026-09-04",
+          "value": 24
+        },
+        {
+          "date": "2026-09-05",
+          "value": 24
+        },
+        {
+          "date": "2026-09-06",
+          "value": 25
+        },
+        {
+          "date": "2026-09-07",
+          "value": 25
+        },
+        {
+          "date": "2026-09-08",
+          "value": 28
+        },
+        {
+          "date": "2026-09-09",
+          "value": 27
+        },
+        {
+          "date": "2026-09-10",
+          "value": 27
+        },
+        {
+          "date": "2026-09-11",
+          "value": 26
+        },
+        {
+          "date": "2026-09-12",
+          "value": 28
+        },
+        {
+          "date": "2026-09-13",
+          "value": 26
+        },
+        {
+          "date": "2026-09-14",
+          "value": 28
+        },
+        {
+          "date": "2026-09-15",
+          "value": 27
+        },
+        {
+          "date": "2026-09-16",
+          "value": 27
+        },
+        {
+          "date": "2026-09-17",
+          "value": 28
+        },
+        {
+          "date": "2026-09-18",
+          "value": 26
+        },
+        {
+          "date": "2026-09-19",
+          "value": 29
+        },
+        {
+          "date": "2026-09-20",
+          "value": 30
+        },
+        {
+          "date": "2026-09-21",
+          "value": 30
+        },
+        {
+          "date": "2026-09-22",
+          "value": 28
+        },
+        {
+          "date": "2026-09-23",
+          "value": 31
+        },
+        {
+          "date": "2026-09-24",
+          "value": 29
+        },
+        {
+          "date": "2026-09-25",
+          "value": 31
+        },
+        {
+          "date": "2026-09-26",
+          "value": 31
+        },
+        {
+          "date": "2026-09-27",
+          "value": 29
+        },
+        {
+          "date": "2026-09-28",
+          "value": 29
+        },
+        {
+          "date": "2026-09-29",
+          "value": 30
+        },
+        {
+          "date": "2026-09-30",
+          "value": 29
+        },
+        {
+          "date": "2026-10-01",
+          "value": 31
+        },
+        {
+          "date": "2026-10-02",
+          "value": 30
+        },
+        {
+          "date": "2026-10-03",
+          "value": 31
+        }
+      ]
+    }
+  ],
+  "market_health": {
+    "fill_rate_48h": 0.79,
+    "median_fill_hours": 36.5,
+    "median_decision_hours": 13.42,
+    "decided_in_sla_ratio": 0.9698,
+    "cleared_on_eta_ratio": 0.9233,
+    "disputes_resolved_48h_ratio": 0.7778,
+    "funded_live_ratio": 1,
+    "first_dollar_median_hours": 58,
+    "active_creators_per_live_bounty": 31
+  },
+  "queues": {
+    "fraud_open": 6,
+    "disputes_open": 5,
+    "verification_open": 16,
+    "safety_new": 6,
+    "sla_stale": 6,
+    "sla_breached": 4,
+    "payouts_held": 10
+  },
+  "next_payout_run": {
+    "run_id": "run_2026-10-09",
+    "scheduled_for": "2026-10-09T18:00:00Z",
+    "creators": 13,
+    "total_cents": 108280,
+    "holds": 10,
+    "held_cents": 87727
+  },
+  "summary": {
+    "gmv_30d_cents": 1741792,
+    "fees_30d_cents": 157861,
+    "paid_total_cents": 2628095,
+    "active_creators_30d": 68,
+    "live_bounties": 23,
+    "brands_active_30d": 20
+  },
+  "promise_metrics": [
+    {
+      "number": 1,
+      "key": "cleared_on_eta",
+      "label": "Earnings cleared on or before their ETA",
+      "value": 0.9233,
+      "unit": "ratio",
+      "display": "92.3% cleared on or before the ETA",
+      "target": 0.95,
+      "note": "Every earning row carries a dated ETA and a named reason for any delay (the Money Clock)."
+    },
+    {
+      "number": 2,
+      "key": "funded_at_go_live",
+      "label": "Live bounties fully funded at go-live",
+      "value": 1,
+      "unit": "ratio",
+      "display": "100.0% of live bounties were fully escrowed",
+      "target": 1,
+      "note": "A bounty cannot go live until its budget and fee reserve are in escrow, and a Reserved Slot protects approved posts."
+    },
+    {
+      "number": 3,
+      "key": "decided_in_72h",
+      "label": "Decisions made inside 72 hours",
+      "value": 0.9698,
+      "unit": "ratio",
+      "display": "97.0% decided inside 72 hours, median 13.42 h",
+      "target": 0.9,
+      "note": "A breach escalates to Ops and dents the brand reliability score. Rejections always carry a reason code and evidence."
+    },
+    {
+      "number": 4,
+      "key": "brands_scored",
+      "label": "Brands with a public Scorecard",
+      "value": 14,
+      "unit": "count",
+      "display": "14 brands have a public Brand Scorecard",
+      "note": "Pay speed, decision time, approval fairness and the share of approved work actually run."
+    },
+    {
+      "number": 5,
+      "key": "disputes_replied_24h",
+      "label": "Disputes with a human reply inside 24 hours",
+      "value": 1,
+      "unit": "ratio",
+      "display": "100.0% of disputes got a human reply inside 24 hours",
+      "target": 0.95,
+      "note": "Every post has a View Ledger and a one-tap dispute; undisputed money is never blocked."
+    },
+    {
+      "number": 6,
+      "key": "bounties_with_rights_card",
+      "label": "Bounties with a Rights Card",
+      "value": 1,
+      "unit": "ratio",
+      "display": "100.0% of bounties carry a plain-language Rights Card",
+      "target": 1,
+      "note": "Organic posting is always included; paid usage is a priced, dated term with alerts at 30, 14 and 7 days."
+    },
+    {
+      "number": 7,
+      "key": "briefs_blocked",
+      "label": "Briefs blocked or fixed by Brief Lint",
+      "value": 2,
+      "unit": "count",
+      "display": "2 briefs were blocked or fixed before they could be published",
+      "note": "Unpaid trials, view-minimum bases, burner-account demands and perpetual rights cannot be published."
+    },
+    {
+      "number": 8,
+      "key": "paid_with_tax_info",
+      "label": "Paid payouts with tax info on file",
+      "value": 1,
+      "unit": "ratio",
+      "display": "100% of paid payouts had tax info on file first",
+      "target": 1,
+      "note": "W-9 or W-8BEN is collected just in time at the first approval. Not tax advice."
+    },
+    {
+      "number": 9,
+      "key": "reports_triaged_24h",
+      "label": "Scam reports triaged inside 24 hours",
+      "value": 1,
+      "unit": "ratio",
+      "display": "100.0% of Scam Shield reports triaged inside 24 hours",
+      "target": 0.95,
+      "note": "In-app chat only, no pay-to-join, verified brands and a human reads every report."
+    },
+    {
+      "number": 10,
+      "key": "typical_creator_30d",
+      "label": "Typical creator earnings (30 days)",
+      "value": 7024,
+      "unit": "cents",
+      "display": "$70.24 median in 30 days (middle half $5.15 to $304.75; top 10% $712.80)",
+      "note": "The median always sits beside any top-earner figure. Results vary; there is no guaranteed income."
+    },
+    {
+      "number": 11,
+      "key": "creators_using_wellbeing",
+      "label": "Creators using Wellbeing Mode",
+      "value": 11,
+      "unit": "count",
+      "display": "11 creators use quiet hours, numbers-off or Pause",
+      "note": "Pause keeps tier and streak; there is no inactivity penalty and no guilt notification."
+    }
+  ],
+  "alerts": [
+    "3 submissions at Wordwave passed 72 hours and are escalated.",
+    "10 payouts are held for the 2026-10-09 run ($877.27); release or resolve before Friday 18:00 UTC.",
+    "6 fraud flags open; 2 above the 70 auto-hold line.",
+    "16 verifications are waiting; the oldest is 86 hours old.",
+    "Filled-in-48-hours is at 79% against an 80% target, and accepted invites per new creator are at 0.41 against 0.5."
+  ]
+}

@@ -1,0 +1,565 @@
+{
+  "schema": "flowd.testvectors/1",
+  "suite": "fraud_compose",
+  "description": "Fraud score composition: score = min(100, sum of round(max_points x severity)); bands clean 0-19, watch 20-39, review 40-69, high 70+; actions auto_clear / hold_for_human_review / auto_hold_and_queue.",
+  "contract_version": "1.0.0",
+  "parity": "required",
+  "compare": {
+    "objects": "subset",
+    "arrays": "same length, element-wise subset",
+    "numbers": "exact",
+    "null": "must be null"
+  },
+  "reference": "packages/contract/schema/formulas.mjs: fraudScore, fraudBand, fraudAction",
+  "generated_by": "services/ml/scripts/export_vectors.py (do not edit by hand)",
+  "endpoint": "/v1/fraud",
+  "function": "fraudScore(signals) + fraudAction(score)",
+  "cases": [
+    {
+      "id": "contract_spiky_post",
+      "description": "The contract's example: spiky post, no engagement, 62% other traffic (60, review).",
+      "in": {
+        "precomputed_signals": [
+          {
+            "signal": "view_spike_no_engagement",
+            "severity": 0.8
+          },
+          {
+            "signal": "bought_views_pattern",
+            "severity": 0.9
+          },
+          {
+            "signal": "traffic_source_anomaly",
+            "severity": 0.7
+          },
+          {
+            "signal": "curve_shape",
+            "severity": 0.6
+          }
+        ]
+      },
+      "out": {
+        "score": 60,
+        "band": "review",
+        "action": "hold_for_human_review",
+        "signals": [
+          {
+            "signal": "view_spike_no_engagement",
+            "severity": 0.8,
+            "points": 20,
+            "detail": "Hourly views at least 10x the post baseline while engagement stays under 0.5% of views."
+          },
+          {
+            "signal": "bought_views_pattern",
+            "severity": 0.9,
+            "points": 27,
+            "detail": "Step-function curve: 80% or more of views arrive in two hourly buckets, flat otherwise, and over 60% of views come from the \"other\" source."
+          },
+          {
+            "signal": "traffic_source_anomaly",
+            "severity": 0.7,
+            "points": 7,
+            "detail": "More than 50% of views from external or \"other\" sources."
+          },
+          {
+            "signal": "curve_shape",
+            "severity": 0.6,
+            "points": 6,
+            "detail": "No natural decay: hourly views flat or rising for more than 24 hours."
+          }
+        ]
+      }
+    },
+    {
+      "id": "contract_new_account",
+      "description": "New account with weak engagement (15, clean).",
+      "in": {
+        "precomputed_signals": [
+          {
+            "signal": "new_account",
+            "severity": 1
+          },
+          {
+            "signal": "engagement_anomaly",
+            "severity": 0.5
+          }
+        ]
+      },
+      "out": {
+        "score": 15,
+        "band": "clean",
+        "action": "auto_clear",
+        "signals": [
+          {
+            "signal": "new_account",
+            "severity": 1.0,
+            "points": 10,
+            "detail": "Social account younger than 30 days."
+          },
+          {
+            "signal": "engagement_anomaly",
+            "severity": 0.5,
+            "points": 5,
+            "detail": "Likes under 0.4% of views, or comment ratio an outlier against the account's 28-day norm."
+          }
+        ]
+      }
+    },
+    {
+      "id": "contract_no_signals",
+      "description": "No signals fired (0, clean).",
+      "in": {
+        "precomputed_signals": []
+      },
+      "out": {
+        "score": 0,
+        "band": "clean",
+        "action": "auto_clear",
+        "signals": []
+      }
+    },
+    {
+      "id": "capped_at_100",
+      "description": "All ten signals at severity 1 sum to 160 and cap at 100.",
+      "in": {
+        "precomputed_signals": [
+          {
+            "signal": "view_spike_no_engagement",
+            "severity": 1
+          },
+          {
+            "signal": "cap_clustering",
+            "severity": 1
+          },
+          {
+            "signal": "bought_views_pattern",
+            "severity": 1
+          },
+          {
+            "signal": "geo_mismatch",
+            "severity": 1
+          },
+          {
+            "signal": "view_to_follower_outlier",
+            "severity": 1
+          },
+          {
+            "signal": "new_account",
+            "severity": 1
+          },
+          {
+            "signal": "duplicate_hash",
+            "severity": 1
+          },
+          {
+            "signal": "engagement_anomaly",
+            "severity": 1
+          },
+          {
+            "signal": "traffic_source_anomaly",
+            "severity": 1
+          },
+          {
+            "signal": "curve_shape",
+            "severity": 1
+          }
+        ]
+      },
+      "out": {
+        "score": 100,
+        "band": "high",
+        "action": "auto_hold_and_queue",
+        "signals": [
+          {
+            "signal": "view_spike_no_engagement",
+            "severity": 1.0,
+            "points": 25,
+            "detail": "Hourly views at least 10x the post baseline while engagement stays under 0.5% of views."
+          },
+          {
+            "signal": "cap_clustering",
+            "severity": 1.0,
+            "points": 20,
+            "detail": "Earnings land within 2% of the per-video cap on 3 of the creator's last 5 posts, or views snap to the cap."
+          },
+          {
+            "signal": "bought_views_pattern",
+            "severity": 1.0,
+            "points": 30,
+            "detail": "Step-function curve: 80% or more of views arrive in two hourly buckets, flat otherwise, and over 60% of views come from the \"other\" source."
+          },
+          {
+            "signal": "geo_mismatch",
+            "severity": 1.0,
+            "points": 15,
+            "detail": "Audience in the bounty target region is more than 25 points below the bounty minimum."
+          },
+          {
+            "signal": "view_to_follower_outlier",
+            "severity": 1.0,
+            "points": 10,
+            "detail": "Views are more than 40x followers on an account under 5,000 followers."
+          },
+          {
+            "signal": "new_account",
+            "severity": 1.0,
+            "points": 10,
+            "detail": "Social account younger than 30 days."
+          },
+          {
+            "signal": "duplicate_hash",
+            "severity": 1.0,
+            "points": 20,
+            "detail": "Perceptual hash within distance 6 of another creator's video or the creator's own earlier post."
+          },
+          {
+            "signal": "engagement_anomaly",
+            "severity": 1.0,
+            "points": 10,
+            "detail": "Likes under 0.4% of views, or comment ratio an outlier against the account's 28-day norm."
+          },
+          {
+            "signal": "traffic_source_anomaly",
+            "severity": 1.0,
+            "points": 10,
+            "detail": "More than 50% of views from external or \"other\" sources."
+          },
+          {
+            "signal": "curve_shape",
+            "severity": 1.0,
+            "points": 10,
+            "detail": "No natural decay: hourly views flat or rising for more than 24 hours."
+          }
+        ]
+      }
+    },
+    {
+      "id": "score_19_clean",
+      "description": "round(25 x 0.76) = 19: top of clean.",
+      "in": {
+        "precomputed_signals": [
+          {
+            "signal": "view_spike_no_engagement",
+            "severity": 0.76
+          }
+        ]
+      },
+      "out": {
+        "score": 19,
+        "band": "clean",
+        "action": "auto_clear",
+        "signals": [
+          {
+            "signal": "view_spike_no_engagement",
+            "severity": 0.76,
+            "points": 19,
+            "detail": "Hourly views at least 10x the post baseline while engagement stays under 0.5% of views."
+          }
+        ]
+      }
+    },
+    {
+      "id": "score_20_watch",
+      "description": "round(25 x 0.8) = 20: bottom of watch.",
+      "in": {
+        "precomputed_signals": [
+          {
+            "signal": "view_spike_no_engagement",
+            "severity": 0.8
+          }
+        ]
+      },
+      "out": {
+        "score": 20,
+        "band": "watch",
+        "action": "auto_clear",
+        "signals": [
+          {
+            "signal": "view_spike_no_engagement",
+            "severity": 0.8,
+            "points": 20,
+            "detail": "Hourly views at least 10x the post baseline while engagement stays under 0.5% of views."
+          }
+        ]
+      }
+    },
+    {
+      "id": "score_39_watch",
+      "description": "25 + round(15 x 0.93) = 39: top of watch.",
+      "in": {
+        "precomputed_signals": [
+          {
+            "signal": "view_spike_no_engagement",
+            "severity": 1
+          },
+          {
+            "signal": "geo_mismatch",
+            "severity": 0.93
+          }
+        ]
+      },
+      "out": {
+        "score": 39,
+        "band": "watch",
+        "action": "auto_clear",
+        "signals": [
+          {
+            "signal": "view_spike_no_engagement",
+            "severity": 1.0,
+            "points": 25,
+            "detail": "Hourly views at least 10x the post baseline while engagement stays under 0.5% of views."
+          },
+          {
+            "signal": "geo_mismatch",
+            "severity": 0.93,
+            "points": 14,
+            "detail": "Audience in the bounty target region is more than 25 points below the bounty minimum."
+          }
+        ]
+      }
+    },
+    {
+      "id": "score_40_review",
+      "description": "25 + 15 = 40: bottom of review (human review within 24 h).",
+      "in": {
+        "precomputed_signals": [
+          {
+            "signal": "view_spike_no_engagement",
+            "severity": 1
+          },
+          {
+            "signal": "geo_mismatch",
+            "severity": 1
+          }
+        ]
+      },
+      "out": {
+        "score": 40,
+        "band": "review",
+        "action": "hold_for_human_review",
+        "signals": [
+          {
+            "signal": "view_spike_no_engagement",
+            "severity": 1.0,
+            "points": 25,
+            "detail": "Hourly views at least 10x the post baseline while engagement stays under 0.5% of views."
+          },
+          {
+            "signal": "geo_mismatch",
+            "severity": 1.0,
+            "points": 15,
+            "detail": "Audience in the bounty target region is more than 25 points below the bounty minimum."
+          }
+        ]
+      }
+    },
+    {
+      "id": "score_69_review",
+      "description": "30 + 25 + 10 + 4 = 69: top of review.",
+      "in": {
+        "precomputed_signals": [
+          {
+            "signal": "bought_views_pattern",
+            "severity": 1
+          },
+          {
+            "signal": "view_spike_no_engagement",
+            "severity": 1
+          },
+          {
+            "signal": "new_account",
+            "severity": 1
+          },
+          {
+            "signal": "engagement_anomaly",
+            "severity": 0.4
+          }
+        ]
+      },
+      "out": {
+        "score": 69,
+        "band": "review",
+        "action": "hold_for_human_review",
+        "signals": [
+          {
+            "signal": "bought_views_pattern",
+            "severity": 1.0,
+            "points": 30,
+            "detail": "Step-function curve: 80% or more of views arrive in two hourly buckets, flat otherwise, and over 60% of views come from the \"other\" source."
+          },
+          {
+            "signal": "view_spike_no_engagement",
+            "severity": 1.0,
+            "points": 25,
+            "detail": "Hourly views at least 10x the post baseline while engagement stays under 0.5% of views."
+          },
+          {
+            "signal": "new_account",
+            "severity": 1.0,
+            "points": 10,
+            "detail": "Social account younger than 30 days."
+          },
+          {
+            "signal": "engagement_anomaly",
+            "severity": 0.4,
+            "points": 4,
+            "detail": "Likes under 0.4% of views, or comment ratio an outlier against the account's 28-day norm."
+          }
+        ]
+      }
+    },
+    {
+      "id": "score_70_high",
+      "description": "70: auto-hold and queue for Ops.",
+      "in": {
+        "precomputed_signals": [
+          {
+            "signal": "bought_views_pattern",
+            "severity": 1
+          },
+          {
+            "signal": "view_spike_no_engagement",
+            "severity": 1
+          },
+          {
+            "signal": "new_account",
+            "severity": 1
+          },
+          {
+            "signal": "engagement_anomaly",
+            "severity": 0.5
+          }
+        ]
+      },
+      "out": {
+        "score": 70,
+        "band": "high",
+        "action": "auto_hold_and_queue",
+        "signals": [
+          {
+            "signal": "bought_views_pattern",
+            "severity": 1.0,
+            "points": 30,
+            "detail": "Step-function curve: 80% or more of views arrive in two hourly buckets, flat otherwise, and over 60% of views come from the \"other\" source."
+          },
+          {
+            "signal": "view_spike_no_engagement",
+            "severity": 1.0,
+            "points": 25,
+            "detail": "Hourly views at least 10x the post baseline while engagement stays under 0.5% of views."
+          },
+          {
+            "signal": "new_account",
+            "severity": 1.0,
+            "points": 10,
+            "detail": "Social account younger than 30 days."
+          },
+          {
+            "signal": "engagement_anomaly",
+            "severity": 0.5,
+            "points": 5,
+            "detail": "Likes under 0.4% of views, or comment ratio an outlier against the account's 28-day norm."
+          }
+        ]
+      }
+    },
+    {
+      "id": "half_point_rounds_up",
+      "description": "round(10 x 0.05) = round(0.5) = 1 (half up), so the signal is kept.",
+      "in": {
+        "precomputed_signals": [
+          {
+            "signal": "engagement_anomaly",
+            "severity": 0.05
+          }
+        ]
+      },
+      "out": {
+        "score": 1,
+        "band": "clean",
+        "action": "auto_clear",
+        "signals": [
+          {
+            "signal": "engagement_anomaly",
+            "severity": 0.05,
+            "points": 1,
+            "detail": "Likes under 0.4% of views, or comment ratio an outlier against the account's 28-day norm."
+          }
+        ]
+      }
+    },
+    {
+      "id": "sub_half_point_dropped",
+      "description": "round(10 x 0.04) = round(0.4) = 0, so the signal is dropped from the evidence.",
+      "in": {
+        "precomputed_signals": [
+          {
+            "signal": "engagement_anomaly",
+            "severity": 0.04
+          }
+        ]
+      },
+      "out": {
+        "score": 0,
+        "band": "clean",
+        "action": "auto_clear",
+        "signals": []
+      }
+    },
+    {
+      "id": "zero_severity_dropped",
+      "description": "Severity 0 contributes nothing.",
+      "in": {
+        "precomputed_signals": [
+          {
+            "signal": "duplicate_hash",
+            "severity": 0
+          },
+          {
+            "signal": "new_account",
+            "severity": 0.3
+          }
+        ]
+      },
+      "out": {
+        "score": 3,
+        "band": "clean",
+        "action": "auto_clear",
+        "signals": [
+          {
+            "signal": "new_account",
+            "severity": 0.3,
+            "points": 3,
+            "detail": "Social account younger than 30 days."
+          }
+        ]
+      }
+    },
+    {
+      "id": "custom_detail_kept",
+      "description": "A supplied detail string is carried through.",
+      "in": {
+        "precomputed_signals": [
+          {
+            "signal": "duplicate_hash",
+            "severity": 0.8,
+            "detail": "Matches sub_0311 at distance 2."
+          }
+        ]
+      },
+      "out": {
+        "score": 16,
+        "band": "clean",
+        "action": "auto_clear",
+        "signals": [
+          {
+            "signal": "duplicate_hash",
+            "severity": 0.8,
+            "points": 16,
+            "detail": "Matches sub_0311 at distance 2."
+          }
+        ]
+      }
+    }
+  ]
+}

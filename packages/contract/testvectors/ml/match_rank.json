@@ -1,0 +1,265 @@
+{
+  "schema": "flowd.testvectors/1",
+  "suite": "match_rank",
+  "description": "Ranking a bounty feed for one creator without embeddings: gates lock bounties (never silently dropped), five factors with adjacent-niche credit 0.5, ties broken by freshness then pay then id.",
+  "contract_version": "1.0.0",
+  "parity": "reference",
+  "compare": {
+    "objects": "subset",
+    "arrays": "same length, element-wise subset",
+    "numbers": "exact",
+    "null": "must be null"
+  },
+  "reference": "services/ml/src/flowd_ml/matching/rank.py",
+  "generated_by": "services/ml/scripts/export_vectors.py (do not edit by hand)",
+  "endpoint": "/v1/match",
+  "cases": [
+    {
+      "id": "maya_feed",
+      "description": "Maya (Silver, US, ai_tools, TikTok) against six bounties.",
+      "in": {
+        "creator": {
+          "id": "cr_maya",
+          "tier": "silver",
+          "country": "US",
+          "niches": [
+            "ai_tools"
+          ],
+          "platforms_linked": [
+            "tiktok"
+          ],
+          "primary_platform": "tiktok",
+          "audience_geo": {
+            "US": 0.71,
+            "CA": 0.08
+          },
+          "median_views_28d": 14200,
+          "usual_pay_cents": 3650
+        },
+        "bounties": [
+          {
+            "id": "bnty_a_fresh_ai",
+            "category": "ai_photo",
+            "niches": [
+              "ai_tools"
+            ],
+            "min_tier": "bronze",
+            "countries": [
+              "US",
+              "CA"
+            ],
+            "platforms": [
+              "tiktok",
+              "instagram"
+            ],
+            "target_countries": [
+              "US"
+            ],
+            "min_target_audience_ratio": 0.5,
+            "funded": true,
+            "expected_pay_cents": 4380,
+            "brand_reliability": 94,
+            "age_days": 2
+          },
+          {
+            "id": "bnty_b_fitness",
+            "category": "fitness",
+            "niches": [
+              "fitness"
+            ],
+            "min_tier": "bronze",
+            "countries": [
+              "US"
+            ],
+            "platforms": [
+              "tiktok"
+            ],
+            "funded": true,
+            "expected_pay_cents": 6000,
+            "brand_reliability": 80,
+            "age_days": 1
+          },
+          {
+            "id": "bnty_c_gold_only",
+            "category": "ai_assistant",
+            "niches": [
+              "ai_tools",
+              "tech"
+            ],
+            "min_tier": "gold",
+            "countries": [
+              "US"
+            ],
+            "platforms": [
+              "tiktok"
+            ],
+            "funded": true,
+            "expected_pay_cents": 9000,
+            "brand_reliability": 97,
+            "age_days": 1
+          },
+          {
+            "id": "bnty_d_adjacent_tech",
+            "category": "productivity",
+            "niches": [
+              "tech"
+            ],
+            "min_tier": "bronze",
+            "countries": [],
+            "platforms": [
+              "tiktok"
+            ],
+            "funded": true,
+            "expected_pay_cents": 3000,
+            "brand_reliability": null,
+            "age_days": 10
+          },
+          {
+            "id": "bnty_e_unfunded",
+            "category": "ai_photo",
+            "niches": [
+              "ai_tools"
+            ],
+            "funded": false,
+            "expected_pay_cents": 5000,
+            "brand_reliability": 90,
+            "age_days": 0
+          },
+          {
+            "id": "bnty_f_instagram_only",
+            "category": "ai_photo",
+            "niches": [
+              "ai_tools"
+            ],
+            "platforms": [
+              "instagram"
+            ],
+            "funded": true,
+            "expected_pay_cents": 5000,
+            "brand_reliability": 90,
+            "age_days": 0
+          }
+        ],
+        "use_embeddings": false
+      },
+      "out": {
+        "top_pick_bounty_id": "bnty_a_fresh_ai",
+        "ranked": [
+          {
+            "bounty_id": "bnty_a_fresh_ai",
+            "rank": 1,
+            "score": 96,
+            "factors": [
+              {
+                "key": "niche",
+                "points": 40.0
+              },
+              {
+                "key": "platform",
+                "points": 15.0
+              },
+              {
+                "key": "region",
+                "points": 15.0
+              },
+              {
+                "key": "price",
+                "points": 12.0
+              },
+              {
+                "key": "brand_reliability",
+                "points": 9.4
+              },
+              {
+                "key": "recency",
+                "points": 4.53
+              }
+            ]
+          },
+          {
+            "bounty_id": "bnty_d_adjacent_tech",
+            "rank": 2,
+            "score": 68,
+            "factors": [
+              {
+                "key": "niche",
+                "points": 20.0
+              },
+              {
+                "key": "platform",
+                "points": 15.0
+              },
+              {
+                "key": "region",
+                "points": 15.0
+              },
+              {
+                "key": "price",
+                "points": 8.22
+              },
+              {
+                "key": "brand_reliability",
+                "points": 7.0
+              },
+              {
+                "key": "recency",
+                "points": 3.05
+              }
+            ]
+          },
+          {
+            "bounty_id": "bnty_b_fitness",
+            "rank": 3,
+            "score": 58,
+            "factors": [
+              {
+                "key": "niche",
+                "points": 0.0
+              },
+              {
+                "key": "platform",
+                "points": 15.0
+              },
+              {
+                "key": "region",
+                "points": 15.0
+              },
+              {
+                "key": "price",
+                "points": 15.0
+              },
+              {
+                "key": "brand_reliability",
+                "points": 8.0
+              },
+              {
+                "key": "recency",
+                "points": 4.76
+              }
+            ]
+          }
+        ],
+        "locked": [
+          {
+            "bounty_id": "bnty_c_gold_only",
+            "locked_by": [
+              "eligibility_tier"
+            ]
+          },
+          {
+            "bounty_id": "bnty_e_unfunded",
+            "locked_by": [
+              "funded"
+            ]
+          },
+          {
+            "bounty_id": "bnty_f_instagram_only",
+            "locked_by": [
+              "platform_account_linked"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,202 @@
+# flowd iOS — XcodeGen spec.  Generate with:  cd apps/ios && xcodegen generate
+#
+# This file is the single source of truth for the Xcode project, Info.plist
+# content and entitlements. Flowd.xcodeproj, Flowd/Resources/Info.plist,
+# Flowd/Resources/Flowd.entitlements, FlowdWidgets/Info.plist and
+# FlowdWidgets/FlowdWidgets.entitlements are all GENERATED from it: edit this
+# file, never those. Spec reference:
+# https://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md
+#
+# Ids and names (canonical):
+#   app            Flowd          app.flowd.creator           iOS 17.0+, iPhone
+#   widgets        FlowdWidgets   app.flowd.creator.widgets   WidgetKit + Live Activity
+#   tests          FlowdTests     app.flowd.creator.tests     unit tests, hosted by Flowd
+#   app group      group.app.flowd.creator
+#   URL scheme     flowd://
+
+name: Flowd
+
+options:
+  xcodeVersion: "2600"
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+  generateEmptyDirectories: true
+  groupSortPosition: top
+  developmentLanguage: en
+  usesTabs: false
+  indentWidth: 4
+  tabWidth: 4
+
+# Applied at the project level AND listed on every target: XcodeGen's per-platform
+# target presets would otherwise win over project-level values (e.g. device family).
+settingGroups:
+  flowd_common:
+    SWIFT_VERSION: "5.0"
+    TARGETED_DEVICE_FAMILY: "1"
+    MARKETING_VERSION: "1.0.0"
+    CURRENT_PROJECT_VERSION: "1"
+    CODE_SIGN_STYLE: Automatic
+    ENABLE_PREVIEWS: YES
+    # Signing: set your 10-character Apple Developer Team ID here before running on a
+    # device or archiving for TestFlight, e.g.  DEVELOPMENT_TEAM: ABCDE12345
+    # Simulator builds and CI need no team (see README, "Signing").
+
+settings:
+  groups:
+    - flowd_common
+
+targets:
+  # ---------------------------------------------------------------- app
+  Flowd:
+    type: application
+    platform: iOS
+    sources:
+      - path: Flowd
+        excludes:
+          - "**/.gitkeep"
+          - "**/*.md"
+          - "Resources/Info.plist"
+          - "Resources/Flowd.entitlements"
+          # Fixtures ship as a blue folder reference (next entry) so files synced by
+          # `npm run sync` are bundled without re-running xcodegen.
+          - "Resources/Fixtures"
+          - "Resources/Fixtures/**"
+      - path: Flowd/Resources/Fixtures
+        type: folder
+      - path: Shared
+        optional: true
+        excludes:
+          - "**/.gitkeep"
+          - "**/*.md"
+    dependencies:
+      - target: FlowdWidgets
+    settings:
+      groups:
+        - flowd_common
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.flowd.creator
+        GENERATE_INFOPLIST_FILE: NO
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+    info:
+      path: Flowd/Resources/Info.plist
+      properties:
+        CFBundleDisplayName: flowd
+        CFBundleShortVersionString: "$(MARKETING_VERSION)"
+        CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
+        CFBundleURLTypes:
+          - CFBundleTypeRole: Editor
+            CFBundleURLName: app.flowd.creator
+            CFBundleURLSchemes:
+              - flowd
+        ITSAppUsesNonExemptEncryption: false
+        LSRequiresIPhoneOS: true
+        NSCameraUsageDescription: "flowd uses the camera so you can record bounty videos in Studio."
+        NSMicrophoneUsageDescription: "flowd uses the microphone to record your voice and sound with each video."
+        NSSpeechRecognitionUsageDescription: "flowd uses speech recognition to build captions and keep the teleprompter in step with your voice."
+        NSPhotoLibraryUsageDescription: "flowd lets you pick videos from your library to submit to a bounty."
+        NSPhotoLibraryAddUsageDescription: "flowd saves your finished videos to Photos so you keep a copy."
+        NSFaceIDUsageDescription: "flowd uses Face ID to confirm payouts."
+        NSSupportsLiveActivities: true
+        NSSupportsLiveActivitiesFrequentUpdates: true
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+        UIApplicationSupportsIndirectInputEvents: true
+        UILaunchScreen:
+          UIColorName: LaunchBackground
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        UIUserInterfaceStyle: Automatic
+    entitlements:
+      path: Flowd/Resources/Flowd.entitlements
+      properties:
+        com.apple.developer.applesignin:
+          - Default
+        com.apple.security.application-groups:
+          - group.app.flowd.creator
+        aps-environment: development
+
+  # ------------------------------------------------------- widget extension
+  FlowdWidgets:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: FlowdWidgets
+        excludes:
+          - "**/.gitkeep"
+          - "**/*.md"
+          - "Info.plist"
+          - "FlowdWidgets.entitlements"
+      - path: Shared
+        optional: true
+        excludes:
+          - "**/.gitkeep"
+          - "**/*.md"
+      # Generated design tokens, shared with the app target (same file reference).
+      - path: Flowd/DesignSystem/Tokens.swift
+    dependencies:
+      - sdk: WidgetKit.framework
+      - sdk: SwiftUI.framework
+    settings:
+      groups:
+        - flowd_common
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.flowd.creator.widgets
+        GENERATE_INFOPLIST_FILE: NO
+        SKIP_INSTALL: YES
+    info:
+      path: FlowdWidgets/Info.plist
+      properties:
+        CFBundleDisplayName: flowd
+        CFBundleShortVersionString: "$(MARKETING_VERSION)"
+        CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    entitlements:
+      path: FlowdWidgets/FlowdWidgets.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.app.flowd.creator
+
+  # ------------------------------------------------------------ unit tests
+  FlowdTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: FlowdTests
+        excludes:
+          - "**/.gitkeep"
+          - "**/*.md"
+    dependencies:
+      - target: Flowd
+    settings:
+      groups:
+        - flowd_common
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.flowd.creator.tests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/Flowd.app/Flowd"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+
+schemes:
+  Flowd:
+    build:
+      targets:
+        Flowd: all
+        FlowdWidgets: all
+        FlowdTests: [test]
+    run:
+      config: Debug
+      executable: Flowd
+    test:
+      config: Debug
+      gatherCoverageData: true
+      targets:
+        - FlowdTests
+    profile:
+      config: Release
+    analyze:
+      config: Debug
+    archive:
+      config: Release

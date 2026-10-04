@@ -1,0 +1,2473 @@
+{
+  "schema": "flowd.testvectors/1",
+  "suite": "calibration",
+  "description": "Calibration bins (the contract's CalibrationBin: band, count, median views, trial rate) on 240 settled posts. Checklist score. It gets smarter as bounties settle.",
+  "contract_version": "1.0.0",
+  "parity": "reference",
+  "compare": {
+    "objects": "subset",
+    "arrays": "same length, element-wise subset",
+    "numbers": "exact",
+    "null": "must be null"
+  },
+  "reference": "services/ml/src/flowd_ml/calibration/report.py",
+  "generated_by": "services/ml/scripts/export_vectors.py (do not edit by hand)",
+  "endpoint": "/v1/calibration/report",
+  "cases": [
+    {
+      "id": "heuristic_240_posts",
+      "description": "A well-separated checklist on 240 posts across 5 apps.",
+      "in": {
+        "model_name": "creative-scorer",
+        "model_stage": "heuristic",
+        "posts": [
+          {
+            "post_id": "post_0001",
+            "app_id": "app_1",
+            "predicted_band": "A",
+            "predicted_points": 90,
+            "window_views": 18000,
+            "installs": 30,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0002",
+            "app_id": "app_2",
+            "predicted_band": "A",
+            "predicted_points": 91,
+            "window_views": 21200,
+            "installs": 35,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0003",
+            "app_id": "app_3",
+            "predicted_band": "A",
+            "predicted_points": 92,
+            "window_views": 20200,
+            "installs": 34,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0004",
+            "app_id": "app_4",
+            "predicted_band": "A",
+            "predicted_points": 93,
+            "window_views": 19200,
+            "installs": 32,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0005",
+            "app_id": "app_5",
+            "predicted_band": "A",
+            "predicted_points": 94,
+            "window_views": 18200,
+            "installs": 30,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0006",
+            "app_id": "app_1",
+            "predicted_band": "A",
+            "predicted_points": 90,
+            "window_views": 21400,
+            "installs": 36,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0007",
+            "app_id": "app_2",
+            "predicted_band": "A",
+            "predicted_points": 91,
+            "window_views": 20400,
+            "installs": 34,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0008",
+            "app_id": "app_3",
+            "predicted_band": "A",
+            "predicted_points": 92,
+            "window_views": 19400,
+            "installs": 32,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0009",
+            "app_id": "app_4",
+            "predicted_band": "A",
+            "predicted_points": 93,
+            "window_views": 18400,
+            "installs": 31,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0010",
+            "app_id": "app_5",
+            "predicted_band": "A",
+            "predicted_points": 94,
+            "window_views": 21600,
+            "installs": 36,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0011",
+            "app_id": "app_1",
+            "predicted_band": "A",
+            "predicted_points": 90,
+            "window_views": 20600,
+            "installs": 34,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0012",
+            "app_id": "app_2",
+            "predicted_band": "A",
+            "predicted_points": 91,
+            "window_views": 19600,
+            "installs": 33,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0013",
+            "app_id": "app_3",
+            "predicted_band": "A",
+            "predicted_points": 92,
+            "window_views": 18600,
+            "installs": 31,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0014",
+            "app_id": "app_4",
+            "predicted_band": "A",
+            "predicted_points": 93,
+            "window_views": 21800,
+            "installs": 36,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0015",
+            "app_id": "app_5",
+            "predicted_band": "A",
+            "predicted_points": 94,
+            "window_views": 20800,
+            "installs": 35,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0016",
+            "app_id": "app_1",
+            "predicted_band": "A",
+            "predicted_points": 90,
+            "window_views": 19800,
+            "installs": 33,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0017",
+            "app_id": "app_2",
+            "predicted_band": "A",
+            "predicted_points": 91,
+            "window_views": 18800,
+            "installs": 31,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0018",
+            "app_id": "app_3",
+            "predicted_band": "A",
+            "predicted_points": 92,
+            "window_views": 22000,
+            "installs": 37,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0019",
+            "app_id": "app_4",
+            "predicted_band": "A",
+            "predicted_points": 93,
+            "window_views": 21000,
+            "installs": 35,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0020",
+            "app_id": "app_5",
+            "predicted_band": "A",
+            "predicted_points": 94,
+            "window_views": 20000,
+            "installs": 33,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0021",
+            "app_id": "app_1",
+            "predicted_band": "A",
+            "predicted_points": 90,
+            "window_views": 19000,
+            "installs": 32,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0022",
+            "app_id": "app_2",
+            "predicted_band": "A",
+            "predicted_points": 91,
+            "window_views": 18000,
+            "installs": 30,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0023",
+            "app_id": "app_3",
+            "predicted_band": "A",
+            "predicted_points": 92,
+            "window_views": 21200,
+            "installs": 35,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0024",
+            "app_id": "app_4",
+            "predicted_band": "A",
+            "predicted_points": 93,
+            "window_views": 20200,
+            "installs": 34,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0025",
+            "app_id": "app_5",
+            "predicted_band": "A",
+            "predicted_points": 94,
+            "window_views": 19200,
+            "installs": 32,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0026",
+            "app_id": "app_1",
+            "predicted_band": "A",
+            "predicted_points": 90,
+            "window_views": 18200,
+            "installs": 30,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0027",
+            "app_id": "app_2",
+            "predicted_band": "A",
+            "predicted_points": 91,
+            "window_views": 21400,
+            "installs": 36,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0028",
+            "app_id": "app_3",
+            "predicted_band": "A",
+            "predicted_points": 92,
+            "window_views": 20400,
+            "installs": 34,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0029",
+            "app_id": "app_4",
+            "predicted_band": "A",
+            "predicted_points": 93,
+            "window_views": 19400,
+            "installs": 32,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0030",
+            "app_id": "app_5",
+            "predicted_band": "A",
+            "predicted_points": 94,
+            "window_views": 18400,
+            "installs": 31,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0031",
+            "app_id": "app_1",
+            "predicted_band": "A",
+            "predicted_points": 90,
+            "window_views": 21600,
+            "installs": 36,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0032",
+            "app_id": "app_2",
+            "predicted_band": "A",
+            "predicted_points": 91,
+            "window_views": 20600,
+            "installs": 34,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0033",
+            "app_id": "app_3",
+            "predicted_band": "A",
+            "predicted_points": 92,
+            "window_views": 19600,
+            "installs": 33,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0034",
+            "app_id": "app_4",
+            "predicted_band": "A",
+            "predicted_points": 93,
+            "window_views": 18600,
+            "installs": 31,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0035",
+            "app_id": "app_5",
+            "predicted_band": "A",
+            "predicted_points": 94,
+            "window_views": 21800,
+            "installs": 36,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0036",
+            "app_id": "app_1",
+            "predicted_band": "A",
+            "predicted_points": 90,
+            "window_views": 20800,
+            "installs": 35,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0037",
+            "app_id": "app_2",
+            "predicted_band": "A",
+            "predicted_points": 91,
+            "window_views": 19800,
+            "installs": 33,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0038",
+            "app_id": "app_3",
+            "predicted_band": "A",
+            "predicted_points": 92,
+            "window_views": 18800,
+            "installs": 31,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0039",
+            "app_id": "app_4",
+            "predicted_band": "A",
+            "predicted_points": 93,
+            "window_views": 22000,
+            "installs": 37,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0040",
+            "app_id": "app_5",
+            "predicted_band": "A",
+            "predicted_points": 94,
+            "window_views": 21000,
+            "installs": 35,
+            "trials": 3,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0041",
+            "app_id": "app_1",
+            "predicted_band": "B",
+            "predicted_points": 77,
+            "window_views": 11700,
+            "installs": 20,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0042",
+            "app_id": "app_2",
+            "predicted_band": "B",
+            "predicted_points": 78,
+            "window_views": 13780,
+            "installs": 23,
+            "trials": 2,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0043",
+            "app_id": "app_3",
+            "predicted_band": "B",
+            "predicted_points": 79,
+            "window_views": 13130,
+            "installs": 22,
+            "trials": 2,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0044",
+            "app_id": "app_4",
+            "predicted_band": "B",
+            "predicted_points": 80,
+            "window_views": 12480,
+            "installs": 21,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0045",
+            "app_id": "app_5",
+            "predicted_band": "B",
+            "predicted_points": 81,
+            "window_views": 11830,
+            "installs": 20,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0046",
+            "app_id": "app_1",
+            "predicted_band": "B",
+            "predicted_points": 77,
+            "window_views": 13910,
+            "installs": 23,
+            "trials": 2,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0047",
+            "app_id": "app_2",
+            "predicted_band": "B",
+            "predicted_points": 78,
+            "window_views": 13260,
+            "installs": 22,
+            "trials": 2,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0048",
+            "app_id": "app_3",
+            "predicted_band": "B",
+            "predicted_points": 79,
+            "window_views": 12610,
+            "installs": 21,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0049",
+            "app_id": "app_4",
+            "predicted_band": "B",
+            "predicted_points": 80,
+            "window_views": 11960,
+            "installs": 20,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0050",
+            "app_id": "app_5",
+            "predicted_band": "B",
+            "predicted_points": 81,
+            "window_views": 14040,
+            "installs": 23,
+            "trials": 2,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0051",
+            "app_id": "app_1",
+            "predicted_band": "B",
+            "predicted_points": 77,
+            "window_views": 13390,
+            "installs": 22,
+            "trials": 2,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0052",
+            "app_id": "app_2",
+            "predicted_band": "B",
+            "predicted_points": 78,
+            "window_views": 12740,
+            "installs": 21,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0053",
+            "app_id": "app_3",
+            "predicted_band": "B",
+            "predicted_points": 79,
+            "window_views": 12090,
+            "installs": 20,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0054",
+            "app_id": "app_4",
+            "predicted_band": "B",
+            "predicted_points": 80,
+            "window_views": 14170,
+            "installs": 24,
+            "trials": 2,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0055",
+            "app_id": "app_5",
+            "predicted_band": "B",
+            "predicted_points": 81,
+            "window_views": 13520,
+            "installs": 23,
+            "trials": 2,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0056",
+            "app_id": "app_1",
+            "predicted_band": "B",
+            "predicted_points": 77,
+            "window_views": 12870,
+            "installs": 21,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0057",
+            "app_id": "app_2",
+            "predicted_band": "B",
+            "predicted_points": 78,
+            "window_views": 12220,
+            "installs": 20,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0058",
+            "app_id": "app_3",
+            "predicted_band": "B",
+            "predicted_points": 79,
+            "window_views": 14300,
+            "installs": 24,
+            "trials": 2,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0059",
+            "app_id": "app_4",
+            "predicted_band": "B",
+            "predicted_points": 80,
+            "window_views": 13650,
+            "installs": 23,
+            "trials": 2,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0060",
+            "app_id": "app_5",
+            "predicted_band": "B",
+            "predicted_points": 81,
+            "window_views": 13000,
+            "installs": 22,
+            "trials": 2,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0061",
+            "app_id": "app_1",
+            "predicted_band": "B",
+            "predicted_points": 77,
+            "window_views": 12350,
+            "installs": 21,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0062",
+            "app_id": "app_2",
+            "predicted_band": "B",
+            "predicted_points": 78,
+            "window_views": 11700,
+            "installs": 20,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0063",
+            "app_id": "app_3",
+            "predicted_band": "B",
+            "predicted_points": 79,
+            "window_views": 13780,
+            "installs": 23,
+            "trials": 2,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0064",
+            "app_id": "app_4",
+            "predicted_band": "B",
+            "predicted_points": 80,
+            "window_views": 13130,
+            "installs": 22,
+            "trials": 2,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0065",
+            "app_id": "app_5",
+            "predicted_band": "B",
+            "predicted_points": 81,
+            "window_views": 12480,
+            "installs": 21,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0066",
+            "app_id": "app_1",
+            "predicted_band": "B",
+            "predicted_points": 77,
+            "window_views": 11830,
+            "installs": 20,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0067",
+            "app_id": "app_2",
+            "predicted_band": "B",
+            "predicted_points": 78,
+            "window_views": 13910,
+            "installs": 23,
+            "trials": 2,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0068",
+            "app_id": "app_3",
+            "predicted_band": "B",
+            "predicted_points": 79,
+            "window_views": 13260,
+            "installs": 22,
+            "trials": 2,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0069",
+            "app_id": "app_4",
+            "predicted_band": "B",
+            "predicted_points": 80,
+            "window_views": 12610,
+            "installs": 21,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0070",
+            "app_id": "app_5",
+            "predicted_band": "B",
+            "predicted_points": 81,
+            "window_views": 11960,
+            "installs": 20,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0071",
+            "app_id": "app_1",
+            "predicted_band": "B",
+            "predicted_points": 77,
+            "window_views": 14040,
+            "installs": 23,
+            "trials": 2,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0072",
+            "app_id": "app_2",
+            "predicted_band": "B",
+            "predicted_points": 78,
+            "window_views": 13390,
+            "installs": 22,
+            "trials": 2,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0073",
+            "app_id": "app_3",
+            "predicted_band": "B",
+            "predicted_points": 79,
+            "window_views": 12740,
+            "installs": 21,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0074",
+            "app_id": "app_4",
+            "predicted_band": "B",
+            "predicted_points": 80,
+            "window_views": 12090,
+            "installs": 20,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0075",
+            "app_id": "app_5",
+            "predicted_band": "B",
+            "predicted_points": 81,
+            "window_views": 14170,
+            "installs": 24,
+            "trials": 2,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0076",
+            "app_id": "app_1",
+            "predicted_band": "B",
+            "predicted_points": 77,
+            "window_views": 13520,
+            "installs": 23,
+            "trials": 2,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0077",
+            "app_id": "app_2",
+            "predicted_band": "B",
+            "predicted_points": 78,
+            "window_views": 12870,
+            "installs": 21,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0078",
+            "app_id": "app_3",
+            "predicted_band": "B",
+            "predicted_points": 79,
+            "window_views": 12220,
+            "installs": 20,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0079",
+            "app_id": "app_4",
+            "predicted_band": "B",
+            "predicted_points": 80,
+            "window_views": 14300,
+            "installs": 24,
+            "trials": 2,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0080",
+            "app_id": "app_5",
+            "predicted_band": "B",
+            "predicted_points": 81,
+            "window_views": 13650,
+            "installs": 23,
+            "trials": 2,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0081",
+            "app_id": "app_1",
+            "predicted_band": "B",
+            "predicted_points": 77,
+            "window_views": 13000,
+            "installs": 22,
+            "trials": 2,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0082",
+            "app_id": "app_2",
+            "predicted_band": "B",
+            "predicted_points": 78,
+            "window_views": 12350,
+            "installs": 21,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0083",
+            "app_id": "app_3",
+            "predicted_band": "B",
+            "predicted_points": 79,
+            "window_views": 11700,
+            "installs": 20,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0084",
+            "app_id": "app_4",
+            "predicted_band": "B",
+            "predicted_points": 80,
+            "window_views": 13780,
+            "installs": 23,
+            "trials": 2,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0085",
+            "app_id": "app_5",
+            "predicted_band": "B",
+            "predicted_points": 81,
+            "window_views": 13130,
+            "installs": 22,
+            "trials": 2,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0086",
+            "app_id": "app_1",
+            "predicted_band": "B",
+            "predicted_points": 77,
+            "window_views": 12480,
+            "installs": 21,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0087",
+            "app_id": "app_2",
+            "predicted_band": "B",
+            "predicted_points": 78,
+            "window_views": 11830,
+            "installs": 20,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0088",
+            "app_id": "app_3",
+            "predicted_band": "B",
+            "predicted_points": 79,
+            "window_views": 13910,
+            "installs": 23,
+            "trials": 2,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0089",
+            "app_id": "app_4",
+            "predicted_band": "B",
+            "predicted_points": 80,
+            "window_views": 13260,
+            "installs": 22,
+            "trials": 2,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0090",
+            "app_id": "app_5",
+            "predicted_band": "B",
+            "predicted_points": 81,
+            "window_views": 12610,
+            "installs": 21,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0091",
+            "app_id": "app_1",
+            "predicted_band": "B",
+            "predicted_points": 77,
+            "window_views": 11960,
+            "installs": 20,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0092",
+            "app_id": "app_2",
+            "predicted_band": "B",
+            "predicted_points": 78,
+            "window_views": 14040,
+            "installs": 23,
+            "trials": 2,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0093",
+            "app_id": "app_3",
+            "predicted_band": "B",
+            "predicted_points": 79,
+            "window_views": 13390,
+            "installs": 22,
+            "trials": 2,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0094",
+            "app_id": "app_4",
+            "predicted_band": "B",
+            "predicted_points": 80,
+            "window_views": 12740,
+            "installs": 21,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0095",
+            "app_id": "app_5",
+            "predicted_band": "B",
+            "predicted_points": 81,
+            "window_views": 12090,
+            "installs": 20,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0096",
+            "app_id": "app_1",
+            "predicted_band": "B",
+            "predicted_points": 77,
+            "window_views": 14170,
+            "installs": 24,
+            "trials": 2,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0097",
+            "app_id": "app_2",
+            "predicted_band": "B",
+            "predicted_points": 78,
+            "window_views": 13520,
+            "installs": 23,
+            "trials": 2,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0098",
+            "app_id": "app_3",
+            "predicted_band": "B",
+            "predicted_points": 79,
+            "window_views": 12870,
+            "installs": 21,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0099",
+            "app_id": "app_4",
+            "predicted_band": "B",
+            "predicted_points": 80,
+            "window_views": 12220,
+            "installs": 20,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0100",
+            "app_id": "app_5",
+            "predicted_band": "B",
+            "predicted_points": 81,
+            "window_views": 14300,
+            "installs": 24,
+            "trials": 2,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0101",
+            "app_id": "app_1",
+            "predicted_band": "C",
+            "predicted_points": 62,
+            "window_views": 8550,
+            "installs": 14,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0102",
+            "app_id": "app_2",
+            "predicted_band": "C",
+            "predicted_points": 63,
+            "window_views": 10070,
+            "installs": 17,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0103",
+            "app_id": "app_3",
+            "predicted_band": "C",
+            "predicted_points": 64,
+            "window_views": 9595,
+            "installs": 16,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0104",
+            "app_id": "app_4",
+            "predicted_band": "C",
+            "predicted_points": 65,
+            "window_views": 9120,
+            "installs": 15,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0105",
+            "app_id": "app_5",
+            "predicted_band": "C",
+            "predicted_points": 66,
+            "window_views": 8645,
+            "installs": 14,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0106",
+            "app_id": "app_1",
+            "predicted_band": "C",
+            "predicted_points": 62,
+            "window_views": 10165,
+            "installs": 17,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0107",
+            "app_id": "app_2",
+            "predicted_band": "C",
+            "predicted_points": 63,
+            "window_views": 9690,
+            "installs": 16,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0108",
+            "app_id": "app_3",
+            "predicted_band": "C",
+            "predicted_points": 64,
+            "window_views": 9215,
+            "installs": 15,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0109",
+            "app_id": "app_4",
+            "predicted_band": "C",
+            "predicted_points": 65,
+            "window_views": 8740,
+            "installs": 15,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0110",
+            "app_id": "app_5",
+            "predicted_band": "C",
+            "predicted_points": 66,
+            "window_views": 10260,
+            "installs": 17,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0111",
+            "app_id": "app_1",
+            "predicted_band": "C",
+            "predicted_points": 62,
+            "window_views": 9785,
+            "installs": 16,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0112",
+            "app_id": "app_2",
+            "predicted_band": "C",
+            "predicted_points": 63,
+            "window_views": 9310,
+            "installs": 16,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0113",
+            "app_id": "app_3",
+            "predicted_band": "C",
+            "predicted_points": 64,
+            "window_views": 8835,
+            "installs": 15,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0114",
+            "app_id": "app_4",
+            "predicted_band": "C",
+            "predicted_points": 65,
+            "window_views": 10355,
+            "installs": 17,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0115",
+            "app_id": "app_5",
+            "predicted_band": "C",
+            "predicted_points": 66,
+            "window_views": 9880,
+            "installs": 16,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0116",
+            "app_id": "app_1",
+            "predicted_band": "C",
+            "predicted_points": 62,
+            "window_views": 9405,
+            "installs": 16,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0117",
+            "app_id": "app_2",
+            "predicted_band": "C",
+            "predicted_points": 63,
+            "window_views": 8930,
+            "installs": 15,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0118",
+            "app_id": "app_3",
+            "predicted_band": "C",
+            "predicted_points": 64,
+            "window_views": 10450,
+            "installs": 17,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0119",
+            "app_id": "app_4",
+            "predicted_band": "C",
+            "predicted_points": 65,
+            "window_views": 9975,
+            "installs": 17,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0120",
+            "app_id": "app_5",
+            "predicted_band": "C",
+            "predicted_points": 66,
+            "window_views": 9500,
+            "installs": 16,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0121",
+            "app_id": "app_1",
+            "predicted_band": "C",
+            "predicted_points": 62,
+            "window_views": 9025,
+            "installs": 15,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0122",
+            "app_id": "app_2",
+            "predicted_band": "C",
+            "predicted_points": 63,
+            "window_views": 8550,
+            "installs": 14,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0123",
+            "app_id": "app_3",
+            "predicted_band": "C",
+            "predicted_points": 64,
+            "window_views": 10070,
+            "installs": 17,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0124",
+            "app_id": "app_4",
+            "predicted_band": "C",
+            "predicted_points": 65,
+            "window_views": 9595,
+            "installs": 16,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0125",
+            "app_id": "app_5",
+            "predicted_band": "C",
+            "predicted_points": 66,
+            "window_views": 9120,
+            "installs": 15,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0126",
+            "app_id": "app_1",
+            "predicted_band": "C",
+            "predicted_points": 62,
+            "window_views": 8645,
+            "installs": 14,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0127",
+            "app_id": "app_2",
+            "predicted_band": "C",
+            "predicted_points": 63,
+            "window_views": 10165,
+            "installs": 17,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0128",
+            "app_id": "app_3",
+            "predicted_band": "C",
+            "predicted_points": 64,
+            "window_views": 9690,
+            "installs": 16,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0129",
+            "app_id": "app_4",
+            "predicted_band": "C",
+            "predicted_points": 65,
+            "window_views": 9215,
+            "installs": 15,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0130",
+            "app_id": "app_5",
+            "predicted_band": "C",
+            "predicted_points": 66,
+            "window_views": 8740,
+            "installs": 15,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0131",
+            "app_id": "app_1",
+            "predicted_band": "C",
+            "predicted_points": 62,
+            "window_views": 10260,
+            "installs": 17,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0132",
+            "app_id": "app_2",
+            "predicted_band": "C",
+            "predicted_points": 63,
+            "window_views": 9785,
+            "installs": 16,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0133",
+            "app_id": "app_3",
+            "predicted_band": "C",
+            "predicted_points": 64,
+            "window_views": 9310,
+            "installs": 16,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0134",
+            "app_id": "app_4",
+            "predicted_band": "C",
+            "predicted_points": 65,
+            "window_views": 8835,
+            "installs": 15,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0135",
+            "app_id": "app_5",
+            "predicted_band": "C",
+            "predicted_points": 66,
+            "window_views": 10355,
+            "installs": 17,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0136",
+            "app_id": "app_1",
+            "predicted_band": "C",
+            "predicted_points": 62,
+            "window_views": 9880,
+            "installs": 16,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0137",
+            "app_id": "app_2",
+            "predicted_band": "C",
+            "predicted_points": 63,
+            "window_views": 9405,
+            "installs": 16,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0138",
+            "app_id": "app_3",
+            "predicted_band": "C",
+            "predicted_points": 64,
+            "window_views": 8930,
+            "installs": 15,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0139",
+            "app_id": "app_4",
+            "predicted_band": "C",
+            "predicted_points": 65,
+            "window_views": 10450,
+            "installs": 17,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0140",
+            "app_id": "app_5",
+            "predicted_band": "C",
+            "predicted_points": 66,
+            "window_views": 9975,
+            "installs": 17,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0141",
+            "app_id": "app_1",
+            "predicted_band": "C",
+            "predicted_points": 62,
+            "window_views": 9500,
+            "installs": 16,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0142",
+            "app_id": "app_2",
+            "predicted_band": "C",
+            "predicted_points": 63,
+            "window_views": 9025,
+            "installs": 15,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0143",
+            "app_id": "app_3",
+            "predicted_band": "C",
+            "predicted_points": 64,
+            "window_views": 8550,
+            "installs": 14,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0144",
+            "app_id": "app_4",
+            "predicted_band": "C",
+            "predicted_points": 65,
+            "window_views": 10070,
+            "installs": 17,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0145",
+            "app_id": "app_5",
+            "predicted_band": "C",
+            "predicted_points": 66,
+            "window_views": 9595,
+            "installs": 16,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0146",
+            "app_id": "app_1",
+            "predicted_band": "C",
+            "predicted_points": 62,
+            "window_views": 9120,
+            "installs": 15,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0147",
+            "app_id": "app_2",
+            "predicted_band": "C",
+            "predicted_points": 63,
+            "window_views": 8645,
+            "installs": 14,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0148",
+            "app_id": "app_3",
+            "predicted_band": "C",
+            "predicted_points": 64,
+            "window_views": 10165,
+            "installs": 17,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0149",
+            "app_id": "app_4",
+            "predicted_band": "C",
+            "predicted_points": 65,
+            "window_views": 9690,
+            "installs": 16,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0150",
+            "app_id": "app_5",
+            "predicted_band": "C",
+            "predicted_points": 66,
+            "window_views": 9215,
+            "installs": 15,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0151",
+            "app_id": "app_1",
+            "predicted_band": "C",
+            "predicted_points": 62,
+            "window_views": 8740,
+            "installs": 15,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0152",
+            "app_id": "app_2",
+            "predicted_band": "C",
+            "predicted_points": 63,
+            "window_views": 10260,
+            "installs": 17,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0153",
+            "app_id": "app_3",
+            "predicted_band": "C",
+            "predicted_points": 64,
+            "window_views": 9785,
+            "installs": 16,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0154",
+            "app_id": "app_4",
+            "predicted_band": "C",
+            "predicted_points": 65,
+            "window_views": 9310,
+            "installs": 16,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0155",
+            "app_id": "app_5",
+            "predicted_band": "C",
+            "predicted_points": 66,
+            "window_views": 8835,
+            "installs": 15,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0156",
+            "app_id": "app_1",
+            "predicted_band": "C",
+            "predicted_points": 62,
+            "window_views": 10355,
+            "installs": 17,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0157",
+            "app_id": "app_2",
+            "predicted_band": "C",
+            "predicted_points": 63,
+            "window_views": 9880,
+            "installs": 16,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0158",
+            "app_id": "app_3",
+            "predicted_band": "C",
+            "predicted_points": 64,
+            "window_views": 9405,
+            "installs": 16,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0159",
+            "app_id": "app_4",
+            "predicted_band": "C",
+            "predicted_points": 65,
+            "window_views": 8930,
+            "installs": 15,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0160",
+            "app_id": "app_5",
+            "predicted_band": "C",
+            "predicted_points": 66,
+            "window_views": 10450,
+            "installs": 17,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0161",
+            "app_id": "app_1",
+            "predicted_band": "C",
+            "predicted_points": 62,
+            "window_views": 9975,
+            "installs": 17,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0162",
+            "app_id": "app_2",
+            "predicted_band": "C",
+            "predicted_points": 63,
+            "window_views": 9500,
+            "installs": 16,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0163",
+            "app_id": "app_3",
+            "predicted_band": "C",
+            "predicted_points": 64,
+            "window_views": 9025,
+            "installs": 15,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0164",
+            "app_id": "app_4",
+            "predicted_band": "C",
+            "predicted_points": 65,
+            "window_views": 8550,
+            "installs": 14,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0165",
+            "app_id": "app_5",
+            "predicted_band": "C",
+            "predicted_points": 66,
+            "window_views": 10070,
+            "installs": 17,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0166",
+            "app_id": "app_1",
+            "predicted_band": "C",
+            "predicted_points": 62,
+            "window_views": 9595,
+            "installs": 16,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0167",
+            "app_id": "app_2",
+            "predicted_band": "C",
+            "predicted_points": 63,
+            "window_views": 9120,
+            "installs": 15,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0168",
+            "app_id": "app_3",
+            "predicted_band": "C",
+            "predicted_points": 64,
+            "window_views": 8645,
+            "installs": 14,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0169",
+            "app_id": "app_4",
+            "predicted_band": "C",
+            "predicted_points": 65,
+            "window_views": 10165,
+            "installs": 17,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0170",
+            "app_id": "app_5",
+            "predicted_band": "C",
+            "predicted_points": 66,
+            "window_views": 9690,
+            "installs": 16,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0171",
+            "app_id": "app_1",
+            "predicted_band": "D",
+            "predicted_points": 47,
+            "window_views": 5400,
+            "installs": 9,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0172",
+            "app_id": "app_2",
+            "predicted_band": "D",
+            "predicted_points": 48,
+            "window_views": 6360,
+            "installs": 11,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0173",
+            "app_id": "app_3",
+            "predicted_band": "D",
+            "predicted_points": 49,
+            "window_views": 6060,
+            "installs": 10,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0174",
+            "app_id": "app_4",
+            "predicted_band": "D",
+            "predicted_points": 50,
+            "window_views": 5760,
+            "installs": 10,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0175",
+            "app_id": "app_5",
+            "predicted_band": "D",
+            "predicted_points": 51,
+            "window_views": 5460,
+            "installs": 9,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0176",
+            "app_id": "app_1",
+            "predicted_band": "D",
+            "predicted_points": 47,
+            "window_views": 6420,
+            "installs": 11,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0177",
+            "app_id": "app_2",
+            "predicted_band": "D",
+            "predicted_points": 48,
+            "window_views": 6120,
+            "installs": 10,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0178",
+            "app_id": "app_3",
+            "predicted_band": "D",
+            "predicted_points": 49,
+            "window_views": 5820,
+            "installs": 10,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0179",
+            "app_id": "app_4",
+            "predicted_band": "D",
+            "predicted_points": 50,
+            "window_views": 5520,
+            "installs": 9,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0180",
+            "app_id": "app_5",
+            "predicted_band": "D",
+            "predicted_points": 51,
+            "window_views": 6480,
+            "installs": 11,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0181",
+            "app_id": "app_1",
+            "predicted_band": "D",
+            "predicted_points": 47,
+            "window_views": 6180,
+            "installs": 10,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0182",
+            "app_id": "app_2",
+            "predicted_band": "D",
+            "predicted_points": 48,
+            "window_views": 5880,
+            "installs": 10,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0183",
+            "app_id": "app_3",
+            "predicted_band": "D",
+            "predicted_points": 49,
+            "window_views": 5580,
+            "installs": 9,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0184",
+            "app_id": "app_4",
+            "predicted_band": "D",
+            "predicted_points": 50,
+            "window_views": 6540,
+            "installs": 11,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0185",
+            "app_id": "app_5",
+            "predicted_band": "D",
+            "predicted_points": 51,
+            "window_views": 6240,
+            "installs": 10,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0186",
+            "app_id": "app_1",
+            "predicted_band": "D",
+            "predicted_points": 47,
+            "window_views": 5940,
+            "installs": 10,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0187",
+            "app_id": "app_2",
+            "predicted_band": "D",
+            "predicted_points": 48,
+            "window_views": 5640,
+            "installs": 9,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0188",
+            "app_id": "app_3",
+            "predicted_band": "D",
+            "predicted_points": 49,
+            "window_views": 6600,
+            "installs": 11,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0189",
+            "app_id": "app_4",
+            "predicted_band": "D",
+            "predicted_points": 50,
+            "window_views": 6300,
+            "installs": 10,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0190",
+            "app_id": "app_5",
+            "predicted_band": "D",
+            "predicted_points": 51,
+            "window_views": 6000,
+            "installs": 10,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0191",
+            "app_id": "app_1",
+            "predicted_band": "D",
+            "predicted_points": 47,
+            "window_views": 5700,
+            "installs": 10,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0192",
+            "app_id": "app_2",
+            "predicted_band": "D",
+            "predicted_points": 48,
+            "window_views": 5400,
+            "installs": 9,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0193",
+            "app_id": "app_3",
+            "predicted_band": "D",
+            "predicted_points": 49,
+            "window_views": 6360,
+            "installs": 11,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0194",
+            "app_id": "app_4",
+            "predicted_band": "D",
+            "predicted_points": 50,
+            "window_views": 6060,
+            "installs": 10,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0195",
+            "app_id": "app_5",
+            "predicted_band": "D",
+            "predicted_points": 51,
+            "window_views": 5760,
+            "installs": 10,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0196",
+            "app_id": "app_1",
+            "predicted_band": "D",
+            "predicted_points": 47,
+            "window_views": 5460,
+            "installs": 9,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0197",
+            "app_id": "app_2",
+            "predicted_band": "D",
+            "predicted_points": 48,
+            "window_views": 6420,
+            "installs": 11,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0198",
+            "app_id": "app_3",
+            "predicted_band": "D",
+            "predicted_points": 49,
+            "window_views": 6120,
+            "installs": 10,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0199",
+            "app_id": "app_4",
+            "predicted_band": "D",
+            "predicted_points": 50,
+            "window_views": 5820,
+            "installs": 10,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0200",
+            "app_id": "app_5",
+            "predicted_band": "D",
+            "predicted_points": 51,
+            "window_views": 5520,
+            "installs": 9,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0201",
+            "app_id": "app_1",
+            "predicted_band": "D",
+            "predicted_points": 47,
+            "window_views": 6480,
+            "installs": 11,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0202",
+            "app_id": "app_2",
+            "predicted_band": "D",
+            "predicted_points": 48,
+            "window_views": 6180,
+            "installs": 10,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0203",
+            "app_id": "app_3",
+            "predicted_band": "D",
+            "predicted_points": 49,
+            "window_views": 5880,
+            "installs": 10,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0204",
+            "app_id": "app_4",
+            "predicted_band": "D",
+            "predicted_points": 50,
+            "window_views": 5580,
+            "installs": 9,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0205",
+            "app_id": "app_5",
+            "predicted_band": "D",
+            "predicted_points": 51,
+            "window_views": 6540,
+            "installs": 11,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0206",
+            "app_id": "app_1",
+            "predicted_band": "D",
+            "predicted_points": 47,
+            "window_views": 6240,
+            "installs": 10,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0207",
+            "app_id": "app_2",
+            "predicted_band": "D",
+            "predicted_points": 48,
+            "window_views": 5940,
+            "installs": 10,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0208",
+            "app_id": "app_3",
+            "predicted_band": "D",
+            "predicted_points": 49,
+            "window_views": 5640,
+            "installs": 9,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0209",
+            "app_id": "app_4",
+            "predicted_band": "D",
+            "predicted_points": 50,
+            "window_views": 6600,
+            "installs": 11,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0210",
+            "app_id": "app_5",
+            "predicted_band": "D",
+            "predicted_points": 51,
+            "window_views": 6300,
+            "installs": 10,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0211",
+            "app_id": "app_1",
+            "predicted_band": "D",
+            "predicted_points": 47,
+            "window_views": 6000,
+            "installs": 10,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0212",
+            "app_id": "app_2",
+            "predicted_band": "D",
+            "predicted_points": 48,
+            "window_views": 5700,
+            "installs": 10,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0213",
+            "app_id": "app_3",
+            "predicted_band": "D",
+            "predicted_points": 49,
+            "window_views": 5400,
+            "installs": 9,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0214",
+            "app_id": "app_4",
+            "predicted_band": "D",
+            "predicted_points": 50,
+            "window_views": 6360,
+            "installs": 11,
+            "trials": 1,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0215",
+            "app_id": "app_5",
+            "predicted_band": "D",
+            "predicted_points": 51,
+            "window_views": 6060,
+            "installs": 10,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0216",
+            "app_id": "app_1",
+            "predicted_band": "E",
+            "predicted_points": 30,
+            "window_views": 3600,
+            "installs": 6,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0217",
+            "app_id": "app_2",
+            "predicted_band": "E",
+            "predicted_points": 31,
+            "window_views": 4240,
+            "installs": 7,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0218",
+            "app_id": "app_3",
+            "predicted_band": "E",
+            "predicted_points": 32,
+            "window_views": 4040,
+            "installs": 7,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0219",
+            "app_id": "app_4",
+            "predicted_band": "E",
+            "predicted_points": 33,
+            "window_views": 3840,
+            "installs": 6,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0220",
+            "app_id": "app_5",
+            "predicted_band": "E",
+            "predicted_points": 34,
+            "window_views": 3640,
+            "installs": 6,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0221",
+            "app_id": "app_1",
+            "predicted_band": "E",
+            "predicted_points": 30,
+            "window_views": 4280,
+            "installs": 7,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0222",
+            "app_id": "app_2",
+            "predicted_band": "E",
+            "predicted_points": 31,
+            "window_views": 4080,
+            "installs": 7,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0223",
+            "app_id": "app_3",
+            "predicted_band": "E",
+            "predicted_points": 32,
+            "window_views": 3880,
+            "installs": 6,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0224",
+            "app_id": "app_4",
+            "predicted_band": "E",
+            "predicted_points": 33,
+            "window_views": 3680,
+            "installs": 6,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0225",
+            "app_id": "app_5",
+            "predicted_band": "E",
+            "predicted_points": 34,
+            "window_views": 4320,
+            "installs": 7,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0226",
+            "app_id": "app_1",
+            "predicted_band": "E",
+            "predicted_points": 30,
+            "window_views": 4120,
+            "installs": 7,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0227",
+            "app_id": "app_2",
+            "predicted_band": "E",
+            "predicted_points": 31,
+            "window_views": 3920,
+            "installs": 7,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0228",
+            "app_id": "app_3",
+            "predicted_band": "E",
+            "predicted_points": 32,
+            "window_views": 3720,
+            "installs": 6,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0229",
+            "app_id": "app_4",
+            "predicted_band": "E",
+            "predicted_points": 33,
+            "window_views": 4360,
+            "installs": 7,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0230",
+            "app_id": "app_5",
+            "predicted_band": "E",
+            "predicted_points": 34,
+            "window_views": 4160,
+            "installs": 7,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0231",
+            "app_id": "app_1",
+            "predicted_band": "E",
+            "predicted_points": 30,
+            "window_views": 3960,
+            "installs": 7,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0232",
+            "app_id": "app_2",
+            "predicted_band": "E",
+            "predicted_points": 31,
+            "window_views": 3760,
+            "installs": 6,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0233",
+            "app_id": "app_3",
+            "predicted_band": "E",
+            "predicted_points": 32,
+            "window_views": 4400,
+            "installs": 7,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0234",
+            "app_id": "app_4",
+            "predicted_band": "E",
+            "predicted_points": 33,
+            "window_views": 4200,
+            "installs": 7,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0235",
+            "app_id": "app_5",
+            "predicted_band": "E",
+            "predicted_points": 34,
+            "window_views": 4000,
+            "installs": 7,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0236",
+            "app_id": "app_1",
+            "predicted_band": "E",
+            "predicted_points": 30,
+            "window_views": 3800,
+            "installs": 6,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0237",
+            "app_id": "app_2",
+            "predicted_band": "E",
+            "predicted_points": 31,
+            "window_views": 3600,
+            "installs": 6,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0238",
+            "app_id": "app_3",
+            "predicted_band": "E",
+            "predicted_points": 32,
+            "window_views": 4240,
+            "installs": 7,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0239",
+            "app_id": "app_4",
+            "predicted_band": "E",
+            "predicted_points": 33,
+            "window_views": 4040,
+            "installs": 7,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          },
+          {
+            "post_id": "post_0240",
+            "app_id": "app_5",
+            "predicted_band": "E",
+            "predicted_points": 34,
+            "window_views": 3840,
+            "installs": 6,
+            "trials": 0,
+            "creator_median_views_28d": 10000
+          }
+        ]
+      },
+      "out": {
+        "n_posts": 240,
+        "n_apps": 5,
+        "monotone": true,
+        "spearman": 0.97,
+        "top_vs_bottom": 5.02,
+        "recommendation": "collect_more_data",
+        "bins": [
+          {
+            "band": "A",
+            "count": 40,
+            "median_views": 20100,
+            "trial_rate": 0.0899,
+            "median_lift_multiple": 2.01
+          },
+          {
+            "band": "B",
+            "count": 60,
+            "median_views": 13000,
+            "trial_rate": 0.0699,
+            "median_lift_multiple": 1.3
+          },
+          {
+            "band": "C",
+            "count": 70,
+            "median_views": 9500,
+            "trial_rate": 0.0633,
+            "median_lift_multiple": 0.95
+          },
+          {
+            "band": "D",
+            "count": 45,
+            "median_views": 6000,
+            "trial_rate": 0.0244,
+            "median_lift_multiple": 0.6
+          },
+          {
+            "band": "E",
+            "count": 25,
+            "median_views": 4000,
+            "trial_rate": 0.0,
+            "median_lift_multiple": 0.4
+          }
+        ]
+      }
+    }
+  ]
+}

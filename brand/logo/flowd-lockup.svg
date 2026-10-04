@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 368 114" width="368" height="114" role="img" aria-labelledby="t d">
+<title id="t">flowd</title>
+<desc id="d">flowd logo (horizontal). Flat full-colour logo: ink wordmark with a mint crossbar on the f; adapts to light and dark colour schemes.</desc>
+<defs><style>.ink{stroke:#08112A}.bar{stroke:#20B27C}.tilebg{fill:#08112A}.tilef{stroke:#F3F7FF}.tilebar{stroke:#18DF9B}@media (prefers-color-scheme:dark){.ink{stroke:#F3F7FF}.bar{stroke:#18DF9B}.tilebg{fill:#F3F7FF}.tilef{stroke:#08112A}.tilebar{stroke:#20B27C}}</style></defs>
+<g transform="translate(4 4)"><path class="ink" d="M8.5 95.5C21.3 95.5 28.5 85.83 30.9 71.87C34.1 52.54 34.9 40.72 39.7 27.83C44.5 14.94 52.5 8.5 61.3 8.5L68.5 8.5M90.5 8.5L90.5 95.5M114.5 71A26.5 26.5 0 0 1 167.5 71A26.5 26.5 0 0 1 114.5 71M188.5 46.5L211 95.5L233.5 50.5L256 95.5L278.5 46.5M298.5 71A26.5 26.5 0 0 1 351.5 71A26.5 26.5 0 0 1 298.5 71M351.5 8.5L351.5 95.5" fill="none" stroke="#08112A" stroke-width="17" stroke-linecap="round" stroke-linejoin="round"/><path class="bar" d="M19.5 46.5L58.5 46.5" fill="none" stroke="#20B27C" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/></g>
+</svg>

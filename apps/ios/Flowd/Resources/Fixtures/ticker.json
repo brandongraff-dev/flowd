@@ -1,0 +1,461 @@
+{
+  "totals": {
+    "total_paid_cents": 2886310,
+    "paid_today_cents": 25000,
+    "paid_7d_cents": 269940,
+    "creators_paid": 68,
+    "payouts_count": 317,
+    "posts_cleared": 372,
+    "typical_creator_30d_cents": 7024,
+    "p25_creator_30d_cents": 515,
+    "p75_creator_30d_cents": 30475,
+    "top_decile_creator_30d_cents": 71280,
+    "active_creators_30d": 68,
+    "updated_at": "2026-10-03T14:00:00Z"
+  },
+  "events": [
+    {
+      "id": "tick_1",
+      "kind": "payout",
+      "at": "2026-10-02T18:20:00Z",
+      "text": "@mira.mornings was paid $52.35",
+      "amount_cents": 5235,
+      "creator_id": "cr_mira_mornings",
+      "handle": "mira.mornings",
+      "tier": "platinum",
+      "proof_id": "prf_kd919lt4"
+    },
+    {
+      "id": "tick_2",
+      "kind": "payout",
+      "at": "2026-10-02T18:19:29Z",
+      "text": "@cole.cuts was paid $200.00",
+      "amount_cents": 20000,
+      "creator_id": "cr_cole_cuts",
+      "handle": "cole.cuts",
+      "tier": "elite",
+      "proof_id": "prf_73x36eop"
+    },
+    {
+      "id": "tick_3",
+      "kind": "payout",
+      "at": "2026-10-02T18:19:26Z",
+      "text": "@coda.cuts was paid $37.24",
+      "amount_cents": 3724,
+      "creator_id": "cr_coda_cuts",
+      "handle": "coda.cuts",
+      "tier": "silver",
+      "proof_id": "prf_2vfq7t5b"
+    },
+    {
+      "id": "tick_4",
+      "kind": "payout",
+      "at": "2026-10-02T18:19:18Z",
+      "text": "@maya.makes was paid $181.80",
+      "amount_cents": 18180,
+      "creator_id": "cr_maya",
+      "handle": "maya.makes",
+      "tier": "silver",
+      "proof_id": "prf_eo21f9lp"
+    },
+    {
+      "id": "tick_5",
+      "kind": "payout",
+      "at": "2026-10-02T18:18:29Z",
+      "text": "@tevin.taps was paid $2.91",
+      "amount_cents": 291,
+      "creator_id": "cr_tevin_taps",
+      "handle": "tevin.taps",
+      "tier": "bronze",
+      "proof_id": "prf_y4xhto8h"
+    },
+    {
+      "id": "tick_6",
+      "kind": "payout",
+      "at": "2026-10-02T18:17:36Z",
+      "text": "@yves.yields.more was paid $224.52",
+      "amount_cents": 22452,
+      "creator_id": "cr_yves_yields_more",
+      "handle": "yves.yields.more",
+      "tier": "gold",
+      "proof_id": "prf_8s1vu3hu"
+    },
+    {
+      "id": "tick_7",
+      "kind": "payout",
+      "at": "2026-10-02T18:16:53Z",
+      "text": "@sky.studio was paid $364.96",
+      "amount_cents": 36496,
+      "creator_id": "cr_sky_studio",
+      "handle": "sky.studio",
+      "tier": "gold",
+      "proof_id": "prf_fctm8agm"
+    },
+    {
+      "id": "tick_8",
+      "kind": "payout",
+      "at": "2026-10-02T18:14:20Z",
+      "text": "@kai.frames was paid $5.00",
+      "amount_cents": 500,
+      "creator_id": "cr_kai_frames",
+      "handle": "kai.frames",
+      "tier": "bronze",
+      "proof_id": "prf_vw1t9jc5"
+    },
+    {
+      "id": "tick_9",
+      "kind": "payout",
+      "at": "2026-10-02T18:12:29Z",
+      "text": "@diego.demos was paid $250.00",
+      "amount_cents": 25000,
+      "creator_id": "cr_diego_demos",
+      "handle": "diego.demos",
+      "tier": "elite",
+      "proof_id": "prf_qeji3jq1"
+    },
+    {
+      "id": "tick_10",
+      "kind": "payout",
+      "at": "2026-10-02T18:12:00Z",
+      "text": "@vee.vibes was paid $50.68",
+      "amount_cents": 5068,
+      "creator_id": "cr_vee_vibes",
+      "handle": "vee.vibes",
+      "tier": "gold",
+      "proof_id": "prf_pt3lbg6a"
+    },
+    {
+      "id": "tick_11",
+      "kind": "payout",
+      "at": "2026-10-02T18:08:56Z",
+      "text": "@ria.rewinds was paid $4.51",
+      "amount_cents": 451,
+      "creator_id": "cr_ria_rewinds",
+      "handle": "ria.rewinds",
+      "tier": "bronze",
+      "proof_id": "prf_y4wjxraq"
+    },
+    {
+      "id": "tick_12",
+      "kind": "payout",
+      "at": "2026-10-02T18:08:39Z",
+      "text": "@tomas.trips was paid $15.42",
+      "amount_cents": 1542,
+      "creator_id": "cr_tomas_trips",
+      "handle": "tomas.trips",
+      "tier": "bronze",
+      "proof_id": "prf_tvr24nsh"
+    },
+    {
+      "id": "tick_13",
+      "kind": "payout",
+      "at": "2026-10-02T18:06:46Z",
+      "text": "@lux.looks was paid $6.44",
+      "amount_cents": 644,
+      "creator_id": "cr_lux_looks",
+      "handle": "lux.looks",
+      "tier": "bronze",
+      "proof_id": "prf_xinufor5"
+    },
+    {
+      "id": "tick_14",
+      "kind": "payout",
+      "at": "2026-10-02T18:05:57Z",
+      "text": "@fern.focus was paid $231.06",
+      "amount_cents": 23106,
+      "creator_id": "cr_fern_focus",
+      "handle": "fern.focus",
+      "tier": "platinum",
+      "proof_id": "prf_g7wwpt0s"
+    },
+    {
+      "id": "tick_15",
+      "kind": "payout",
+      "at": "2026-10-02T18:05:39Z",
+      "text": "@zed.zones was paid $208.67",
+      "amount_cents": 20867,
+      "creator_id": "cr_zed_zones",
+      "handle": "zed.zones",
+      "tier": "gold",
+      "proof_id": "prf_t1h8wjdb"
+    },
+    {
+      "id": "tick_16",
+      "kind": "payout",
+      "at": "2026-10-02T18:05:29Z",
+      "text": "@abe.adds.apps was paid $1.99",
+      "amount_cents": 199,
+      "creator_id": "cr_abe_adds_apps",
+      "handle": "abe.adds.apps",
+      "tier": "bronze",
+      "proof_id": "prf_3l77pi8f"
+    },
+    {
+      "id": "tick_17",
+      "kind": "payout",
+      "at": "2026-10-02T18:05:07Z",
+      "text": "@greta.grows was paid $17.20",
+      "amount_cents": 1720,
+      "creator_id": "cr_greta_grows",
+      "handle": "greta.grows",
+      "tier": "silver",
+      "proof_id": "prf_tuvzg46z"
+    },
+    {
+      "id": "tick_18",
+      "kind": "payout",
+      "at": "2026-10-02T18:05:05Z",
+      "text": "@indy.in.the.app was paid $12.11",
+      "amount_cents": 1211,
+      "creator_id": "cr_indy_in_the_app",
+      "handle": "indy.in.the.app",
+      "tier": "silver",
+      "proof_id": "prf_25q7drr0"
+    },
+    {
+      "id": "tick_19",
+      "kind": "payout",
+      "at": "2026-10-02T18:04:38Z",
+      "text": "@opal.organizes was paid $44.12",
+      "amount_cents": 4412,
+      "creator_id": "cr_opal_organizes",
+      "handle": "opal.organizes",
+      "tier": "silver",
+      "proof_id": "prf_n13ho7h6"
+    },
+    {
+      "id": "tick_20",
+      "kind": "payout",
+      "at": "2026-10-02T18:03:22Z",
+      "text": "@eden.edits.it was paid $134.18",
+      "amount_cents": 13418,
+      "creator_id": "cr_eden_edits_it",
+      "handle": "eden.edits.it",
+      "tier": "gold",
+      "proof_id": "prf_n912hypp"
+    },
+    {
+      "id": "tick_21",
+      "kind": "payout",
+      "at": "2026-10-02T18:03:13Z",
+      "text": "@bree.breaks.down was paid $5.85",
+      "amount_cents": 585,
+      "creator_id": "cr_bree_breaks_down",
+      "handle": "bree.breaks.down",
+      "tier": "bronze",
+      "proof_id": "prf_9xlq5z9b"
+    },
+    {
+      "id": "tick_22",
+      "kind": "payout",
+      "at": "2026-10-02T18:03:07Z",
+      "text": "@wilder.wanders was paid $7.75",
+      "amount_cents": 775,
+      "creator_id": "cr_wilder_wanders",
+      "handle": "wilder.wanders",
+      "tier": "bronze",
+      "proof_id": "prf_j7lfhoiq"
+    },
+    {
+      "id": "tick_23",
+      "kind": "payout",
+      "at": "2026-10-02T18:02:16Z",
+      "text": "@quinn.quick.takes was paid $46.90",
+      "amount_cents": 4690,
+      "creator_id": "cr_quinn_quick_takes",
+      "handle": "quinn.quick.takes",
+      "tier": "bronze",
+      "proof_id": "prf_h74lfebj"
+    },
+    {
+      "id": "tick_24",
+      "kind": "payout",
+      "at": "2026-10-02T18:02:07Z",
+      "text": "@wade.watches was paid $18.70",
+      "amount_cents": 1870,
+      "creator_id": "cr_wade_watches",
+      "handle": "wade.watches",
+      "tier": "silver",
+      "proof_id": "prf_82g0ayey"
+    },
+    {
+      "id": "tick_25",
+      "kind": "first_dollar",
+      "at": "2026-10-02T14:00:00Z",
+      "text": "@lux.looks earned a first dollar",
+      "creator_id": "cr_lux_looks",
+      "handle": "lux.looks",
+      "tier": "bronze"
+    },
+    {
+      "id": "tick_26",
+      "kind": "payout",
+      "at": "2026-10-02T09:42:00Z",
+      "text": "@jules.journals was paid $35.96",
+      "amount_cents": 3596,
+      "creator_id": "cr_jules_journals",
+      "handle": "jules.journals",
+      "tier": "silver",
+      "proof_id": "prf_9cwu6w3z"
+    },
+    {
+      "id": "tick_27",
+      "kind": "bounty_filled",
+      "at": "2026-10-02T08:07:25Z",
+      "text": "30-second retouch challenge by Lumi is filled",
+      "bounty_id": "bnty_lumi_retouch30",
+      "app_name": "Lumi"
+    },
+    {
+      "id": "tick_28",
+      "kind": "bounty_filled",
+      "at": "2026-10-01T09:05:11Z",
+      "text": "Five calm minutes by Stillwater is filled",
+      "bounty_id": "bnty_stillwater_calm",
+      "app_name": "Stillwater"
+    },
+    {
+      "id": "tick_29",
+      "kind": "first_dollar",
+      "at": "2026-09-30T14:00:00Z",
+      "text": "@wilder.wanders earned a first dollar",
+      "creator_id": "cr_wilder_wanders",
+      "handle": "wilder.wanders",
+      "tier": "bronze"
+    },
+    {
+      "id": "tick_30",
+      "kind": "payout",
+      "at": "2026-09-30T06:58:00Z",
+      "text": "@otis.optimizes was paid $32.29",
+      "amount_cents": 3229,
+      "creator_id": "cr_otis_optimizes",
+      "handle": "otis.optimizes",
+      "tier": "silver",
+      "proof_id": "prf_xc8itzxw"
+    },
+    {
+      "id": "tick_31",
+      "kind": "first_dollar",
+      "at": "2026-09-29T14:00:00Z",
+      "text": "@bree.breaks.down earned a first dollar",
+      "creator_id": "cr_bree_breaks_down",
+      "handle": "bree.breaks.down",
+      "tier": "bronze"
+    },
+    {
+      "id": "tick_32",
+      "kind": "tier_up",
+      "at": "2026-09-29T14:00:00Z",
+      "text": "@coda.cuts reached Silver",
+      "creator_id": "cr_coda_cuts",
+      "handle": "coda.cuts",
+      "tier": "silver"
+    },
+    {
+      "id": "tick_33",
+      "kind": "payout",
+      "at": "2026-09-29T03:03:00Z",
+      "text": "@tara.tests was paid $49.00",
+      "amount_cents": 4900,
+      "creator_id": "cr_tara_tests",
+      "handle": "tara.tests",
+      "tier": "platinum",
+      "proof_id": "prf_uurs4p4s"
+    },
+    {
+      "id": "tick_34",
+      "kind": "bounty_filled",
+      "at": "2026-09-27T15:29:42Z",
+      "text": "I spoke it on day one by Parlo is filled",
+      "bounty_id": "bnty_parlo_spoke",
+      "app_name": "Parlo"
+    },
+    {
+      "id": "tick_35",
+      "kind": "first_dollar",
+      "at": "2026-09-27T14:00:00Z",
+      "text": "@tevin.taps earned a first dollar",
+      "creator_id": "cr_tevin_taps",
+      "handle": "tevin.taps",
+      "tier": "bronze"
+    },
+    {
+      "id": "tick_36",
+      "kind": "tier_up",
+      "at": "2026-09-26T19:45:43Z",
+      "text": "@lenabuilds reached Silver",
+      "creator_id": "cr_lenabuilds",
+      "handle": "lenabuilds",
+      "tier": "silver"
+    },
+    {
+      "id": "tick_37",
+      "kind": "tier_up",
+      "at": "2026-09-25T20:53:22Z",
+      "text": "@paige.pins reached Gold",
+      "creator_id": "cr_paige_pins",
+      "handle": "paige.pins",
+      "tier": "gold"
+    },
+    {
+      "id": "tick_38",
+      "kind": "milestone",
+      "at": "2026-09-25T18:01:31Z",
+      "text": "flowd has paid out $25,000.00 to creators",
+      "amount_cents": 2500000
+    },
+    {
+      "id": "tick_39",
+      "kind": "tier_up",
+      "at": "2026-09-25T06:17:58Z",
+      "text": "@jules.journals reached Silver",
+      "creator_id": "cr_jules_journals",
+      "handle": "jules.journals",
+      "tier": "silver"
+    },
+    {
+      "id": "tick_40",
+      "kind": "tier_up",
+      "at": "2026-09-24T14:00:00Z",
+      "text": "@yves.yields.more reached Gold",
+      "creator_id": "cr_yves_yields_more",
+      "handle": "yves.yields.more",
+      "tier": "gold"
+    },
+    {
+      "id": "tick_41",
+      "kind": "milestone",
+      "at": "2026-09-24T00:03:01Z",
+      "text": "flowd has paid out $20,000.00 to creators",
+      "amount_cents": 2000000
+    },
+    {
+      "id": "tick_42",
+      "kind": "tier_up",
+      "at": "2026-09-23T14:00:00Z",
+      "text": "@sunny.sync reached Silver",
+      "creator_id": "cr_sunny_sync",
+      "handle": "sunny.sync",
+      "tier": "silver"
+    },
+    {
+      "id": "tick_43",
+      "kind": "tier_up",
+      "at": "2026-09-23T14:00:00Z",
+      "text": "@faye.finds reached Silver",
+      "creator_id": "cr_faye_finds",
+      "handle": "faye.finds",
+      "tier": "silver"
+    },
+    {
+      "id": "tick_44",
+      "kind": "tier_up",
+      "at": "2026-09-20T14:00:00Z",
+      "text": "@greta.grows reached Silver",
+      "creator_id": "cr_greta_grows",
+      "handle": "greta.grows",
+      "tier": "silver"
+    }
+  ]
+}
