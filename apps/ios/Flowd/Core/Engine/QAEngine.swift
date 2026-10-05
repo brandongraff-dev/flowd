@@ -249,17 +249,19 @@ enum QAEngine {
 
     /// The first transcript segment that contains a spoken disclosure, or nil.
     static func findSpokenDisclosure(_ transcript: [TranscriptSegment]) -> TranscriptSegment? {
-        for segment in transcript {
+        // Walk in order and return the EARLIEST segment the disclosure starts in. A disclosure split across two segments
+        // ("this is a" / "paid partnership") starts in the first of them, so the pair is tried before the second one alone.
+        var index: Int = 0
+        while index < transcript.count {
+            let segment: TranscriptSegment = transcript[index]
             if Rx.testAny(spokenDisclosure, in: TextTools.normalize(segment.text)) {
                 return segment
             }
-        }
-        // A disclosure split across two segments ("this is a" / "paid partnership").
-        var index: Int = 0
-        while index + 1 < transcript.count {
-            let joined: String = TextTools.normalize(transcript[index].text + " " + transcript[index + 1].text)
-            if Rx.testAny(spokenDisclosure, in: joined) {
-                return transcript[index]
+            if index + 1 < transcript.count {
+                let joined: String = TextTools.normalize(segment.text + " " + transcript[index + 1].text)
+                if Rx.testAny(spokenDisclosure, in: joined) {
+                    return segment
+                }
             }
             index += 1
         }

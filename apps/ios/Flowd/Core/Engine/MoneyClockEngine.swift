@@ -338,10 +338,10 @@ enum MoneyClockEngine {
         timeZone: TimeZone? = nil
     ) -> String {
         let eta: String? = etaAt.map { (date: Date) -> String in
-            return stamp(date, timeZone) + (timeZone == nil ? " UTC" : "")
+            return stamp(date, timeZone)
         }
         func zoned(_ date: Date) -> String {
-            return stamp(date, timeZone) + (timeZone == nil ? " UTC" : "")
+            return stamp(date, timeZone)
         }
         switch reason {
         case .windowOpen:
@@ -402,9 +402,9 @@ enum MoneyClockEngine {
         let verb: String = clock.state == .cleared ? "Pays" : "Clears"
         var etaLabel: String? = nil
         if let eta = clock.etaAt {
-            etaLabel = verb + " " + stamp(eta, timeZone) + (timeZone == nil ? " UTC" : "")
+            etaLabel = verb + " " + stamp(eta, timeZone)
         } else if let arrives = clock.arrivesAt {
-            etaLabel = "Arrives " + stamp(arrives, timeZone) + (timeZone == nil ? " UTC" : "")
+            etaLabel = "Arrives " + stamp(arrives, timeZone)
         }
         return EarningDescription(
             uiTitle: clock.state.uiTitle,
