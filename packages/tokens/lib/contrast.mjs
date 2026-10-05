@@ -121,7 +121,7 @@ export function runContrastChecks(tokens) {
 
   // 5. Primary button gradient: white text at both ends (theme independent)
   for (const s of tokens.gradient.flowButton.stops) {
-    add('both', 'solid', 'on-accent on flowButton stop', '#FFFFFF', `flowButton ${s.at}%`, opaque(parseColor(s.color)), 4.5);
+    add('both', 'solid', 'on-accent on flowButton stop', '#030921', `flowButton ${s.at}%`, opaque(parseColor(s.color)), 4.5);
   }
 
   // 6. Tier badges: ink on medallion (>=4.5 on the mid stop, >=3 on the extremes)

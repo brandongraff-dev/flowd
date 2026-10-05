@@ -36,36 +36,12 @@ struct AuroraBackground: View {
         self.isAnimated = isAnimated
     }
 
+    // Flat Ink: the canvas is a solid colour. Orbs, vignette, grain and drift are gone; the API is kept so call sites compile.
     var body: some View {
-        let isDark: Bool = colorScheme == ColorScheme.dark
-        let orbs: [FlowdAuroraOrb] = FlowdAurora.orbs(isDark: isDark)
-        let multiplier: Double = intensity.multiplier
-        return GeometryReader { (proxy: GeometryProxy) in
-            let size: CGSize = proxy.size
-            ZStack {
-                FlowdAurora.base
-                orbLayer(orbs: orbs, size: size, multiplier: multiplier)
-                    .offset(
-                        x: drift ? size.width * 0.02 : -size.width * 0.02,
-                        y: drift ? size.height * 0.012 : -size.height * 0.012
-                    )
-                    .scaleEffect(drift ? 1.06 : 1.0)
-                if isDark {
-                    vignette(size: size)
-                }
-                AuroraGrain(opacity: isDark ? FlowdAurora.darkNoiseOpacity : FlowdAurora.lightNoiseOpacity)
-            }
-            .frame(width: size.width, height: size.height)
-            .clipped()
-        }
-        .ignoresSafeArea()
-        .allowsHitTesting(false)
-        .accessibilityHidden(true)
-        .onAppear { updateDrift() }
-        .onChange(of: shouldDrift) { _, _ in updateDrift() }
-        .onReceive(NotificationCenter.default.publisher(for: Notification.Name.NSProcessInfoPowerStateDidChange)) { _ in
-            lowPower = ProcessInfo.processInfo.isLowPowerModeEnabled
-        }
+        return FlowdAurora.base
+            .ignoresSafeArea()
+            .allowsHitTesting(false)
+            .accessibilityHidden(true)
     }
 
     private func orbLayer(orbs: [FlowdAuroraOrb], size: CGSize, multiplier: Double) -> some View {

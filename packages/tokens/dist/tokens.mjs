@@ -5,7 +5,7 @@
 export const tokens = {
   "$meta": {
     "name": "flowd design tokens",
-    "theme": "Lagoon Glass",
+    "theme": "Flat Ink",
     "version": "1.0.0",
     "updated": "2026-10-03",
     "notes": [
@@ -139,26 +139,26 @@ export const tokens = {
         "surface-field": "rgba(255, 255, 255, 0.06)",
         "surface-hover": "rgba(255, 255, 255, 0.06)",
         "surface-active": "rgba(255, 255, 255, 0.10)",
-        "surface-glass-1": "rgba(9, 16, 40, 0.72)",
-        "surface-glass-2": "rgba(14, 22, 52, 0.68)",
-        "surface-glass-3": "rgba(7, 12, 32, 0.80)",
+        "surface-glass-1": "#101A34",
+        "surface-glass-2": "#18233D",
+        "surface-glass-3": "#18233D",
         "scrim": "rgba(2, 5, 16, 0.62)",
         "fg": "#F3F7FF",
         "fg-muted": "#C0CAE0",
         "fg-subtle": "#A3AFCB",
         "fg-disabled": "#5F6B8A",
         "fg-inverse": "#030921",
-        "on-accent": "#FFFFFF",
-        "rim": "rgba(255, 255, 255, 0.14)",
+        "on-accent": "#030921",
+        "rim": "rgba(255, 255, 255, 0.09)",
         "rim-strong": "rgba(255, 255, 255, 0.28)",
         "divider": "rgba(255, 255, 255, 0.08)",
-        "focus-ring": "#73A5F9",
-        "accent-solid": "#0E62E1",
-        "accent-bright": "#307DFD",
-        "accent-solid-hover": "#0D6CF8",
-        "accent-solid-pressed": "#1150B3",
-        "accent": "#7CABF9",
-        "accent-soft": "rgba(48, 125, 253, 0.11)",
+        "focus-ring": "#39F1AB",
+        "accent-solid": "#18DF9B",
+        "accent-bright": "#18DF9B",
+        "accent-solid-hover": "#39F1AB",
+        "accent-solid-pressed": "#20B27C",
+        "accent": "#18DF9B",
+        "accent-soft": "rgba(24, 223, 155, 0.14)",
         "violet-solid": "#784FFC",
         "violet": "#BCB8F3",
         "violet-soft": "rgba(120, 79, 252, 0.20)",
@@ -193,26 +193,26 @@ export const tokens = {
         "surface-field": "rgba(8, 17, 42, 0.05)",
         "surface-hover": "rgba(8, 17, 42, 0.05)",
         "surface-active": "rgba(8, 17, 42, 0.09)",
-        "surface-glass-1": "rgba(255, 255, 255, 0.62)",
-        "surface-glass-2": "rgba(255, 255, 255, 0.54)",
-        "surface-glass-3": "rgba(255, 255, 255, 0.84)",
+        "surface-glass-1": "#FFFFFF",
+        "surface-glass-2": "#FFFFFF",
+        "surface-glass-3": "#FFFFFF",
         "scrim": "rgba(8, 17, 42, 0.34)",
         "fg": "#08112A",
         "fg-muted": "#3F4966",
         "fg-subtle": "#5B6684",
         "fg-disabled": "#9AA4BC",
         "fg-inverse": "#FFFFFF",
-        "on-accent": "#FFFFFF",
+        "on-accent": "#030921",
         "rim": "rgba(8, 17, 42, 0.10)",
         "rim-strong": "rgba(8, 17, 42, 0.22)",
         "divider": "rgba(8, 17, 42, 0.07)",
-        "focus-ring": "#0E62E1",
-        "accent-solid": "#0E62E1",
-        "accent-bright": "#0E62E1",
-        "accent-solid-hover": "#1150B3",
-        "accent-solid-pressed": "#113E88",
-        "accent": "#1150B3",
-        "accent-soft": "rgba(14, 98, 225, 0.10)",
+        "focus-ring": "#238A61",
+        "accent-solid": "#20B27C",
+        "accent-bright": "#238A61",
+        "accent-solid-hover": "#18DF9B",
+        "accent-solid-pressed": "#238A61",
+        "accent": "#146949",
+        "accent-soft": "rgba(32, 178, 124, 0.12)",
         "violet-solid": "#671AF3",
         "violet": "#531EC3",
         "violet-soft": "rgba(103, 26, 243, 0.10)",
@@ -245,115 +245,99 @@ export const tokens = {
       "angle": 135,
       "stops": [
         {
-          "color": "#784FFC",
+          "color": "#18DF9B",
           "at": 0
         },
         {
-          "color": "#307DFD",
-          "at": 52
-        },
-        {
-          "color": "#17D2E7",
+          "color": "#18DF9B",
           "at": 100
         }
       ],
-      "note": "Signature. Decorative, strokes, hero art, gradient text. Never put body text on the cyan end."
+      "note": "Flat Ink: solid mint. No gradients anywhere."
     },
     "flowButton": {
       "angle": 135,
       "stops": [
         {
-          "color": "#671AF3",
+          "color": "#18DF9B",
           "at": 0
         },
         {
-          "color": "#0E62E1",
+          "color": "#18DF9B",
           "at": 100
         }
       ],
-      "note": "Primary CTA fill. White text clears AA at both ends."
+      "note": "Primary CTA fill, solid mint, ink label."
     },
     "flowSoft": {
       "angle": 135,
       "stops": [
         {
-          "color": "rgba(120, 79, 252, 0.30)",
+          "color": "rgba(24, 223, 155, 0.14)",
           "at": 0
         },
         {
-          "color": "rgba(48, 125, 253, 0.22)",
-          "at": 52
-        },
-        {
-          "color": "rgba(23, 210, 231, 0.18)",
+          "color": "rgba(24, 223, 155, 0.14)",
           "at": 100
         }
       ],
-      "note": "Tinted glass / selected states."
+      "note": "Selected states, solid soft mint."
     },
     "money": {
       "angle": 135,
       "stops": [
         {
-          "color": "#39F1AB",
+          "color": "#18DF9B",
           "at": 0
         },
         {
-          "color": "#37E4FA",
+          "color": "#18DF9B",
           "at": 100
         }
       ],
-      "note": "Earnings glow, payout celebration, wallet hero. Ink text only."
+      "note": "Money, solid mint. Ink text only."
     },
     "ember": {
       "angle": 135,
       "stops": [
         {
-          "color": "#F8C216",
+          "color": "#FE7A43",
           "at": 0
         },
         {
           "color": "#FE7A43",
-          "at": 55
-        },
-        {
-          "color": "#FD5170",
           "at": 100
         }
       ],
-      "note": "Daily Drop, urgent CTAs. Ink text only."
+      "note": "Urgency only, solid ember. Ink text only."
     },
     "sun": {
       "angle": 135,
       "stops": [
         {
-          "color": "#FAE2A9",
+          "color": "#F8C216",
           "at": 0
         },
         {
           "color": "#F8C216",
-          "at": 55
-        },
-        {
-          "color": "#C59B1D",
           "at": 100
         }
       ],
-      "note": "Featured bounties, Elite accents."
+      "note": "Featured/Elite, solid sun."
     },
     "flo": {
       "angle": 135,
       "stops": [
         {
-          "color": "#988BF8",
+          "color": "#784FFC",
           "at": 0
         },
         {
-          "color": "#671AF3",
+          "color": "#784FFC",
           "at": 100
         }
       ],
-      "note": "Flo, the in-app copilot. Always violet."
+      "note": "Flo copilot, solid violet."
     }
   },
   "aurora": {
@@ -369,12 +353,12 @@ export const tokens = {
           "stops": [
             [
               "#6B3FF5",
-              0.67,
+              0,
               0
             ],
             [
               "#6B3FF5",
-              0.29,
+              0,
               45
             ],
             [
@@ -392,12 +376,12 @@ export const tokens = {
           "stops": [
             [
               "#2F7BFF",
-              0.52,
+              0,
               0
             ],
             [
               "#2F7BFF",
-              0.22,
+              0,
               45
             ],
             [
@@ -415,12 +399,12 @@ export const tokens = {
           "stops": [
             [
               "#19D3E6",
-              0.35,
+              0,
               0
             ],
             [
               "#19D3E6",
-              0.145,
+              0,
               45
             ],
             [
@@ -438,12 +422,12 @@ export const tokens = {
           "stops": [
             [
               "#FF4D8D",
-              0.2,
+              0,
               0
             ],
             [
               "#FF4D8D",
-              0.07,
+              0,
               45
             ],
             [
@@ -454,8 +438,8 @@ export const tokens = {
           ]
         }
       ],
-      "noise": 0.035,
-      "vignette": "radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(1, 4, 25, 0.55) 100%)"
+      "noise": 0,
+      "vignette": "none"
     },
     "light": {
       "base": "#F3F7FF",
@@ -468,12 +452,12 @@ export const tokens = {
           "stops": [
             [
               "#A99CF2",
-              0.62,
+              0,
               0
             ],
             [
               "#A99CF2",
-              0.28,
+              0,
               45
             ],
             [
@@ -491,12 +475,12 @@ export const tokens = {
           "stops": [
             [
               "#8DB8F5",
-              0.6,
+              0,
               0
             ],
             [
               "#8DB8F5",
-              0.26,
+              0,
               45
             ],
             [
@@ -514,12 +498,12 @@ export const tokens = {
           "stops": [
             [
               "#7FE3F2",
-              0.55,
+              0,
               0
             ],
             [
               "#7FE3F2",
-              0.24,
+              0,
               45
             ],
             [
@@ -537,12 +521,12 @@ export const tokens = {
           "stops": [
             [
               "#F6B3BA",
-              0.45,
+              0,
               0
             ],
             [
               "#F6B3BA",
-              0.18,
+              0,
               45
             ],
             [
@@ -553,7 +537,7 @@ export const tokens = {
           ]
         }
       ],
-      "noise": 0.03,
+      "noise": 0,
       "vignette": "none"
     },
     "drift": {
@@ -586,7 +570,7 @@ export const tokens = {
       "L1": {
         "blur": 16,
         "saturate": 1.4,
-        "fill": "rgba(9, 16, 40, 0.72)",
+        "fill": "#101A34",
         "fillOverMedia": "rgba(8, 14, 36, 0.78)",
         "sheen": {
           "angle": 135,
@@ -608,7 +592,7 @@ export const tokens = {
       "L2": {
         "blur": 24,
         "saturate": 1.6,
-        "fill": "rgba(14, 22, 52, 0.68)",
+        "fill": "#18233D",
         "fillOverMedia": "rgba(10, 17, 42, 0.78)",
         "sheen": {
           "angle": 135,
@@ -630,7 +614,7 @@ export const tokens = {
       "L3": {
         "blur": 40,
         "saturate": 1.5,
-        "fill": "rgba(7, 12, 32, 0.80)",
+        "fill": "#18233D",
         "fillOverMedia": "rgba(7, 12, 32, 0.86)",
         "sheen": {
           "angle": 135,
@@ -660,7 +644,7 @@ export const tokens = {
       "L1": {
         "blur": 16,
         "saturate": 1.5,
-        "fill": "rgba(255, 255, 255, 0.62)",
+        "fill": "#FFFFFF",
         "fillOverMedia": "rgba(255, 255, 255, 0.80)",
         "sheen": {
           "angle": 135,
@@ -682,7 +666,7 @@ export const tokens = {
       "L2": {
         "blur": 24,
         "saturate": 1.7,
-        "fill": "rgba(255, 255, 255, 0.54)",
+        "fill": "#FFFFFF",
         "fillOverMedia": "rgba(255, 255, 255, 0.78)",
         "sheen": {
           "angle": 135,
@@ -704,7 +688,7 @@ export const tokens = {
       "L3": {
         "blur": 40,
         "saturate": 1.5,
-        "fill": "rgba(255, 255, 255, 0.84)",
+        "fill": "#FFFFFF",
         "fillOverMedia": "rgba(255, 255, 255, 0.90)",
         "sheen": {
           "angle": 135,

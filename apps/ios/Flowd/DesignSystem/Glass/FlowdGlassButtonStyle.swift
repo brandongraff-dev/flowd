@@ -184,9 +184,7 @@ private struct FlowdGlassButtonBody: View {
     ) -> some View {
         return styledLabel(foreground: label)
             .background { shape.fill(fill) }
-            .overlay { shape.strokeBorder(specularRim, lineWidth: 1).allowsHitTesting(false) }
             .overlay { pressedVeil(shape) }
-            .shadow(color: glow, radius: 12, x: 0, y: 6)
             .contentShape(shape)
     }
 
