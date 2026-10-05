@@ -101,12 +101,76 @@ enum FlowdDates {
     }
 }
 
+/// A `CodingKey` that carries whatever string (or index) it is given. Used by the custom key strategy below.
+struct FlowdAnyKey: CodingKey {
+    var stringValue: String
+    var intValue: Int?
+
+    init(stringValue: String) {
+        self.stringValue = stringValue
+        self.intValue = nil
+    }
+
+    init?(intValue: Int) {
+        self.stringValue = String(intValue)
+        self.intValue = intValue
+    }
+}
+
+/// snake_case to camelCase exactly as `scripts/lib/ios-names.mjs` `camelFromSnake` produces the Swift property names.
+///
+/// Foundation's `.convertFromSnakeCase` capitalises the first LETTER of each word, so `renewal_pct_per_30d` becomes `renewalPctPer30D`
+/// and never matches the property `renewalPctPer30d`. Here only the first CHARACTER of each later segment is upper-cased (a digit stays a
+/// digit) and the rest of the segment is lower-cased, so `30d` stays `30d`.
+func flowdCamelFromSnake(_ key: String) -> String {
+    if !key.contains("_") {
+        return key
+    }
+    let chars: [Character] = Array(key)
+    var start: Int = 0
+    while start < chars.count && chars[start] == "_" {
+        start += 1
+    }
+    if start == chars.count {
+        return key
+    }
+    var end: Int = chars.count - 1
+    while end > start && chars[end] == "_" {
+        end -= 1
+    }
+    let lead: String = String(chars[0..<start])
+    let trail: String = String(chars[(end + 1)...])
+    let body: String = String(chars[start...end])
+    let parts: [String] = body.split(separator: "_", omittingEmptySubsequences: true).map { (part: Substring) -> String in
+        return String(part)
+    }
+    if parts.count <= 1 {
+        return lead + body + trail
+    }
+    var out: String = parts[0].lowercased()
+    for part in parts.dropFirst() {
+        guard let first: Character = part.first else {
+            continue
+        }
+        out += String(first).uppercased() + String(part.dropFirst()).lowercased()
+    }
+    return lead + out + trail
+}
+
 /// The app's JSON coders.
 enum FlowdJSON {
     /// Decoder for contract JSON: snake_case keys, tolerant ISO-8601 dates. A fresh instance per call (decoders are cheap).
     static func makeDecoder() -> JSONDecoder {
         let decoder: JSONDecoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        decoder.keyDecodingStrategy = .custom { (codingPath: [CodingKey]) -> CodingKey in
+            guard let last: CodingKey = codingPath.last else {
+                return FlowdAnyKey(stringValue: "")
+            }
+            if last.intValue != nil {
+                return last
+            }
+            return FlowdAnyKey(stringValue: flowdCamelFromSnake(last.stringValue))
+        }
         decoder.dateDecodingStrategy = .custom { (inner: Decoder) -> Date in
             let container: SingleValueDecodingContainer = try inner.singleValueContainer()
             let text: String = try container.decode(String.self)
