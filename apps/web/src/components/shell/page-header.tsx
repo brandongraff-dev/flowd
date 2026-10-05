@@ -65,7 +65,7 @@ export function Section({ title, description, actions, level = 2, gap = "md", cl
   const Heading = level === 2 ? "h2" : "h3";
   const headingId = id && title ? `${id}-title` : undefined;
   return (
-    <section id={id} aria-labelledby={headingId} className={cn("grid min-w-0", GAPS[gap], className)} {...props}>
+    <section id={id} aria-labelledby={headingId} className={cn("grid min-w-0 grid-cols-[minmax(0,1fr)]", GAPS[gap], className)} {...props}>
       {title || actions ? (
         <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-2">
           <div className="grid min-w-0 gap-1">

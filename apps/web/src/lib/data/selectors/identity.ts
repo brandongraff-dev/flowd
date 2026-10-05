@@ -32,7 +32,8 @@ export function me(db: MeDb): Me {
   const creator = s.creator_id ? db.creators[s.creator_id] : undefined;
   const brand = s.brand_id ? db.brands[s.brand_id] : undefined;
   const member = s.member_id ? db.brand_members[s.member_id] : undefined;
-  const apps = brand ? groupBy(db.apps, "brand", (a) => a.brand_id).get(brand.id) : [];
+  // An archived app leaves the switcher (its history stays reachable from Apps).
+  const apps = brand ? groupBy(db.apps, "brand", (a) => a.brand_id).get(brand.id).filter((a) => a.archived_at === undefined) : [];
   const app = (s.app_id ? db.apps[s.app_id] : undefined) ?? apps.find((a) => a.status === "connected") ?? apps[0];
   const workspaces: Brand[] = brand ? [brand, ...valuesOf(db.brands).filter((b) => b.agency_id === brand.id)] : [];
   return { persona: s.persona, signedIn: s.persona !== null, user, creator, brand, member, member_role: member?.role, app, apps, workspaces };

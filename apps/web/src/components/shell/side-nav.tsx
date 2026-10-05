@@ -36,6 +36,8 @@ export interface SideNavProps extends Omit<ComponentPropsWithoutRef<"aside">, "c
   onNavigate?: () => void;
   /** Accessible name of the nav landmark. */
   label?: string;
+  /** Show the collapse toggle and honour `[` (default true). Turn off when the nav lives in a phone drawer, where it is always full width. */
+  collapsible?: boolean;
 }
 
 /**
@@ -57,6 +59,7 @@ export function SideNav({
   collapseBelow = 1024,
   onNavigate,
   label = "Primary",
+  collapsible = true,
   className,
   ...props
 }: SideNavProps) {
@@ -64,13 +67,13 @@ export function SideNav({
   const lensId = `nav-lens-${useId()}`;
   const [stored, setStored, chosen] = useStoredBoolean(collapsedProp === undefined ? storageKey : undefined, defaultCollapsed);
   const narrow = useMediaQuery(`(max-width: ${Math.max(collapseBelow, 1) - 1}px)`, false);
-  // An explicit choice (the toggle, the [ key) always wins; until then tablets get the rail.
-  const collapsed = collapsedProp ?? (chosen ? stored : collapseBelow > 0 && narrow ? true : stored);
+  // An explicit choice (the toggle, the [ key) always wins; until then tablets get the rail. A non-collapsible nav (a phone drawer) is always open.
+  const collapsed = !collapsible ? false : (collapsedProp ?? (chosen ? stored : collapseBelow > 0 && narrow ? true : stored));
   const setCollapsed = (next: boolean): void => {
     if (collapsedProp === undefined) setStored(next);
     onCollapsedChange?.(next);
   };
-  useHotkey("[", () => setCollapsed(!collapsed));
+  useHotkey("[", () => setCollapsed(!collapsed), { enabled: collapsible });
 
   const activeHref = resolveActiveHref(activePath ?? pathname ?? "/", flattenNav(groups));
   const state = { collapsed };
@@ -95,7 +98,7 @@ export function SideNav({
             <Logo variant={collapsed ? "mark" : "lockup"} height={26} decorative />
           </Link>
         )}
-        {collapsed ? null : (
+        {collapsed || !collapsible ? null : (
           <IconButton
             variant="plain"
             size="sm"

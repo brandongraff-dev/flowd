@@ -60,6 +60,9 @@ export { SectionReveal, RevealItem, type SectionRevealProps, type RevealItemProp
 export { RoleGate, type RoleGateProps } from "./role-gate";
 export { DemoBanner, DemoTag, DEMO_BANNER_DISMISSED_KEY, type DemoBannerProps, type DemoTagProps } from "./demo-banner";
 export { useStoredBoolean } from "./use-stored-boolean";
+export { CreatorShell } from "./creator-shell";
+export { CREATOR_DESTINATIONS, CREATOR_MOBILE_ITEMS, CREATOR_MORE_HREF, creatorNav, mobileActivePath, type CreatorDestination, type CreatorNavBadges } from "./creator-nav";
+export { CreatorNotifications, type CreatorNotificationsProps } from "./creator-notifications";
 export { Providers } from "./providers";
 export { ThemeProvider, useTheme } from "./theme-provider";
 export { ThemeSwitch } from "./theme-switch";

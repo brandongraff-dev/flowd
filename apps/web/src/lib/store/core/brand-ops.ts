@@ -113,6 +113,37 @@ export function updateApp(tx: Tx, input: { app_id: string; changes: Partial<Pick
   return { app: tx.patch("apps", app.id, input.changes) };
 }
 
+/**
+ * Archives an app (or brings it back). An archived app leaves the switcher and cannot start bounties; its history, ledger entries and rights
+ * stay. It cannot be archived while money is in a bounty for it (live, paused, full or scheduled), or when it is the last active app of the workspace.
+ */
+export function setAppArchived(tx: Tx, input: { app_id: string; archived: boolean }): { app: App } {
+  const app = tx.must("apps", input.app_id, "App");
+  const { brand, member } = requireBrand(tx, app.brand_id, "manage");
+  const isArchived = app.archived_at !== undefined;
+  if (input.archived === isArchived) return { app };
+  if (input.archived) {
+    const open = tx.all("bounties").filter((x) => x.app_id === app.id && ["live", "paused", "filled", "scheduled"].includes(x.status));
+    ensure(open.length === 0, "app_has_open_bounties", `${app.name} still has ${open.length === 1 ? "a bounty" : `${open.length} bounties`} with money in escrow.`, "End or settle them first, then archive the app.", 409);
+    const others = tx.all("apps").filter((a) => a.brand_id === brand.id && a.id !== app.id && a.archived_at === undefined);
+    ensure(others.length > 0, "last_app", "Keep at least one active app in the workspace.", "Connect another app first.", 409);
+  }
+  const next = input.archived ? tx.patch("apps", app.id, { archived_at: tx.now }) : tx.unset("apps", app.id, "archived_at");
+  if (input.archived && tx.session.app_id === app.id) {
+    const fallback = tx.all("apps").find((a) => a.brand_id === brand.id && a.id !== app.id && a.archived_at === undefined);
+    tx.setSession({ ...tx.session, app_id: fallback?.id ?? null });
+  }
+  logActivity(tx, {
+    brand_id: brand.id,
+    action: input.archived ? "integration_disconnected" : "integration_connected",
+    summary: `${describeActor(tx, member?.id)} ${input.archived ? "archived" : "restored"} the app ${app.name}`,
+    actor_member_id: member?.id,
+    target_kind: "app",
+    target_id: app.id,
+  });
+  return { app: next };
+}
+
 // ── integrations ───────────────────────────────────────────────────────────────────────────────
 
 const COVERAGE: Record<IntegrationKind, number | undefined> = { revenuecat: 0.82, appsflyer: 0.9, adjust: 0.88, branch: 0.86, meta_ads: undefined, tiktok_ads: undefined, slack: undefined, zapier: undefined, app_store_connect: 0.4 };
