@@ -36,3 +36,4 @@ docs/qa/
 .claude/settings.local.json
 apps/ios/build/
 .dev-server.log
+docs/HANDOFF_PLAN.md
