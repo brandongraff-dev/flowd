@@ -16,10 +16,7 @@ struct BrandShell: View {
             tabContent(BrandTab.insights)
             tabContent(BrandTab.wallet)
         }
-        .flowdBottomBar {
-            FlowdTabBar(items: items, selection: router.brandSelection, style: chrome.style)
-                .flowdAnimation(FlowdSpring.snappy, value: chrome.style)
-        }
+        .tint(FlowdColor.accent)
         .onChange(of: router.selectedBrandTab) { (_: BrandTab, _: BrandTab) in
             chrome.reset()
         }
@@ -34,7 +31,9 @@ struct BrandShell: View {
         .environment(\.flowdScrollToTopTick, nav.scrollTick)
         .environment(\.flowdScrollReport, scrollReport(for: tab))
         .tag(tab)
-        .flowdHideSystemTabBar()
+        .tabItem {
+            Label(tab.title, systemImage: tab.systemImage)
+        }
     }
 
     private func scrollReport(for tab: BrandTab) -> (CGFloat) -> Void {
@@ -66,10 +65,7 @@ struct AdminShell: View {
             tabContent(AdminTab.market)
             tabContent(AdminTab.more)
         }
-        .flowdBottomBar {
-            FlowdTabBar(items: items, selection: router.adminSelection, style: chrome.style)
-                .flowdAnimation(FlowdSpring.snappy, value: chrome.style)
-        }
+        .tint(FlowdColor.accent)
         .onChange(of: router.selectedAdminTab) { (_: AdminTab, _: AdminTab) in
             chrome.reset()
         }
@@ -84,7 +80,9 @@ struct AdminShell: View {
         .environment(\.flowdScrollToTopTick, nav.scrollTick)
         .environment(\.flowdScrollReport, scrollReport(for: tab))
         .tag(tab)
-        .flowdHideSystemTabBar()
+        .tabItem {
+            Label(tab.title, systemImage: tab.systemImage)
+        }
     }
 
     private func scrollReport(for tab: AdminTab) -> (CGFloat) -> Void {

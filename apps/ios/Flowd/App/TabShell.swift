@@ -94,8 +94,9 @@ struct TabShell: View {
             tabContent(AppTab.wallet, root: Route.wallet)
             tabContent(AppTab.profile, root: Route.profile)
         }
-        .flowdBottomBar {
-            bottomChrome
+        .tint(FlowdColor.accent)
+        .overlay(alignment: .bottomTrailing) {
+            captureChrome
         }
         .overlay {
             fanOverlay
@@ -125,7 +126,10 @@ struct TabShell: View {
         .environment(\.flowdScrollToTopTick, nav.scrollTick)
         .environment(\.flowdScrollReport, scrollReport(for: tab))
         .tag(tab)
-        .flowdHideSystemTabBar()
+        .tabItem {
+            Label(tab.title, systemImage: tab.systemImage)
+        }
+        .badge(tab == AppTab.home ? appState.unreadCount : 0)
     }
 
     /// Scroll offsets from the selected tab's screens drive the compact bar; the other tabs (kept alive by `TabView`) are ignored.
@@ -141,25 +145,25 @@ struct TabShell: View {
 
     // MARK: Bottom chrome
 
-    private var bottomChrome: some View {
-        VStack(spacing: FlowdSpacing.xs) {
+    /// The system tab bar (Liquid Glass on iOS 26) stays untouched. Making a take is a floating action above it.
+    private var captureChrome: some View {
+        VStack(alignment: .trailing, spacing: FlowdSpacing.sm) {
             if let draft = appState.latestDraft, !fanOpen {
-                ContinueDraftAccessory(draft: draft, isCompact: chrome.style == FlowdTabBarStyle.compact) {
+                ContinueDraftAccessory(draft: draft, isCompact: true) {
                     router.open(Route.studio(StudioEntry.resume(draftID: draft.id)))
                 }
                 .transition(AnyTransition.flowdRise)
             }
-            FlowdTabBar(
-                leading: leadingItems,
-                trailing: trailingItems,
-                selection: router.creatorSelection,
-                center: FlowdTabCenterAction(systemImage: "video.fill", label: "Make a take") {
-                    toggleFan()
-                },
-                style: chrome.style
-            )
+            Button {
+                toggleFan()
+            } label: {
+                Image(systemName: "video.fill")
+            }
+            .buttonStyle(FlowdGlassButtonStyle(.primary, size: .large, isIconOnly: true, haptic: .tap))
+            .accessibilityLabel("Make a take")
         }
-        .flowdAnimation(FlowdSpring.snappy, value: chrome.style)
+        .padding(.trailing, FlowdLayout.gutter)
+        .padding(.bottom, 84)
         .flowdAnimation(FlowdSpring.smooth, value: appState.latestDraft?.id)
     }
 

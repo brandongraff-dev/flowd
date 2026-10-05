@@ -136,12 +136,11 @@ struct HomeView: View {
         return Button {
             router?.push(.dailyDrop)
         } label: {
-            FlowdCard(padding: FlowdSpacing.md, tint: FlowdColor.emberSolid) {
+            FlowdCard(padding: FlowdSpacing.md) {
                 HStack(spacing: FlowdSpacing.md) {
-                    ProgressRing(progress: Double(left) / Double(total), size: 76, lineWidth: 7, tone: .ember) {
-                        Image(systemName: "bolt.fill")
-                            .font(.system(size: 28, weight: .bold))
-                            .foregroundStyle(FlowdColor.ember)
+                    ZStack {
+                        ProgressRing(progress: Double(left) / Double(total), size: 72, lineWidth: 6, tone: .ember)
+                        FlowdIconBadge("bolt.fill", tone: .ember, size: 40)
                     }
                     VStack(alignment: .leading, spacing: FlowdSpacing.xxs) {
                         CountdownLabel(to: target, style: .compact, textStyle: FlowdFont.figureMd, tone: .ember)
@@ -187,21 +186,16 @@ struct HomeView: View {
         return Button {
             router?.push(.bounty(id: item.bounty.id))
         } label: {
-            ZStack(alignment: .bottomLeading) {
-                ThumbArt(item.bounty.art, aspect: .card, cornerRadius: FlowdRadius.xl, showsText: false, isDecorative: true)
-                LinearGradient(colors: [Color.clear, FlowdPrimitive.black.opacity(0.78)], startPoint: .center, endPoint: .bottom)
-                    .clipShape(RoundedRectangle(cornerRadius: FlowdRadius.xl, style: .continuous))
-                VStack(alignment: .leading, spacing: 2) {
+            VStack(alignment: .leading, spacing: FlowdSpacing.xs) {
+                ZStack(alignment: .bottomLeading) {
+                    ThumbArt(item.bounty.art, aspect: .square, cornerRadius: FlowdRadius.xl, showsText: false, isDecorative: true)
                     MoneyText(cents: item.expectedPay.medianCents, style: FlowdFont.figureMd, state: .neutral, showsCents: false, showsGlyph: false)
-                    Text(item.bounty.title).flowdCaption(.footnote).flowdInk(.muted).lineLimit(1)
+                        .padding(FlowdSpacing.sm)
+                        .shadow(color: FlowdPrimitive.black.opacity(0.5), radius: 6, x: 0, y: 1)
                 }
-                .padding(FlowdSpacing.sm)
+                Text(item.bounty.title).flowdBody(.subheadline).lineLimit(1)
             }
-            .frame(width: 176)
-            .overlay {
-                RoundedRectangle(cornerRadius: FlowdRadius.xl, style: .continuous)
-                    .strokeBorder(FlowdColor.rim, lineWidth: 1)
-            }
+            .frame(width: 148)
         }
         .buttonStyle(FlowdPressStyle())
         .accessibilityLabel("\(item.bounty.title), \(Fmt.money(item.expectedPay.medianCents)) typical")
