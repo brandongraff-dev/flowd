@@ -340,7 +340,8 @@ export function saveRateCard(tx: Tx, input: RateCardInput): { rate_card: RateCar
     categories_excluded: input.categories_excluded ?? existing?.categories_excluded ?? [],
     accepts_direct_offers: input.accepts_direct_offers ?? existing?.accepts_direct_offers ?? true,
     suggested: suggestRate(tx.state, creator),
-    packages: existing?.packages ?? [
+    // Existing bundles keep their discount when the base price moves (a 3-pack must never cost more per video than a single).
+    packages: existing?.packages.map((pack) => ({ ...pack, price_per_video_cents: Math.round(input.price_per_video_cents * (existing.price_per_video_cents > 0 ? pack.price_per_video_cents / existing.price_per_video_cents : 1)) })) ?? [
       { label: "3 videos", videos: 3, price_per_video_cents: Math.round(input.price_per_video_cents * 0.92) },
       { label: "5 videos", videos: 5, price_per_video_cents: Math.round(input.price_per_video_cents * 0.85) },
     ],

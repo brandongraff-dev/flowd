@@ -18,7 +18,7 @@ import type { StoreState } from "./store";
 import { ensureTables } from "./store";
 import { fail, runAction, type ActionResult, type Tx } from "./core/tx";
 
-import { addApp, autoApproveRun, claimAudit, connectIntegration, createApiKey, createList, createWebhook, disconnectIntegration, dryRunRule, addToList, changeMemberRole, inviteTeamMember, promoteWinner, removeFromList, removeMember, renewRights, resolveFatigue, respondToAd, revokeApiKey, revokeRights, runAudit, saveRule, setAdStatus, setRuleStatus, testIntegration, testWebhook, updateApp, updateBrandSettings } from "./core/brand-ops";
+import { addApp, autoApproveRun, claimAudit, connectIntegration, createApiKey, createList, createWebhook, disconnectIntegration, dryRunRule, addToList, changeMemberRole, inviteTeamMember, promoteWinner, removeFromList, removeMember, renewRights, resolveFatigue, respondToAd, revokeApiKey, revokeRights, runAudit, saveRule, setAdStatus, setAppArchived, setRuleStatus, testIntegration, testWebhook, updateApp, updateBrandSettings } from "./core/brand-ops";
 import { cancelBounty, createBounty, discardDraft, endBounty, extendBounty, featureBounty, fundBounty, pauseBounty, publishBounty, resumeBounty, topUpBounty, updateBounty } from "./core/bounties";
 import { advanceClock, advanceClockTo, runPayoutRun } from "./core/clock";
 import { claimDrop, completeLesson, connectSocialAccount, createCrew, disconnectSocialAccount, inviteToFlowd, joinCrew, joinTournament, leaveCrew, markAllNotificationsRead, markNotificationRead, saveRateCard, setPayoutMethod, setTaxSetAside, startLesson, submitTaxForm, toggleWellbeing, updateCreatorProfile, updateNotificationPrefs, updateWellbeing } from "./core/creator";
@@ -32,13 +32,14 @@ import { attachPost, fixCaption, removePost, waiveCompliance } from "./core/post
 import { applyFoundingCreator, joinWaitlist, recordLinkClick, recordProofView, revokeProof, shareProof } from "./core/public";
 import { addFeedbackNote, approveSubmission, rejectSubmission, requestChanges, resolveNote } from "./core/review";
 import { switchWorkspace } from "./core/session";
+import { signUpBrand, signUpCreator } from "./core/signup";
 import { appealRejection, claimBounty, reviseSubmission, saveBounty, submitVideo, withdrawSubmission } from "./core/submissions";
 import { archiveTestPlan, assignTestPlan, createTestPlan, updateTestPlan } from "./core/test-plans";
 import { changeBrandPlan, fundWallet, recordExport, recordInvoiceDownload, setPaymentMethod, updateInvoice } from "./core/wallet";
 import { cancelAuction, createAuction, licenseSpec, placeBid, uploadSpec, withdrawBid, withdrawSpec } from "./core/marketplace";
 
-/** Actions a signed-out visitor may call: the waitlist, the founding application, tracking-link clicks, proof-page views and the free audit. Everything else needs a persona. */
-const PUBLIC_ACTIONS: ReadonlySet<unknown> = new Set<unknown>([joinWaitlist, applyFoundingCreator, recordLinkClick, recordProofView, runAudit]);
+/** Actions a signed-out visitor may call: the waitlist, the founding application, tracking-link clicks, proof-page views, the free audit, sign-up and the no-login scam report. Everything else needs a persona. */
+const PUBLIC_ACTIONS: ReadonlySet<unknown> = new Set<unknown>([joinWaitlist, applyFoundingCreator, recordLinkClick, recordProofView, runAudit, signUpCreator, signUpBrand, reportScam]);
 const isPublicAction = (fn: unknown): boolean => PUBLIC_ACTIONS.has(fn);
 
 /** What an action host provides: a store to run against, and a promise that says the store may be used. */
@@ -149,6 +150,7 @@ export function createActions(host: ActionHost) {
     licenseSpec: bind(licenseSpec),
     addApp: bind(addApp),
     updateApp: bind(updateApp),
+    setAppArchived: bind(setAppArchived),
     connectIntegration: bind(connectIntegration),
     disconnectIntegration: bind(disconnectIntegration),
     testIntegration: bind(testIntegration),
@@ -218,6 +220,10 @@ export function createActions(host: ActionHost) {
     runAudit: bind(runAudit),
 
     // ── public pages ──────────────────────────────────────────────────────────────────────────
+    /** Creates a creator account (empty Bronze profile) and signs the visitor in as it. Public: a visitor has no session yet. */
+    signUpCreator: bind(signUpCreator),
+    /** Creates a brand workspace on the Free plan with its owner seat and signs the visitor in as it. Public. */
+    signUpBrand: bind(signUpBrand),
     joinWaitlist: bind(joinWaitlist),
     applyFoundingCreator: bind(applyFoundingCreator),
     recordLinkClick: bind(recordLinkClick),

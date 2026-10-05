@@ -3849,6 +3849,8 @@ export interface App {
   mmp: MmpKind;
   sdk_status: SdkStatus;
   default_hashtags: string[];
+  /** Set when the brand archived the app: it leaves the switcher and cannot start bounties; history, ledger and rights stay. Absent while active. */
+  archived_at?: IsoTimestamp;
 }
 
 /** One leg of a double-entry transaction. Rows with the same txn_id sum to exactly 0 (signed amounts: credit +, debit -). Append-only: only status, cleared_at, paid_at and payout_id change. Fixture: ledger.json (core). */

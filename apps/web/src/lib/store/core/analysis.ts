@@ -50,6 +50,8 @@ export interface ClipInput {
   face_at_ms?: number;
   /** When the app is first on screen, in ms. */
   app_at_ms?: number;
+  /** When the first hard cut or zoom happens, in ms (a pattern interrupt). Omit to cut when the app appears. */
+  first_cut_ms?: number;
   /** Add the spoken and on-screen #ad automatically (Studio does). Default true. */
   include_disclosure?: boolean;
   has_captions?: boolean;
@@ -136,8 +138,15 @@ export function analyzeClip(p: { clip: ClipInput; bounty: Bounty; app: App; bran
   const faceless = format?.faceless ?? false;
   const faceAt = faceless ? undefined : (clip.face_at_ms ?? 300);
   const appAt = clip.app_at_ms ?? 2200;
+  const firstCut = clip.first_cut_ms !== undefined && clip.first_cut_ms > 0 && clip.first_cut_ms < appAt ? clip.first_cut_ms : undefined;
+  const opening: SceneCut["kind"] = faceless ? "text_card" : "face";
   const scenes: SceneCut[] = [
-    { t_start_ms: 0, t_end_ms: appAt, kind: faceless ? "text_card" : "face" },
+    ...(firstCut !== undefined
+      ? [
+          { t_start_ms: 0, t_end_ms: firstCut, kind: opening },
+          { t_start_ms: firstCut, t_end_ms: appAt, kind: opening },
+        ]
+      : [{ t_start_ms: 0, t_end_ms: appAt, kind: opening }]),
     { t_start_ms: appAt, t_end_ms: Math.min(durationMs, appAt + 6500), kind: "screen_recording" },
   ];
   if (durationMs > appAt + 6500) scenes.push({ t_start_ms: appAt + 6500, t_end_ms: durationMs, kind: faceless ? "screen_recording" : "face" });

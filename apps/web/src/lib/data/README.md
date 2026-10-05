@@ -486,6 +486,7 @@ Two actions are called a little differently:
 | `licenseSpec` | `{ spec_id: string; paid_ads_days?: number; }` | `{ spec: Spec; license: SpecLicense; brand_cost_cents: number; }` |  |
 | `addApp` | `{ store_url_or_name: string; brand_id?: string; category?: Category; }` | `{ app: App; }` |  |
 | `updateApp` | `{ app_id: string; changes: Partial<Pick<App, "name" \| "category" \| "tagline" \| "features" \| "default_hashtags" \| "pricing" \| "avg_first_payment_cents">>; }` | `{ app: App; }` |  |
+| `setAppArchived` | `{ app_id: string; archived: boolean; }` | `{ app: App; }` | Archives or restores an app (`archived_at`). Refused while a bounty for it has money in escrow (`app_has_open_bounties`) or when it is the last active app (`last_app`). |
 | `connectIntegration` | `ConnectIntegrationInput` | `{ integration: Integration; webhook_secret?: string \| undefined; }` |  |
 | `disconnectIntegration` | `{ integration_id: string; }` | `{ integration: Integration; }` |  |
 | `testIntegration` | `{ integration_id: string; }` | `{ integration: Integration; }` |  |
