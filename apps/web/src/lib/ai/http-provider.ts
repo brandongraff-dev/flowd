@@ -3,12 +3,16 @@
  * server-sent events. If the route is missing, rate limited, down, or sends an error, it answers from the local mock instead and marks
  * the result `degraded`, so the screen still works and can say "Flo is on the backup engine".
  *
+ * The route sends each option whole. This provider types the finished answer out in the browser (the same typewriter the mock uses), so
+ * the pace and reduced motion are the page's decision and the server never sleeps to look busy.
+ *
  * A fallback after a partial stream restarts with a fresh `start` event: UIs reset their buffers on `start` (`useFlo` does).
  */
 
 import type { FloTask } from "./schemas";
 import { MockFloProvider } from "./mock-provider";
 import { readSse } from "./sse";
+import { streamResult } from "./typewriter";
 import { FloError, type AIProvider, type FloCallOptions, type FloResult, type FloStreamEvent } from "./types";
 
 export const FLO_ENDPOINT = "/api/v1/flo/chat";
@@ -56,8 +60,12 @@ export class HttpFloProvider implements AIProvider {
       let finished = false;
       for await (const event of readSse(response.body, signal)) {
         if (event.type === "error") throw new FloError("unavailable", event.message);
-        yield event;
-        if (event.type === "done") finished = true;
+        if (event.type === "start") yield event;
+        if (event.type === "done") {
+          finished = true;
+          yield* streamResult(event.result, { ...options.typewriter, firstTokenDelayMs: options.typewriter?.firstTokenDelayMs ?? 0, signal });
+        }
+        // The route's own delta and output_end events are not replayed: the answer is typed here, from the finished result.
       }
       if (!finished && !signal?.aborted) throw new FloError("unavailable", "The stream ended before the answer was complete.");
     } catch {

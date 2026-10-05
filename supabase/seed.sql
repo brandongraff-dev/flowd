@@ -1,6 +1,6 @@
 -- flowd seed: a small, alive local world built THROUGH the money functions, so it is also a worked example of the money path.
 -- Loaded by `supabase db reset` (config.toml, [db.seed]) and by `node supabase/tools/verify-pglite.mjs --seed`. Safe to run once on an empty database.
--- For the full demo world (80 fixture files, 4,500 ledger legs) generate supabase/seed.full.sql: node supabase/tools/gen-seed.mjs (supabase/README.md).
+-- For the full demo world (80 fixture files, 97 tables, 4,275 ledger legs) generate supabase/seed.full.sql: node supabase/tools/gen-seed.mjs (supabase/README.md, section 6).
 --
 -- Who is in it (all fictional; the personas of packages/contract/schema/world.mjs)
 --   Maya Reyes  @maya.makes  creator, Silver, $1,640.00 lifetime cleared, 21 of 27 decided videos approved         usr_maya / cr_maya

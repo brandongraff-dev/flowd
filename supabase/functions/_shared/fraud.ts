@@ -1,4 +1,4 @@
-// The fraud gate between "window closed" and "cleared" (docs: DOMAIN 12.4; BLUEPRINT ML system 4).
+// The fraud gate between "window closed" and "cleared" (docs: DOMAIN 12.4).
 //
 //   buildFraudRequest()  everything the model needs, gathered from the tables: hourly view curve, latest traffic-source and audience mix,
 //                        the account's age and followers, the bounty's target regions and cap, the creator's recent earnings (cap

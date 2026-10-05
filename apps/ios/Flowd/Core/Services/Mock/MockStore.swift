@@ -119,6 +119,7 @@ final class MockStore {
     let payouts: MockTable<Payout>
     let proofs: MockTable<Proof>
     // Market
+    let marketSeries: MockTable<MarketSeriesPoint>
     let offers: MockTable<Offer>
     let rightsGrants: MockTable<RightsGrant>
     let specs: MockTable<Spec>
@@ -180,6 +181,7 @@ final class MockStore {
         ledger = MockTable<LedgerEntry>("ledger", loader: loader)
         payouts = MockTable<Payout>("payouts", loader: loader)
         proofs = MockTable<Proof>("proofs", loader: loader)
+        marketSeries = MockTable<MarketSeriesPoint>("market_series", loader: loader)
         offers = MockTable<Offer>("offers", loader: loader)
         rightsGrants = MockTable<RightsGrant>("rights_grants", loader: loader)
         specs = MockTable<Spec>("specs", loader: loader)
@@ -262,6 +264,7 @@ final class MockStore {
         ledger.reset()
         payouts.reset()
         proofs.reset()
+        marketSeries.reset()
         offers.reset()
         rightsGrants.reset()
         specs.reset()

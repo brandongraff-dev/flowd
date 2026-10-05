@@ -153,7 +153,7 @@ All seven pages share one template: a "Draft · not legal advice" banner, versio
 | `/brand/review/rules` | Auto-approve rules | Rule builder (Flow band, 100% beats, disclosure, duplicate, music, fraud threshold, US %, creator history); scope; guardrails (daily and budget caps, 10% spot-check, kill switch); dry run "would have approved 31 of the last 50" with list; timeout policy (approve-if-clean or escalate); audit log; Pro gating message | F-049 |
 | `/brand/analytics` | Funnel and analytics | Filters (bounty, creator, hook, format, platform, window); views → clicks → installs → trials → paid with Tracked / Estimated chips; cost per stage; ROAS D7–D90 with maturity badges; payback day; cohorts; creator league ranked by cost per trial and D30 ROAS; attribution mix and coverage; CSV; table view for accessibility | F-044, F-045 |
 | `/brand/library` | Creative library | Grid of every video tagged by format, hook type, hook words, time to app reveal, CTA; hook leaderboards; filters; compare view; "why it won" notes; empty state explains the need for settled posts | F-053 |
-| `/brand/tests` | Test planner | Hook × body × CTA matrix sized to spend tier; assign to bounties or offers; results with winner, lift and confidence; small-sample caution; export | F-051 |
+| `/brand/tests` | **Redirect to `/brand/insights/experiments`** (308; builds no page) | Hook × body × CTA matrix sized to spend tier; assign to bounties or offers; results with winner, lift and confidence; small-sample caution; export | F-051 |
 | `/brand/promote` | Winner promotion | Eligible posts (cleared, rights allow) with hook rate, hold rate, trial rate, ROAS; flow: creator consent → platform permission (Spark / partnership, mock) → commission and 1% fee summary → confirm; running promotions; fatigue alerts (down 30% from peak) with refresh bounty | F-057, F-058, F-052, F-069 |
 | `/brand/rights` | Rights Vault | Licences table (post, creator, usage type, start, end, platform code or grant, status); expiry buckets 30 / 14 / 7 days; renew with price preview (25% of base fee per 30 days); revoke; export | F-012, F-058 |
 | `/brand/compliance` | Compliance QA | Audit log per submission (disclosure audio and on-screen, music, claims, AI flag); failures blocking settlement; waive with logged reason; banned-claims and categories lists; disclosure wording template; export | F-050, F-072 |
@@ -268,3 +268,33 @@ Implements `packages/contract/openapi.yaml` against the same demo data layer (se
 | Developers | `GET/POST /api-keys`, `/webhook-endpoints`, `POST /mcp` (JSON-RPC) | Scopes (read / write / financial); drafts by default; signed webhooks |
 | Admin | `GET /admin/{targets,fraud,disputes,verification,payouts,ledger,sla,ml}`, `POST /admin/demo/advance` | Demo clock drives window close, fraud check, payout run |
 | Events and health | `POST /events`, `GET /health` | Analytics rules in `PRODUCT_SPEC.md` §10 |
+
+---
+
+## 7. flowd Insights (added after the analytics study; spec: `docs/research/analytics-spec.md`, local-only)
+
+Insights is the analytics and recommendation layer built on the Insight Graph: video → hook/format tags → views → clicks → installs → trials → paid → renewals/refunds → LTV/payback. **`docs/research/analytics-spec.md` is the source of truth for every page below**: §2 metric dictionary, §3 brand modules (purpose, three questions, visuals, interactions, recommendation logic), §4 creator and admin insights, §5 the insight engine (`src/lib/engine/insights/*`), §7 per-route ASCII UI specs with copy and states. Read the sections for your routes before building. Every insight is phrased as **what / why / expected impact with a range / confidence / one-tap action**; every number carries a confidence label (Verified / Estimated / Modelled) and a maturity badge; every comparison shows posts-needed. Owners: `web-insights-brand` (routes under `/brand/insights`), `web-insights-cr-admin` (`/creator/insights`, `/admin/insights` and the post-autopsy tab).
+
+| Route | Page | Owner |
+|---|---|---|
+| `/brand/insights` | **Money Map** (home): ranked insight feed (priced leaks, budget moves, fatigue, anomalies, rehire), net-of-fee funnel, payback clock, attribution confidence meter, `?tab=alerts` | brand |
+| `/brand/insights/creative` | Creative Leaderboard with Video Story drawer | brand |
+| `/brand/insights/hooks` | Hook Lab: credible intervals, posts-needed, cheap-trial trap detector | brand |
+| `/brand/insights/formats` | Format × category win-rates (heatmap + table) | brand |
+| `/brand/insights/creators` | Creator Scorecards and Rehire / Test again / Clone / Rest / Pass queue | brand |
+| `/brand/insights/cohorts` | Cohort LTV and Payback (headline vs confirmed, projection band, net of fee/refund, maturity badges) | brand |
+| `/brand/insights/funnel-doctor` | Funnel Doctor: priced leaks D0–D12 with fix and impact range | brand |
+| `/brand/insights/fatigue` | Fatigue Radar with cause classification and refresh-bounty draft | brand |
+| `/brand/insights/budget` | Budget Optimizer: "move $X from A to B for about +Y kept subscribers" as a draft with P(better) and p10–p90 | brand |
+| `/brand/insights/experiments` | Experiments + Link Lab (hook × body × CTA planner, honest readouts, SRM check). **`/brand/tests` 308-redirects here** (do NOT build `/brand/tests` as a page) | brand |
+| `/brand/insights/benchmarks` | Percentile strip vs category, gap-to-p75 in dollars, "stabilizing" under 10 contributing brands | brand |
+| `/brand/insights/ask` | Ask flowd: deterministic planner over the metric registry, grounded answers with the query shown | brand |
+| `/brand/insights/brief` | Weekly AI Brief (grounded, verifyGrounded) | brand |
+| `/brand/market?tab=radar` | Market Radar tab (rising / fading formats and hooks) | `web-brand-market` adds the tab; data from insights |
+| `/creator/insights` | Creator Insights: Why It Won, retention replay, best hooks/apps for me, Hour Value (private, hidden in Wellbeing Mode), best window, pending forecast with range, streak-safe suggestions | cr-admin |
+| `/creator/posts/[id]?tab=autopsy` | Post autopsy: three drivers marked "likely driver, not proof", money-vs-viral quadrant, beat-anchored fix | cr-admin (additive tab edit on `web-creator-core`'s page) |
+| `/admin/insights` | Ops insights: market health, score calibration, fraud trends, attribution health, benchmark release gate, engine health | cr-admin |
+
+**Navigation:** the brand shell (owner `web-brand-core`) adds an **Insights** group with Money Map and the sub-pages above (Funnel Doctor, Hooks, Creators, Cohorts, Budget, Experiments, Benchmarks, Ask); the creator shell adds **Insights**; the admin shell adds **Insights**. `/brand/analytics` stays as the raw funnel explorer and links to Funnel Doctor.
+
+**API additions** (`web-admin-api`, additive): `/api/v1/insights/*` (feed, act / dismiss / snooze, receipts, read models, budget/simulate, experiments/analyze, ask), `/api/v1/metrics/registry`, `/api/v1/creator/insights`, `/api/v1/admin/insights/*`.

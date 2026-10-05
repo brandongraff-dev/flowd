@@ -18,7 +18,7 @@ import {
   withCarryOver,
   CONSTANTS,
 } from "@/lib/engine";
-import type { Creator, CreatorId, CreatorReputation, LedgerEntry, LedgerType, Submission, TierEvent } from "@/lib/contract/types";
+import type { Creator, CreatorId, CreatorReputation, LedgerEntry, LedgerType, OnboardingStage, Submission, TierEvent } from "@/lib/contract/types";
 import { notifyCreator } from "./notify";
 import type { Tx } from "./tx";
 
@@ -38,6 +38,22 @@ export function clearedFromLedger(tx: Tx, creatorId: CreatorId): number {
   let sum = 0;
   for (const e of tx.all("ledger")) if (e.account === account && isEarning(e) && (e.status === "cleared" || e.status === "paid")) sum += e.amount_cents;
   return sum;
+}
+
+/** The First-Dollar Path in order. */
+export const ONBOARDING_STAGES: readonly OnboardingStage[] = ["signed_up", "niches_picked", "accounts_linked", "first_submission", "first_approval", "verified", "first_dollar"];
+
+/** The furthest stage the facts support, never earlier than the stage the creator already reached. */
+export function onboardingStageFor(c: Pick<Creator, "onboarding_stage" | "verification_status">, facts: { submissions: number; approved: number; cleared_cents: number }): OnboardingStage {
+  let reached: OnboardingStage = c.onboarding_stage;
+  const advance = (to: OnboardingStage): void => {
+    if (ONBOARDING_STAGES.indexOf(to) > ONBOARDING_STAGES.indexOf(reached)) reached = to;
+  };
+  if (facts.submissions > 0) advance("first_submission");
+  if (facts.approved > 0) advance("first_approval");
+  if (facts.approved > 0 && c.verification_status === "verified") advance("verified");
+  if (facts.cleared_cents > 0) advance("first_dollar");
+  return reached;
 }
 
 /** Recomputes approval counts, lifetime cleared and the tier of a creator. Writes a tier-history row and a notification on a change. */
@@ -74,6 +90,14 @@ export function refreshCreator(tx: Tx, creatorId: CreatorId, opts: { clearedCent
   if (evaluation.tier_hold_until) patch.tier_hold_until = evaluation.tier_hold_until;
   if (evaluation.tier !== c.tier) patch.tier_since = tx.now;
   if (evaluation.tier_basis === "earned" && c.tier_hold_until) patch.tier_hold_until = undefined;
+  // The First-Dollar Path moves forward as the facts arrive (a first video, a first approval, a first cleared dollar); it never moves back.
+  const ledgerCleared = opts.clearedCents ?? clearedFromLedger(tx, creatorId);
+  const stage = onboardingStageFor(c, { submissions: subs.length, approved: approvedLike, cleared_cents: ledgerCleared });
+  if (stage !== c.onboarding_stage) patch.onboarding_stage = stage;
+  if (ledgerCleared > 0 && !c.first_dollar_at) {
+    patch.first_dollar_at = tx.now;
+    if (!c.badges.includes("first_dollar")) patch.badges = [...c.badges, "first_dollar"];
+  }
   const next = { ...c, ...patch } as Creator;
   if (next.tier_hold_until === undefined) delete (next as Partial<Creator>).tier_hold_until;
   tx.put("creators", next);

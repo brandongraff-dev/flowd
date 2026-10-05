@@ -9,7 +9,8 @@
 //   node supabase/tools/verify-pglite.mjs --only money     run only test files whose name contains "money"
 //   node supabase/tools/verify-pglite.mjs --seed           load supabase/seed.sql, then run tests/seed/*.test.sql (instead of the other tests: they
 //                                                          build their own worlds with the same ids)
-//   node supabase/tools/verify-pglite.mjs --seed-file seed.full.sql   the same with another seed (the full fixture world from gen-seed.mjs)
+//   node supabase/tools/verify-pglite.mjs --seed-file seed.full.sql   the full fixture world (generate it first: node supabase/tools/gen-seed.mjs), then
+//                                                          tests/seed-full/*.test.sql: counts, the ledger audit and what each persona may see
 //   node supabase/tools/verify-pglite.mjs --migrations     apply the migrations only
 //
 // If the packages are installed outside the repo, point PGLITE_DIR at the folder that holds node_modules/@electric-sql.
@@ -100,7 +101,8 @@ if (withSeed) {
 // 3. tests
 if (!migrationsOnly) {
   const helpersDir = path.join(root, 'tests');
-  const testDir = withSeed ? path.join(helpersDir, 'seed') : helpersDir;
+  // seed.sql has its own assertions (tests/seed); the generated full world has its (tests/seed-full, expectations computed from the fixtures)
+  const testDir = withSeed ? path.join(helpersDir, seedFileArg ? 'seed-full' : 'seed') : helpersDir;
   const files = fs.existsSync(testDir) ? fs.readdirSync(testDir).filter((x) => x.endsWith('.test.sql')).sort() : [];
   const helpers = path.join(helpersDir, '00_helpers.sql');
   if (fs.existsSync(helpers)) {

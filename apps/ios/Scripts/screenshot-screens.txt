@@ -1,0 +1,27 @@
+# One screen key per line (comments after # are ignored). The app opens each directly when launched with
+#   -FlowdDemo YES -FlowdPersona <creator|brand|admin> -FlowdScreen <key>
+# The persona is taken from the key prefix (creator-, brand-, admin-); other keys use the creator persona.
+# Keys are defined by the launch-option router (apps/ios/Flowd/App/LaunchOptions.swift) - see docs/SCREENS.md.
+design-gallery
+# --- Creator (Maya, Gold) ---
+creator-home
+creator-bounties
+creator-bounty-detail
+creator-studio-capture
+creator-hook-score
+creator-wallet
+creator-earnings-card
+creator-leaderboard
+creator-profile
+# --- Brand (Jordan Ellis, Lumi) ---
+brand-overview
+brand-review
+brand-bounty-detail
+brand-insights
+brand-wallet
+# --- Admin (Ops) ---
+admin-control
+admin-queues
+admin-fraud-case
+admin-payouts
+admin-market

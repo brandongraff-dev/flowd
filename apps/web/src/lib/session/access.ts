@@ -89,3 +89,30 @@ export function postLoginTarget(role: Role, next?: string | null): string {
   if (safe && safe !== "/login" && roleCanAccess(role, safe)) return safe;
   return homeFor(role);
 }
+
+/** What a `RoleGate` shows. `pending` is only returned while the browser's session is unread and the server gave no role to go on. */
+export type GateDecision = "pending" | "allow" | "signed_out" | "wrong_role";
+
+/**
+ * The decision behind `<RoleGate>`, pure so it can be tested without a DOM. Once the session is `ready` the browser's role decides.
+ * Before that the server-verified `initialRole` stands in (so the server HTML and the first client render agree, with no flash of a
+ * gate screen); with no `initialRole` either, the answer is `pending`.
+ */
+export function gateDecision(params: {
+  status: "unknown" | "ready";
+  role: Role | null;
+  initialRole?: Role | null;
+  allow: Role | readonly Role[];
+}): GateDecision {
+  const allowed: readonly Role[] = typeof params.allow === "string" ? [params.allow] : params.allow;
+  if (params.status === "unknown" && params.initialRole === undefined) return "pending";
+  const role = params.status === "ready" ? params.role : (params.initialRole ?? null);
+  if (role === null) return "signed_out";
+  return allowed.includes(role) ? "allow" : "wrong_role";
+}
+
+/** Which personas can open a gate: the allowed roles, in picker order (brand, creator, admin). */
+export function gateTargets(allow: Role | readonly Role[]): Role[] {
+  const allowed: readonly Role[] = typeof allow === "string" ? [allow] : allow;
+  return (["brand_member", "creator", "admin"] as const).filter((role) => allowed.includes(role));
+}

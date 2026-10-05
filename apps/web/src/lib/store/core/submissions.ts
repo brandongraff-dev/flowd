@@ -11,7 +11,6 @@ import type {
   CurveShape,
   Dispute,
   FormatId,
-  Platform,
   Submission,
   SubmissionSource,
   SubmissionVersion,

@@ -69,6 +69,11 @@ create constraint trigger offer_code_pool_cap
   deferrable initially deferred
   for each row execute function private.offer_code_cap_check();
 
+-- A promo code belongs to one creator within an app.
+create trigger attribution_links_promo_owner
+  before insert or update of promo_code, status, creator_id on public.attribution_links
+  for each row execute function private.promo_code_owner_check();
+
 -- Workspaces keep an owner.
 create constraint trigger brand_members_owner
   after insert or update or delete on public.brand_members

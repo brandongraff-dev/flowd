@@ -7,6 +7,7 @@
  *   DATA       <StatCard/>  <KpiRow/>  <Delta/>  <DataTable/>  <Pagination/>  <Timeline/>
  *   MARKETING  <PhoneFrame/>  <Marquee/>  <PayoutTicker/>  <AnimatedBeam/>  <FlowLines/>  <SectionReveal/>  <RevealItem/>
  *   DELIGHT    <ConfettiBurst/>  <PayoutArrive/>     creator earned outcomes ONLY (cleared money, approvals, tier-ups)
+ *   DEMO       <RoleGate/>  <DemoBanner/>  <DemoTag/>     role gating with a "switch persona" screen; the demo-data strip and tag
  *
  * Also exported for convenience: the providers and theme control that already live in this folder.
  *
@@ -56,6 +57,8 @@ export { ConfettiBurst, type ConfettiBurstProps } from "./confetti-burst";
 export { PayoutArrive, type PayoutArriveProps } from "./payout-arrive";
 export { AnimatedBeam, FlowLines, type AnimatedBeamProps, type FlowLinesProps } from "./animated-beam";
 export { SectionReveal, RevealItem, type SectionRevealProps, type RevealItemProps } from "./section-reveal";
+export { RoleGate, type RoleGateProps } from "./role-gate";
+export { DemoBanner, DemoTag, DEMO_BANNER_DISMISSED_KEY, type DemoBannerProps, type DemoTagProps } from "./demo-banner";
 export { useStoredBoolean } from "./use-stored-boolean";
 export { Providers } from "./providers";
 export { ThemeProvider, useTheme } from "./theme-provider";

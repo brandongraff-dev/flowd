@@ -29,6 +29,7 @@ import { clearConversions, clearDueRows, clearPostEarnings, completeTransfers, e
 import { advanceAds, advanceBounties, advanceDrops, advanceReviewSla, advanceRights, advanceTournaments, expireStale, refreshAffectedCreators, settleAds } from "./lifecycle";
 import { advanceAuctions, advanceSpecs } from "./marketplace";
 import { expireOffers } from "./offers";
+import { applyReferralRewards } from "./referrals";
 import { growPosts } from "./simulate";
 import { rolloverStreaks } from "./streaks";
 import { ensure, type Tx } from "./tx";
@@ -107,6 +108,7 @@ function clearingRun(tx: Tx, at: IsoTimestamp, summary: TickSummary): void {
   clearDueRows(tx, at);
   for (const e of tx.all("ledger")) if (e.status === "cleared" && !e.payout_id && e.cleared_at === at && e.account.startsWith("creator:")) affected.add(e.account.slice("creator:".length));
   refreshAffectedCreators(tx, affected);
+  for (const id of affected) applyReferralRewards(tx, id, at);
   for (const id of affected) scheduleWeekly(tx, id);
   summary.clearing_runs += 1;
   summary.log.push(`${at.slice(0, 16).replace("T", " ")} UTC clearing run: ${summary.posts_cleared} posts, ${conv.batches} conversion batches cleared`);

@@ -173,5 +173,36 @@ select tap.eq('a claimed creator joins the bounty as "joined" with a 24 h reserv
 select tap.raises('the last owner cannot leave', $$update public.brand_members set status = 'removed' where brand_id = 'br_lumi' and role = 'owner'; set constraints all immediate$$, 'FD016');
 select tap.raises('a workspace with money in the wallet cannot be closed', $$update public.brands set deleted_at = now() where id = 'br_lumi'$$, 'FD016');
 
+-- 13. A promo code belongs to one creator within an app (many links, one owner); an expired link releases it -------------------------------
+insert into public.attribution_links (id, creator_id, bounty_id, app_id, code, short_url, deep_link, promo_code, status) values
+  ('lnk_p1', 'cr_maya', 'bnty_i1', 'app_lumi', 'maya-p1', 'joinflowd.io/r/maya-p1', 'lumi://r/maya-p1', 'MAYA-LUMI', 'active'),
+  ('lnk_p2', 'cr_maya', 'bnty_i1', 'app_lumi', 'maya-p2', 'joinflowd.io/r/maya-p2', 'lumi://r/maya-p2', 'MAYA-LUMI', 'active');
+select tap.eq('the same creator may carry her promo code on several links (one per post or bounty)', (select count(*)::text from public.attribution_links where promo_code = 'MAYA-LUMI' and creator_id = 'cr_maya'), '2');
+select tap.raises('another creator cannot hold the same promo code in the same app', $$insert into public.attribution_links (id, creator_id, bounty_id, app_id, code, short_url, deep_link, promo_code, status)
+  values ('lnk_p3', 'cr_olga', 'bnty_i1', 'app_lumi', 'olga-p3', 'joinflowd.io/r/olga-p3', 'lumi://r/olga-p3', 'MAYA-LUMI', 'active')$$, 'FD016');
+select tap.raises('a link cannot be handed to another creator while the code is held', $$update public.attribution_links set creator_id = 'cr_olga' where id = 'lnk_p2'$$, 'FD016');
+update public.attribution_links set status = 'expired' where creator_id = 'cr_maya' and promo_code = 'MAYA-LUMI';
+insert into public.attribution_links (id, creator_id, bounty_id, app_id, code, short_url, deep_link, promo_code, status)
+values ('lnk_p4', 'cr_olga', 'bnty_i1', 'app_lumi', 'olga-p4', 'joinflowd.io/r/olga-p4', 'lumi://r/olga-p4', 'MAYA-LUMI', 'active');
+select tap.eq('once her links expire, the pooled code rotates to another creator', (select string_agg(creator_id, ',') from public.attribution_links where promo_code = 'MAYA-LUMI' and status = 'active'), 'cr_olga');
+
+-- 14. Rights terms: organic has none, every paid-ad right ends; a partnership permission not yet granted has no term to end -------------------
+select set_config('flowd.seed_mode', 'on', true);
+select tap.raises('an active paid-ad grant without an end date (a perpetual right) is refused', $$insert into public.rights_grants (id, post_id, submission_id, bounty_id, brand_id, app_id, creator_id, scope, status, platform, starts_at, base_fee_cents, renewal_pct_per_30d, renewal_price_cents, ai_likeness)
+  values ('rg_t_perp', 'post_nope', 'sub_nope', 'bnty_i1', 'br_lumi', 'app_lumi', 'cr_maya', 'paid_ads', 'active', 'tiktok', now(), 10000, 0.25, 2500, false)$$, '23514');
+select tap.raises('an expired partnership permission without an end date is refused too', $$insert into public.rights_grants (id, post_id, submission_id, bounty_id, brand_id, app_id, creator_id, scope, status, platform, starts_at, base_fee_cents, renewal_pct_per_30d, renewal_price_cents, ai_likeness)
+  values ('rg_t_perp2', 'post_nope', 'sub_nope', 'bnty_i1', 'br_lumi', 'app_lumi', 'cr_maya', 'partnership_permission', 'active', 'meta', now(), 10000, 0.25, 2500, false)$$, '23514');
+select tap.raises('organic posting carries no end date', $$insert into public.rights_grants (id, post_id, submission_id, bounty_id, brand_id, app_id, creator_id, scope, status, platform, starts_at, ends_at, base_fee_cents, renewal_pct_per_30d, renewal_price_cents, ai_likeness)
+  values ('rg_t_org', 'post_nope', 'sub_nope', 'bnty_i1', 'br_lumi', 'app_lumi', 'cr_maya', 'organic', 'active', 'tiktok', now(), now() + interval '30 days', 10000, 0.25, 2500, false)$$, '23514');
+do $t$
+begin
+  -- accepted: the permission is still pending, so there is no term yet (the row is removed again: its post and submission are placeholders)
+  insert into public.rights_grants (id, post_id, submission_id, bounty_id, brand_id, app_id, creator_id, scope, status, platform, starts_at, base_fee_cents, renewal_pct_per_30d, renewal_price_cents, ai_likeness)
+  values ('rg_t_pend', 'post_nope', 'sub_nope', 'bnty_i1', 'br_lumi', 'app_lumi', 'cr_maya', 'partnership_permission', 'pending_permission', 'meta', now(), 10000, 0.25, 2500, false);
+  delete from public.rights_grants where id = 'rg_t_pend';
+end
+$t$;
+select set_config('flowd.seed_mode', 'off', true);
+
 select 'invariants.test.sql: passed' as result;
 rollback;

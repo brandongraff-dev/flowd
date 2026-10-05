@@ -2,7 +2,7 @@
  * Brand billing: card top-ups, funding invoices and plan changes. Every dollar that enters or leaves a wallet goes through the ledger here.
  */
 
-import type { Brand, BrandId, Invoice, LineItem, Plan } from "@/lib/contract/types";
+import type { Auction, Brand, BrandId, Invoice, LineItem, Plan } from "@/lib/contract/types";
 import {
   addDays,
   addMonths,
@@ -83,15 +83,18 @@ export function availableWallet(tx: Tx, brandId: BrandId): number {
   return brand.wallet_balance_cents - heldForBids(tx, brandId);
 }
 
-/** Money held from the wallet for open sealed bids. */
-export function heldForBids(tx: Tx, brandId: BrandId): number {
+/** Money held from the wallet for open sealed bids, from a list of auctions (selectors use this; actions use `heldForBids`). */
+export function heldForBidsIn(auctions: Iterable<Auction>, brandId: BrandId): number {
   let held = 0;
-  for (const a of tx.all("auctions")) {
+  for (const a of auctions) {
     if (a.status !== "open" && a.status !== "scheduled" && a.status !== "closed") continue;
     for (const b of a.bids) if (b.brand_id === brandId && b.status === "sealed") held += b.escrow_hold_cents;
   }
   return held;
 }
+
+/** Money held from the wallet for open sealed bids. */
+export const heldForBids = (tx: Tx, brandId: BrandId): number => heldForBidsIn(tx.all("auctions"), brandId);
 
 export interface PlanChange {
   from: Plan;

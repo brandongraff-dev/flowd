@@ -27,7 +27,6 @@ import {
   CONSTANTS,
   addDays,
   addMonths,
-  AUDIT_LABEL,
   canEnable,
   clockLabel,
   dryRun,
@@ -63,7 +62,7 @@ import { ActionError, ensure, type Tx } from "./tx";
 import { pad, slug } from "../ids";
 import { schemeOf } from "./tracking";
 
-const needFeature = (tx: Tx, brand: Brand, feature: Parameters<typeof planHasFeature>[1], what: string): void => {
+export const needFeature = (tx: Tx, brand: Brand, feature: Parameters<typeof planHasFeature>[1], what: string): void => {
   if (planHasFeature(brand.plan, feature)) return;
   const need = cheapestPlanWith(feature);
   throw new ActionError("plan_required", `${what} is part of the ${need ? planLabel(need) : "Pro"} plan.`, `You are on ${planLabel(brand.plan)}. Upgrade in Settings, then Plan and billing.`, 402);
@@ -80,8 +79,6 @@ export function addApp(tx: Tx, input: { store_url_or_name: string; brand_id?: st
   ensure(!tx.get("apps", id), "app_exists", `${parsed.name} is already in a workspace.`, undefined, 409);
   const audit = generateAudit({ input: input.store_url_or_name, now: tx.now });
   const category = input.category ?? inferCategory(parsed.name).category;
-  const rng = seededRng(id);
-  const hue = Math.floor(rng() * 360);
   const app: App = {
     id,
     brand_id: brand.id,
@@ -104,9 +101,7 @@ export function addApp(tx: Tx, input: { store_url_or_name: string; brand_id?: st
     sdk_status: "not_installed",
     default_hashtags: [`#${slug(parsed.name).replace(/-/g, "")}`, "#ad"],
   };
-  void hue;
   tx.put("apps", app);
-  tx.patch("users", member?.user_id ?? tx.session.user_id ?? "", {});
   logActivity(tx, { brand_id: brand.id, action: "integration_connected", summary: `${describeActor(tx, member?.id)} added the app ${app.name}`, actor_member_id: member?.id, target_kind: "app", target_id: app.id });
   return { app };
 }
@@ -505,7 +500,7 @@ export function respondToAd(tx: Tx, input: { ad_id: string; accept: boolean; cod
     return { ad: tx.patch("ads", ad.id, { status: "declined", ended_at: tx.now }) };
   }
   const days = input.code_days ?? sparkCodeDaysFor(Math.ceil(ad.rights_ends_at ? daysLeft(ad.rights_ends_at, tx.now) : 90));
-  ensure(CONSTANTS.rights.spark_code_options_days.includes(days), "days_invalid", "Spark codes last 7, 30, 60 or 365 days.", undefined, 422);
+  ensure((CONSTANTS.rights.spark_code_options_days as readonly number[]).includes(days), "days_invalid", "Spark codes last 7, 30, 60 or 365 days.", undefined, 422);
   const next = tx.patch("ads", ad.id, { status: "authorised", permission_granted_at: tx.now, spark_code: `${ad.kind === "spark_ad" ? "#" : "&"}${hashString(`${ad.id}|code`).toString(36).toUpperCase()}${hashString(`${ad.id}|b`).toString(36).toUpperCase()}`.slice(0, 18), code_duration_days: days, code_expires_at: addDays(tx.now, days) });
   notifyBrand(tx, ad.brand_id, { kind: "ad_live", title: "Permission granted: launch your promotion", body: `The ${ad.kind === "spark_ad" ? "Spark code" : "permission"} is valid for ${days} days. Launch it from Winner promotion.`, route: "/brand/promote", ref_kind: "ad", ref_id: ad.id });
   return { ad: next };
@@ -631,13 +626,9 @@ export function runAudit(tx: Tx, input: { input: string }): { report: AuditRepor
   const gen = generateAudit({ input: raw, now: tx.now, creators });
   const existing = tx.all("audit_reports").find((r) => r.slug === gen.slug);
   if (existing) return { report: tx.patch("audit_reports", existing.id, { page_views: existing.page_views + 1 }), created: false };
+  // The generator also returns working data (reference pool, features, label) that is not part of the saved report.
   const { reference_pool: _pool, category_source: _source, features: _features, label: _label, ...row } = gen;
-  void _pool;
-  void _source;
-  void _features;
-  void _label;
-  const report: AuditReport = { ...row, id: `aud_${gen.slug.replace(/-/g, "_").slice(0, 28)}`, created_by: tx.session.persona === "brand" ? "brand" : "creator", ...(tx.session.persona === "brand" && tx.session.brand_id ? {} : {}), page_views: 1 };
-  void AUDIT_LABEL;
+  const report: AuditReport = { ...row, id: `aud_${gen.slug.replace(/-/g, "_").slice(0, 28)}`, created_by: tx.session.persona === "brand" ? "brand" : "creator", page_views: 1 };
   return { report: tx.put("audit_reports", report), created: true };
 }
 

@@ -32,15 +32,17 @@ export interface BrandActor {
 export function requireBrand(tx: Tx, brandId: string | null | undefined, capability: BrandCapability = "view"): BrandActor {
   const s = tx.session;
   ensure(s.persona !== null, "unauthenticated", "Sign in to do that.", "Pick a demo persona on the login page.", 401);
+  // The persona is judged before the brand is looked up, so a creator calling a brand action is told it is not theirs, not that a brand is missing.
+  ensure(s.persona === "brand" || s.persona === "admin", "forbidden", "Only the brand team can do that.", "Switch to the brand persona.", 403);
   const brand = tx.must("brands", brandId ?? s.brand_id, "Brand");
   if (s.persona === "admin") return { brand, user_id: s.user_id ?? "usr_ops", by_admin: true };
-  ensure(s.persona === "brand", "forbidden", "Only the brand team can do that.", "Switch to the brand persona.", 403);
   const own = s.brand_id === brand.id;
   const managed = brand.agency_id !== undefined && brand.agency_id === s.brand_id;
   ensure(own || managed, "forbidden", "That belongs to another brand.", undefined, 403);
   const member = tx.get("brand_members", s.member_id ?? undefined) ?? tx.all("brand_members").find((m) => m.brand_id === s.brand_id && m.user_id === s.user_id);
   ensure(member && member.status === "active", "forbidden", "You are not an active member of this workspace.", undefined, 403);
   ensure(roleCan(member.role, capability), "forbidden", `Your role (${member.role.replace(/_/g, " ")}) cannot do that.`, "Ask a workspace owner or admin.", 403);
+  ensureNotSuspended(tx, member.user_id);
   return { brand, member, user_id: member.user_id, by_admin: false };
 }
 
@@ -62,7 +64,14 @@ export function requireCreator(tx: Tx, creatorId?: string | null): CreatorActor 
   const id = s.creator_id;
   ensure(!creatorId || creatorId === id, "forbidden", "That belongs to another creator.", undefined, 403);
   const creator = tx.must("creators", id, "Creator");
+  ensureNotSuspended(tx, creator.user_id);
   return { creator, user_id: creator.user_id, by_admin: false };
+}
+
+/** A person Ops has put on hold can read but not act (their money is never taken; Ops contacts them). */
+function ensureNotSuspended(tx: Tx, userId: string): void {
+  const user = tx.get("users", userId);
+  ensure(user?.status !== "suspended", "account_on_hold", "Your account is on hold, so you can look but not change anything.", "A person on the flowd team will contact you within 24 hours. Your money is safe.", 403);
 }
 
 /** Ops only. */

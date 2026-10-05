@@ -41,7 +41,7 @@ type Reply = (c: Ctx) => string;
 const REPLIES: Readonly<Record<CommentIntent, readonly Reply[]>> = {
   sponsored: [
     (c) => `Yes, this is a paid partnership with ${c.app}. I'd tell you either way. ${c.feature.charAt(0).toUpperCase()}${c.feature.slice(1)} is the part I'd actually use.`,
-    (c) => `It's an ad, yes: #ad is in the caption. I only show what I'd try myself, and I show it on screen.`,
+    () => `It's an ad, yes: #ad is in the caption. I only show what I'd try myself, and I show it on screen.`,
     (c) => `Good catch. Paid partnership with ${c.app}. What you see on screen is what the app did for me.`,
   ],
   skeptical: [
@@ -65,7 +65,7 @@ const REPLIES: Readonly<Record<CommentIntent, readonly Reply[]>> = {
     () => `Appreciate the honesty. Not every app is for everyone, and that's okay.`,
   ],
   praise: [
-    (c) => `Thank you! ${c.feature.charAt(0).toUpperCase()}${c.feature.slice(1)} is the part I use most. (#ad)`,
+    (c) => `Thank you. ${c.feature.charAt(0).toUpperCase()}${c.feature.slice(1)} is the part I use most. (#ad)`,
     (c) => `Glad it helps. ${c.app} has more than I showed. ${link(c)}`,
     (c) => `Appreciate that. Paid partnership with ${c.app}, and I'd say the same either way.`,
   ],
@@ -75,9 +75,9 @@ const REPLIES: Readonly<Record<CommentIntent, readonly Reply[]>> = {
     (c) => `Worth checking on the listing before you download. I only used ${c.feature}. (#ad)`,
   ],
   other: [
-    (c) => `Thanks for watching! This is a paid partnership with ${c.app}. ${link(c)}`,
+    (c) => `Thanks for watching. This is a paid partnership with ${c.app}. ${link(c)}`,
     (c) => `Appreciate you stopping by. I used ${c.feature} for ${c.goal}. (#ad)`,
-    (c) => `Thanks! Ask me anything about ${c.app} and I'll answer honestly.`,
+    (c) => `Thanks. Ask me anything about ${c.app} and I'll answer honestly.`,
   ],
 };
 

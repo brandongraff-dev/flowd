@@ -86,13 +86,16 @@ function clockText(row: Pick<MoneyClockRow, "reason" | "eta_at">, windowEnd?: Is
 }
 
 /** What stops a creator's cleared money from paying out: no payout method, identity not verified, or no tax form (just-in-time at first approval). */
-export function payoutHold(tx: Tx, creator: Creator): HoldReason | null {
+export function payoutHoldFor(creator: Pick<Creator, "payout_method" | "verification_status">, tax: { status: string } | undefined): HoldReason | null {
   const method = creator.payout_method;
   if (!method || method.status !== "active") return "payout_method_missing";
   if (creator.verification_status !== "verified") return "identity_check";
-  const tax = tx.all("tax_profiles").find((t) => t.creator_id === creator.id);
   if (CONSTANTS.tax.hold_payout_without_tax_info && (!tax || tax.status !== "verified")) return "tax_info_missing";
   return null;
+}
+
+export function payoutHold(tx: Tx, creator: Creator): HoldReason | null {
+  return payoutHoldFor(creator, tx.all("tax_profiles").find((t) => t.creator_id === creator.id));
 }
 
 const HOLD_NEXT_STEP: Record<HoldReason, string> = {

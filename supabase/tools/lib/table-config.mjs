@@ -447,9 +447,9 @@ export const TABLE_CONFIG = {
     ],
     uniques: [
       uq('attribution_links_code_key', { cols: ['code'] }),
-      uq('attribution_links_promo_key', { cols: ['app_id', 'promo_code'], where: 'promo_code is not null' }),
     ],
     indexes: [
+      ix('attribution_links_promo_idx', '(app_id, promo_code) where promo_code is not null'), // one creator per code: private.promo_code_owner_check()
       ix('attribution_links_creator_idx', '(creator_id, bounty_id)'),
       ix('attribution_links_post_idx', '(post_id) where post_id is not null'),
     ],
@@ -529,7 +529,9 @@ export const TABLE_CONFIG = {
   rights_grants: {
     skip: ['renewals'],
     checks: [
-      chk('rights_grants_organic_chk', `(scope = 'organic') = (ends_at is null)`),
+      // organic posting has no term; every paid-ad right has an end date (no perpetual rights). A partnership permission that the creator has not granted yet has
+      // no term to end: its term starts when the permission arrives (pending_permission -> active sets starts_at and ends_at).
+      chk('rights_grants_organic_chk', `(scope = 'organic') = (ends_at is null) or (status = 'pending_permission' and ends_at is null)`),
       chk('rights_grants_ai_chk', 'ai_likeness = false'),
       chk('rights_grants_renewal_price_chk', `renewal_price_cents = ${bps('base_fee_cents', '(round(renewal_pct_per_30d * 10000))::bigint')}`),
       chk('rights_grants_alerts_chk', 'alerts_sent <@ array[30, 14, 7]'),

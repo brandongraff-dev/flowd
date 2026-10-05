@@ -35,3 +35,4 @@ docs/qa/
 # --- local tooling
 .claude/settings.local.json
 apps/ios/build/
+.dev-server.log

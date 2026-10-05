@@ -170,7 +170,9 @@ export function createFloServer(deps: FloServerDeps = {}): FloServer {
 
       const abort = new AbortController();
       request.signal.addEventListener("abort", () => abort.abort(), { once: true });
-      const options: FloCallOptions = { signal: abort.signal, typewriter: { signal: abort.signal } };
+      // The server never sleeps to look like typing (that would hold a function open for seconds). It sends each option whole; the browser's
+      // HttpFloProvider types the answer out at its own pace, so reduced motion and the typing speed stay the client's call.
+      const options: FloCallOptions = { signal: abort.signal, typewriter: { signal: abort.signal, instant: true } };
       const encoder = new TextEncoder();
       const task = parsed.data.task;
 

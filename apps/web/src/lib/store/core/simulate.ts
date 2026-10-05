@@ -105,13 +105,6 @@ export interface GrowthResult {
   snapshots: number;
 }
 
-/** Everything the growth step touches, kept out of the per-post loop so tests can inspect it. */
-interface GrowthCtx {
-  rng: Rng;
-  t0: IsoTimestamp;
-  t1: IsoTimestamp;
-}
-
 function dayEdges(from: IsoTimestamp, to: IsoTimestamp): { date: IsoDate; start: number; end: number }[] {
   const out: { date: IsoDate; start: number; end: number }[] = [];
   let cursor = toMs(from);

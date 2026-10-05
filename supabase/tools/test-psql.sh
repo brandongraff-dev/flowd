@@ -7,6 +7,8 @@
 #   sh supabase/tools/test-psql.sh money                  # only files whose name contains "money"
 #   supabase db reset                                     # with the seed this time
 #   sh supabase/tools/test-psql.sh --seed                 # tests/seed/*.test.sql (assertions about supabase/seed.sql)
+#   node supabase/tools/gen-seed.mjs && supabase db reset --no-seed && psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f supabase/seed.full.sql
+#   sh supabase/tools/test-psql.sh --seed-full            # tests/seed-full/*.test.sql (assertions about the full fixture world)
 #
 # DATABASE_URL defaults to the local Supabase database (postgresql://postgres:postgres@127.0.0.1:54322/postgres).
 # Every test file is one transaction that ends in ROLLBACK, so nothing it creates survives. The helper schema "tap" is created by
@@ -23,6 +25,7 @@ filter=""
 for arg in "$@"; do
   case "$arg" in
     --seed) dir="$tests/seed" ;;
+    --seed-full) dir="$tests/seed-full" ;;
     *) filter="$arg" ;;
   esac
 done

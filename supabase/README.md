@@ -13,10 +13,11 @@ supabase/
     0005_reference_data.sql state machines as data, 347 constants, brand role capabilities                              GENERATED
     0006_schedules.sql     pg_cron jobs calling the edge functions through pg_net; maintenance                          hand-written
   seed.sql                 a small, alive local world built through the money functions (loaded by `supabase db reset`)
+  seed.full.sql            the whole fixture world (97 tables, ~80,000 rows): GENERATED on demand by tools/gen-seed.mjs, gitignored
   SCHEMA.md                data dictionary: every table and column with its contract field                              GENERATED
   functions/               8 edge functions, the shared library, adapters, unit tests, .env.example
-  tests/                   SQL tests (7 files, 363 assertions) + tests/seed (the seed world)
-  tools/                   generators, linter, the PGlite verifier and the psql test runner
+  tests/                   SQL tests (7 files, 370 assertions) + tests/seed (the small seed, 23) + tests/seed-full (the full world, 26, generated)
+  tools/                   generators (schema, formula tests, OpenAPI, full seed), linter, the PGlite verifier and the psql test runner
 ```
 
 Everything marked GENERATED comes from the contract (`packages/contract/schema`) plus the per-table decisions in `tools/lib/table-*.mjs`. **Never edit a generated file by hand**; change the generator input and run `npm run supabase:gen`. `0001` is regenerated freely while flowd is pre-launch; after the first production deploy it is frozen and every change ships as a new numbered migration (`0007_...`).
@@ -74,6 +75,8 @@ Use these for the server code that talks to Postgres (the API routes call the mo
 | **Apply every migration and run every SQL test** | `npm run supabase:verify` | Node + PGlite |
 | The same tests on a real Postgres | `supabase db reset --no-seed && sh supabase/tools/test-psql.sh` | Docker, psql |
 | The seed world | `node supabase/tools/verify-pglite.mjs --seed` or `sh supabase/tools/test-psql.sh --seed` | as above |
+| **The full fixture world** | `node supabase/tools/gen-seed.mjs && node supabase/tools/verify-pglite.mjs --seed-file seed.full.sql` (psql: `sh supabase/tools/test-psql.sh --seed-full` after loading it) | Node + PGlite |
+| The full-world test is current | `node supabase/tools/gen-seed.mjs --check` (part of `npm run supabase:check`) | Node |
 | Edge function unit tests | `npm run functions:test` (Node) or `deno task test` in `supabase/functions` | Node or Deno |
 | Edge function types | `deno check */index.ts` in `supabase/functions` | Deno |
 | The OpenAPI document | `node supabase/tools/gen-openapi.mjs --verify` | Node, optionally PyYAML + openapi-spec-validator |
@@ -98,14 +101,15 @@ What is real in it: the SQL, PL/pgSQL, constraints, triggers, deferred constrain
 | `rls.test.sql` | who can read and write what: anon, creator, brand owner, viewer, reviewer, admin, service role; column grants; function privileges |
 | `views.test.sql` | wallets, funnels, review queue, Money Clock states and ETAs |
 | `functions.test.sql` | utility, scoring and quote functions, erase_user, SLA clock |
-| `seed/world.test.sql` | the seed world: audit clean, persona facts, Money Clock states, role visibility |
+| `seed/world.test.sql` | the small seed: audit clean, persona facts, Money Clock states, role visibility |
+| `seed-full/full-world.test.sql` | the full world (generated, every expectation computed from the fixtures): ledger audit, one row count per table, read models reproduced by the views, what each persona sees through RLS |
 
 Conventions: each file is one transaction ending in `ROLLBACK`; assertions come from the `tap` helper schema in `tests/00_helpers.sql` (not pgTAP, so `supabase test db` does not run them); deferred triggers fire at COMMIT, which a rolled back test never reaches, so tests call `tap.settle()` after each money step. `tap` is not a migration: do not ship it (`drop schema tap cascade;`).
 
 ## 3. Change the schema
 
 1. Edit the contract (`packages/contract/schema/*.mjs`) or the table decisions (`supabase/tools/lib/table-config.mjs`, `table-local.mjs`; invariants and triggers in `tools/sql/*.sql`).
-2. `npm run supabase:gen` regenerates `0001`, `0005`, `SCHEMA.md`, `tests/formulas.test.sql` and `packages/contract/openapi.yaml`.
+2. `npm run supabase:gen` regenerates `0001`, `0005`, `SCHEMA.md`, `tests/formulas.test.sql`, `tests/seed-full/full-world.test.sql` and `packages/contract/openapi.yaml`.
 3. Hand-written changes go in `0002`..`0004`/`0006` (pre-launch) or a new `0007_*.sql` (after launch). Keep money functions `security definer`, `set search_path = ''`, fully qualified, and `service_role` only (`revoke ... from public, anon, authenticated`).
 4. `npm run supabase:check && npm run supabase:verify`. Add a regression test for every bug you fix.
 
@@ -165,7 +169,7 @@ Two sources of local data, for two purposes:
 |---|---|---|
 | What | 5 people, 1 brand, 1 bounty, 5 posts: the golden path from DOMAIN section 10 | the full demo world: 80 files, 25 apps, 90 creators, 418 posts, 4,277 ledger legs |
 | How it is built | **through the money functions** (`post_ledger_txn`, `fund_bounty`, `settle_post`, `clear_post`, ...), so every ledger row is real and `audit_ledger()` is clean | files in `packages/contract/fixtures/*.json`, generated by `npm run fixtures:gen` and shared with the web mock API and the iOS app |
-| Loaded by | `supabase db reset` (automatic, `config.toml`) | the web app and iOS app read them directly; the backend mapping is below |
+| Loaded by | `supabase db reset` (automatic, `config.toml`) | the web app and iOS app read them directly; `tools/gen-seed.mjs` turns them into `seed.full.sql` for Postgres (below) |
 | Time | relative to `now()`, so the Money Clock is alive whenever you load it | fixed at the contract's "now" (`2026-10-03T14:00Z`) |
 
 Both use the same ids and personas (`usr_maya`, `cr_maya`, `br_lumi`, `bnty_lumi_glowup` ...), so a screen built against the fixtures shows the same story against the local database.
@@ -174,5 +178,25 @@ Both use the same ids and personas (`usr_maya`, `cr_maya`, `br_lumi`, `bnty_lumi
 
 * *Renamed*: `world.now` to `demo_now`, `social_accounts.primary` to `is_primary`, `lessons.order` to `sort_order`, `tier_history.at` and `activity_log.at` to `occurred_at`.
 * *Normalised into child tables* (the nested array becomes rows): `creators.payout_method` to `payout_methods`, `submissions.versions` to `submission_versions`, `video_analyses.checks` to `qa_checks`, `ads.daily` to `ad_daily`, `offers.thread` to `offer_messages`, `auctions.bids` to `auction_bids`, `specs.licenses` to `spec_licenses`, `rights_grants.renewals` to `rights_renewals`, `daily_drops.items` to `drop_items`, `leaderboards.entries` to `leaderboard_entries`, `disputes.events` to `dispute_events`, `compliance_checks.checks` to `compliance_check_items`, `webhooks.deliveries` to `webhook_deliveries`, `auto_approve_rules.audit` to `rule_audit_log`, `threads.messages` to `chat_messages`.
-* *Read models, not tables*: `ticker` (becomes `ticker_events` and the `ticker_totals` view) and `waitlist` (`waitlist_entries` and the `v_waitlist_*` views). `admin_metrics` and `state_of_app_ugc` stay single-document fixtures stored in their own tables.
-* *Added by the backend*: `ledger.seq`, `account_kind`, `account_ref`, `ledger_transactions` (one row per `txn_id`), `ledger_balances` (derived), `posts.fraud_score` (the worst hourly score), `api_keys.key_hash` (sha256 of a fixture key), `users.auth_user_id` (an `auth.users` row per user).
+* *Read models, not tables*: `ticker` (becomes `ticker_events` and the `v_ticker_totals` view) and `waitlist` (`waitlist_entries` and the `v_waitlist_*` views). `admin_metrics` and `state_of_app_ugc` stay single-document fixtures stored in their own tables.
+* *Added by the backend*: `ledger.seq`, `account_kind`, `account_ref`, `ledger_transactions` (one row per `txn_id`), `ledger_balances` (derived), `posts.fraud_score` (generated from `fraud.score`), `api_keys.key_hash` (sha256 of a fixed string: a seeded key cannot call the API), `users.auth_user_id` (an `auth.users` row per user).
+
+### The full world: `tools/gen-seed.mjs`
+
+```sh
+node supabase/tools/gen-seed.mjs                              # writes supabase/seed.full.sql (~22 MB, gitignored) and the committed tests/seed-full test
+supabase db reset --no-seed                                   # an EMPTY database: the fixture ids would collide with seed.sql's
+psql "postgresql://postgres:postgres@127.0.0.1:54322/postgres" -v ON_ERROR_STOP=1 -f supabase/seed.full.sql
+sh supabase/tools/test-psql.sh --seed-full                    # or, with no Docker: node supabase/tools/verify-pglite.mjs --seed-file seed.full.sql
+```
+
+To make `supabase db reset` load it, point `[db.seed] sql_paths` in `config.toml` at `./seed.full.sql` (generate it first). Local sign-in works for the three personas (`maya.reyes@example.com`, `jordan.ellis@example.com`, `sam@joinflowd.io`, password `flowd-demo-local`); the other 141 users have an `auth.users` row and no password.
+
+How it works: the fixtures are not turned into hand-written `INSERT`s. Each table is loaded with `insert ... select ... from jsonb_populate_recordset(null::public.<table>, <rows as JSON>)`, so Postgres converts every enum, array, domain and timestamp, and **every constraint and trigger runs**. `flowd.seed_mode` is on (transaction local): the soft rules (state-machine edges, claim guards, snapshot order, pricing recompute) are skipped so rows can be loaded in any historical state; the money rules are not: every ledger transaction must net to zero, every escrow must reconcile with its bounty and no wallet may end negative, all checked at `COMMIT`, and `audit_ledger()` runs again after it. The mapping (renames from the model, the 16 child tables, ticker and waitlist, the backend columns, `ledger_transactions`) is `tools/lib/seed-map.mjs`; a fixture field that maps to no column aborts the generator, so a contract change cannot be dropped silently.
+
+What the database does differently from the fixtures (each is explained in `docs/ARCHITECTURE.md`, section 13, items 11 to 15):
+
+* 2 ledger legs of 0 cents are left out (a leg is never zero); their transactions still net to zero.
+* 46 RevenueCat redelivery rows (`match_status = duplicate`) are left out: the database keeps one row per `(app, event id)`.
+* The waitlist is loaded as 19,759 rows: the 25 leaders of the fixture, then deterministic filler (no handle, a `.test` address) so `v_waitlist_totals` reproduces the fixture totals.
+* Embeddings (`pgvector` columns) stay null until `services/ml` writes them; tokens and secrets are not seeded.

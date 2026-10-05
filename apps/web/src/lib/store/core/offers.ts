@@ -28,6 +28,7 @@ import { availableWallet, ensureWalletCovers } from "./billing";
 import { applyEscrow, escrowOf } from "./escrow";
 import { requireBrand, requireCreator } from "./guards";
 import { logActivity, notifyBrand, notifyCreator } from "./notify";
+import { mirrorToThread, offerThread } from "./inbox";
 import { scamWarningFor } from "./scamshield";
 import { ActionError, ensure, type Tx } from "./tx";
 
@@ -144,6 +145,8 @@ export function sendOffer(tx: Tx, input: SendOfferInput): { offer: Offer } {
     updated_at: tx.now,
   };
   tx.put("offers", row);
+  offerThread(tx, row);
+  mirrorToThread(tx, row, { author_role: "brand", ...(member?.user_id ? { author_user_id: member.user_id } : {}), body: row.message, ...(row.thread[0].warning_code ? { warning: row.thread[0].warning_code } : {}) });
   logActivity(tx, { brand_id: brand.id, action: "offer_sent", summary: `${tx.get("users", member?.user_id)?.display_name ?? "Someone"} sent @${creator.handle} ${kind === "invite" ? `an invite to "${bounty?.title}"` : `an offer of ${formatMoney(amount)}`}`, actor_member_id: member?.id, target_kind: "offer", target_id: row.id });
   notifyCreator(tx, creator.id, { kind: "offer_received", title: kind === "invite" ? `${brand.name} invited you to a bounty` : `${brand.name} sent you an offer: ${formatMoney(amount)}`, body: `${row.title}. Answer by ${clockLabel(row.expires_at)} UTC. Everything stays in flowd.`, amount_cents: amount || undefined, path: `offer/${row.id}`, ref_kind: "offer", ref_id: row.id });
   return { offer: row };
@@ -184,6 +187,7 @@ export function counterOffer(tx: Tx, input: { offer_id: string; amount_cents: nu
     expires_at: addDays(tx.now, CONSTANTS.windows.offer_expiry_days),
     updated_at: tx.now,
   });
+  mirrorToThread(tx, o, { author_role: side, author_user_id: side === "creator" ? creator?.user_id : member?.user_id, kind: "system", body: `${side === "creator" ? "The creator" : "The brand"} countered with ${formatMoney(input.amount_cents)}.${input.message ? ` ${input.message.trim()}` : ""}`, ...(msg.warning_code ? { warning: msg.warning_code } : {}) });
   if (side === "creator") notifyBrand(tx, o.brand_id, { kind: "offer_countered", title: `Counter-offer: ${formatMoney(input.amount_cents)}`, body: `${o.title}. They moved from ${formatMoney(o.amount_cents)}. Reply by ${clockLabel(next.expires_at)} UTC.`, amount_cents: input.amount_cents, route: "/brand/offers", ref_kind: "offer", ref_id: o.id, member_id: o.created_by_member_id });
   else notifyCreator(tx, o.creator_id, { kind: "offer_countered", title: `The brand countered: ${formatMoney(input.amount_cents)}`, body: `${o.title}. Reply by ${clockLabel(next.expires_at)} UTC.`, amount_cents: input.amount_cents, path: `offer/${o.id}`, ref_kind: "offer", ref_id: o.id });
   return { offer: next };
@@ -206,6 +210,7 @@ export function sendOfferMessage(tx: Tx, input: { offer_id: string; body: string
   ensure(o.status !== "declined" && o.status !== "expired" && o.status !== "withdrawn", "invalid_state", `This offer is ${o.status}.`, undefined, 409);
   const msg = message(tx, { author_role: side, author_user_id: userId, type: "message", body: input.body.trim() });
   const next = tx.patch("offers", o.id, { thread: [...o.thread, msg], updated_at: tx.now });
+  mirrorToThread(tx, o, { author_role: side, author_user_id: userId, body: input.body.trim(), ...(msg.warning_code ? { warning: msg.warning_code } : {}) });
   return { offer: next, warning: msg.warning_code };
 }
 
@@ -306,6 +311,7 @@ export function acceptOffer(tx: Tx, input: { offer_id: string }): { offer: Offer
   }
   const msg = message(tx, { author_role: side, author_user_id: side === "creator" ? creator?.user_id : member?.user_id, type: "accept" });
   const next = tx.patch("offers", o.id, { status: "accepted", accepted_at: tx.now, ...(bountyId ? { bounty_id: bountyId } : {}), escrow_funded: o.kind !== "invite", thread: [...o.thread, msg], updated_at: tx.now });
+  mirrorToThread(tx, o, { author_role: side, author_user_id: side === "creator" ? creator?.user_id : member?.user_id, kind: "system", body: `${side === "creator" ? "The creator" : "The brand"} accepted${o.amount_cents > 0 ? ` at ${formatMoney(o.amount_cents)}` : ""}.${o.kind === "invite" ? " The bounty is open for a take." : " The money is in escrow."}` });
   logActivity(tx, { brand_id: o.brand_id, action: "offer_accepted", summary: `@${creatorRow.handle} accepted "${o.title}"${o.amount_cents > 0 ? ` at ${formatMoney(o.amount_cents)}` : ""}`, target_kind: "offer", target_id: o.id });
   if (side === "creator") notifyBrand(tx, o.brand_id, { kind: "offer_accepted", title: `@${creatorRow.handle} accepted your offer`, body: `${o.title}${o.amount_cents > 0 ? `: ${formatMoney(o.amount_cents)} is in escrow` : ""}. They have ${o.turnaround_days} days to submit.`, route: "/brand/offers", ref_kind: "offer", ref_id: o.id, member_id: o.created_by_member_id });
   else notifyCreator(tx, o.creator_id, { kind: "offer_accepted", title: "Your counter was accepted", body: `${o.title}: ${formatMoney(o.amount_cents)} is in escrow. Open the brief and make it.`, amount_cents: o.amount_cents, path: `bounty/${bountyId}`, ref_kind: "offer", ref_id: o.id });
@@ -319,6 +325,7 @@ export function declineOffer(tx: Tx, input: { offer_id: string; reason?: string 
   const { side, member, creator } = turnOf(tx, o);
   const msg = message(tx, { author_role: side, author_user_id: side === "creator" ? creator?.user_id : member?.user_id, type: "decline", ...(input.reason ? { body: input.reason.trim() } : {}) });
   const next = tx.patch("offers", o.id, { status: "declined", closed_at: tx.now, thread: [...o.thread, msg], updated_at: tx.now });
+  mirrorToThread(tx, o, { author_role: side, author_user_id: side === "creator" ? creator?.user_id : member?.user_id, kind: "system", body: `${side === "creator" ? "The creator" : "The brand"} declined.${input.reason ? ` ${input.reason.trim()}` : ""}` });
   const creatorRow = tx.must("creators", o.creator_id);
   if (side === "creator") notifyBrand(tx, o.brand_id, { kind: "offer_countered", title: `@${creatorRow.handle} declined`, body: `${o.title}${input.reason ? `: ${input.reason}` : ""}`, route: "/brand/offers", ref_kind: "offer", ref_id: o.id, member_id: o.created_by_member_id });
   else notifyCreator(tx, o.creator_id, { kind: "offer_countered", title: "The brand declined your counter", body: o.title, path: `offer/${o.id}`, ref_kind: "offer", ref_id: o.id });
@@ -331,7 +338,9 @@ export function withdrawOffer(tx: Tx, input: { offer_id: string }): { offer: Off
   ensureOpenOffer(o);
   const { member } = requireBrand(tx, o.brand_id, "build");
   const msg = message(tx, { author_role: "brand", author_user_id: member?.user_id, type: "withdraw" });
-  return { offer: tx.patch("offers", o.id, { status: "withdrawn", closed_at: tx.now, thread: [...o.thread, msg], updated_at: tx.now }) };
+  const next = tx.patch("offers", o.id, { status: "withdrawn", closed_at: tx.now, thread: [...o.thread, msg], updated_at: tx.now });
+  mirrorToThread(tx, o, { author_role: "brand", author_user_id: member?.user_id, kind: "system", body: "The brand withdrew this offer." });
+  return { offer: next };
 }
 
 /** Whether a creator may submit to a private or invite-only bounty: they hold an accepted offer for it. */

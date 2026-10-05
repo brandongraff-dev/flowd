@@ -10,6 +10,10 @@ A floating glass **tab bar** with 5 slots: **Home · Bounties · Studio (centre 
 
 **Deep links**: `flowd://bounty/<id>`, `flowd://payout/<id>`, `flowd://submission/<id>`, `flowd://post/<id>`, `flowd://drop`, `flowd://scorecard/<brandId>`, `flowd://lesson/<slug>`, `flowd://tournament/<id>`; universal links `joinflowd.io/b/<id>` and `joinflowd.io/c/<handle>`.
 
+**Personas (modes), added after the first review.** The app has three demo personas, switchable from Profile > Account and by launch argument: **Creator** (default; Maya, the native creator app described below), **Brand** (Jordan Ellis, the Lumi workspace: a mobile companion for app teams, section 10) and **Admin** (Ops: the platform console on a phone, section 11). Each persona has its own floating tab bar. Creator = Home / Bounties / Studio / Wallet / Profile; Brand = Overview / Review / Bounties / Insights / Wallet; Admin = Control / Queues / Money / Market / More. `AppState.persona` selects the shell; `RootView` swaps the tab bar with a matched glass morph; the Creator shell stays the default so the existing screens are untouched.
+
+**Launch arguments (automated screenshots and demos; owner `ios-core`, file `App/LaunchOptions.swift`).** `-FlowdDemo YES` skips onboarding and signs in as the demo user of the persona; `-FlowdPersona creator|brand|admin`; `-FlowdScreen <key>` opens a screen directly (keys live in `apps/ios/Scripts/screenshot-screens.txt`; unknown keys fall back to the persona's home); `-FlowdAppearance dark|light`; `-FlowdReduceGlass YES`. The GitHub Actions workflow `ios-screenshots.yml` launches the simulator with these arguments, so every screen that should be screenshotted needs a stable key (`creator-home`, `creator-bounties`, `creator-bounty-detail`, `creator-studio-capture`, `creator-hook-score`, `creator-wallet`, `creator-earnings-card`, `creator-leaderboard`, `creator-profile`, `brand-overview`, `brand-review`, `brand-bounty-detail`, `brand-insights`, `brand-wallet`, `admin-control`, `admin-queues`, `admin-fraud-case`, `admin-payouts`, `admin-market`, `design-gallery`).
+
 **Shared views** (owned by `ios-core`, in `DesignSystem/Components`; feature areas wrap them in their own sheets and screens): `MoneyFigure` (hero and column variants, numericText), `MoneyStateChip` (pending lagoon + clock, cleared mint + check, paid neutral + bank, held rose-soft + pause), `ClearsAtLabel`, `FundedBadge`, `TierBadge` (medallion with chevrons), `ScoreBandView` (band, timecoded reasons, one-tap fix slot, "Checklist score" label), `RightsCardView`, `BrandScorecardView`, `SLACountdownChip` (neutral, amber at 48 h, rose at 72 h), `ConfidenceChip` (Tracked / Estimated), `CelebrationEmitter`, `SkeletonShimmer`, `EmptyStateView`, `ErrorStateView`.
 
 **Folders** are `Flowd/Features/<Area>/`. Existing folders: Onboarding, Home, Bounties, Studio, Wallet, Profile, Leaderboard, Crews, Tournaments, Inbox, RateCard, Earnings, Academy, Tools, Settings. Each agent may add folders for its own screens only: `Flo`, `Safety`, `Rights`, `Referrals`, `Specs`, `Auctions`, `Remix`, `Submissions`, `Studio/Capture`, `Studio/Edit`.
@@ -178,3 +182,32 @@ Full-screen cover from the centre tab or "Make it". Glass only on controls.
 - Data comes from `FlowdAPI` only (never from fixtures directly); mutations go through the API protocol so the whole flow works against `MockFlowdAPI`. Analytics through the `Analytics` wrapper using the events in `PRODUCT_SPEC.md` §10.
 - Every `View` file ends with a `#Preview` using `PreviewData` (fixture-backed), plus a second preview (dark or empty state) where it matters.
 - Celebrations only for creator-earned outcomes; funding, bidding, rejection and spending get calm treatments.
+
+---
+
+## 10. Brand mode (mobile companion for app teams). Owner: `ios-brand-mode` (`Features/BrandMode`)
+Persona: Jordan Ellis, growth lead at Lumi (workspace `br_lumi`). Everything runs against `MockFlowdAPI` and the same fixtures as the web brand dashboard. Calm confirmations only (no confetti) for funding, approving and spending.
+| Screen | Presented as | Must show (data · interactions) |
+|---|---|---|
+| Overview | Tab 1 | Spend pacing vs budget; KPI row (views, installs, trials, paid, cost per trial) with tracked-vs-estimated chips; mini funnel; "Needs you" list (reviews waiting with SLA clocks, expiring rights, fatigue alerts); escrow balance chip; next best action |
+| Review queue | Tab 2 | Swipeable cards ranked by score and QA flags; approve / request changes (timecoded note, reason code) / reject (reason code mandatory); SLA countdown chips; auto-approve rule status and dry-run summary |
+| Review detail | Push | Video (ThumbArt player stand-in), Hook Score and Flow Score with timecoded reasons, QA flags, fraud evidence (view curve, audience %, duplicate hash), creator scorecard, decision bar |
+| Bounties | Tab 3 | List by status with Funded badge and budget bar; detail with pace chart, submissions, top creators, rights card, edit caps, pause / extend |
+| Insights | Tab 4 | Money Map: funnel with tracked vs estimated, creative leaderboard, hook lab summary, Funnel Doctor top fix with expected-impact range, budget optimizer suggestion (final list follows `docs/research/analytics-spec.md`) |
+| Creators | Push from Bounties | Discover and scorecards, rehire list, send direct offer |
+| Wallet | Tab 5 | Escrow balance, fund (calm sheet, card mock), ledger, invoices, auto top-up |
+| Notifications and settings | Push | Approvals, SLA, rights expiries, digest preferences, persona switch |
+
+## 11. Admin mode (platform console on a phone). Owner: `ios-admin-mode` (`Features/AdminMode`)
+Persona: Ops. Mirrors the web `/admin/*` area. Destructive actions (ban, clawback) use a confirm sheet; every decision writes the audit log.
+| Screen | Presented as | Must show (data · interactions) |
+|---|---|---|
+| Control tower | Tab 1 | 90-day targets vs actuals (median time to first dollar, fill within 48 h, second-bounty rate, repeat creators, invites per creator, creators per bounty), market health, live alerts; demo clock control |
+| Queues hub | Tab 2 | Fraud, disputes, verification, payouts with counts, oldest-item age and SLA colour |
+| Fraud case | Push | View curve with anomaly markers, signal list with weights, account history, hold / clear / ban actions |
+| Dispute | Push | Evidence timeline, both sides, decision with reason code, message composer, human-reply SLA (48 h) |
+| Verification | Push | ID review card, risk signals, approve / request more |
+| Payout approvals | Tab 3 | Weekly batch with risk flags, approve all or per item, instant cash-out requests |
+| Market health | Tab 4 | Fill rate, clearing CPMs by category with bands, supply vs demand, active creators per live bounty |
+| ML calibration | Push | Score drift, band calibration chart, shadow-model comparison |
+| Lookup and audit log | Tab 5 | Creator / brand search, scorecards, audit log, settings |

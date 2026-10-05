@@ -11,10 +11,13 @@
  */
 
 import type { IsoTimestamp, Streak, WeekRecord } from "@/lib/contract/types";
-import { CONSTANTS, evaluateStreak, isoWeek, isoWeekAdd, isoWeekEnd, toMs } from "@/lib/engine";
+import { CONSTANTS, evaluateStreak, isoWeek, isoWeekAdd, isoWeekEnd, isoWeekToStart, toMs } from "@/lib/engine";
 import type { Tx } from "./tx";
 
 const HISTORY = 12;
+
+/** Sunday 23:59:59Z that ends an ISO week label ("2026-W41"). */
+const weekEndsAt = (label: string): IsoTimestamp => isoWeekEnd(isoWeekToStart(label));
 
 const weeksToNextFreeze = (current: number): number => (current % CONSTANTS.streaks.freeze_earned_every_weeks === 0 ? 0 : CONSTANTS.streaks.freeze_earned_every_weeks - (current % CONSTANTS.streaks.freeze_earned_every_weeks)) % 4;
 
@@ -124,7 +127,7 @@ function rollWeek(row: Streak, now: IsoTimestamp): Streak {
     iso_week: week,
     posts_this_week: 0,
     posted_this_week: false,
-    week_ends_at: isoWeekEnd(week),
+    week_ends_at: weekEndsAt(week),
     next_freeze_in_weeks: weeksToNextFreeze(current),
     history: history.slice(-HISTORY),
   };
@@ -138,7 +141,7 @@ export function rolloverStreaks(tx: Tx): number {
     const creator = tx.get("creators", s.creator_id);
     if (!creator) continue;
     const paused = creator.paused_until && toMs(creator.paused_until) > toMs(tx.now);
-    const next = paused ? { ...s, iso_week: isoWeek(tx.now), posts_this_week: 0, posted_this_week: false, week_ends_at: isoWeekEnd(isoWeek(tx.now)), status: "resting" as const } : rollWeek(s, tx.now);
+    const next = paused ? { ...s, iso_week: isoWeek(tx.now), posts_this_week: 0, posted_this_week: false, week_ends_at: weekEndsAt(isoWeek(tx.now)), status: "resting" as const } : rollWeek(s, tx.now);
     tx.put("streaks", { ...next, updated_at: tx.now });
     if (creator.streak_weeks !== next.current_weeks) tx.patch("creators", creator.id, { streak_weeks: next.current_weeks });
     changed += 1;

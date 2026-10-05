@@ -27,11 +27,40 @@ import { DOC_NAMES, ROW_TABLES, type DocName, type RowOf, type RowTableName } fr
 /** One `Record<id, row>` per row table. */
 export type Tables = { [K in RowTableName]: Record<string, RowOf<K>> };
 
+/** The person using the demo after they join the ranked waitlist or apply to be a founding creator (the fixture only knows a seeded demo position). */
+export interface WaitlistVisitor {
+  /** "j***@example.com": the address is never kept. */
+  masked_email: string;
+  role: "creator" | "brand";
+  handle?: string;
+  /** 1-based place in the ranked waitlist. */
+  position: number;
+  referral_code: string;
+  referral_link: string;
+  /** Friends who joined with the code. */
+  referrals: number;
+  joined_at: IsoTimestamp;
+}
+
+/** An application to be one of the first 200 founding creators, made during this demo. */
+export interface FoundingApplication {
+  handle: string;
+  niche: string;
+  proof_url: string;
+  /** "FC-2026-0042". */
+  case_id: string;
+  status: "in_review";
+  submitted_at: IsoTimestamp;
+}
+
+/** The waitlist doc plus what the visitor did during this demo. */
+export type WaitlistDoc = Waitlist & { visitor?: WaitlistVisitor; founding_application?: FoundingApplication };
+
 /** The object-shaped fixtures. */
 export interface Docs {
   world: World;
   ticker: Ticker;
-  waitlist: Waitlist;
+  waitlist: WaitlistDoc;
   state_of_app_ugc: StateOfAppUgc;
   admin_metrics: AdminMetrics;
 }
@@ -188,8 +217,8 @@ export function createEmptyState(): DemoState {
   };
 }
 
-/** Keys of `DemoState` a selector may depend on: every row table, every doc, `session` and `clock`. */
-export type StateKey = RowTableName | DocName | "session" | "clock";
+/** Keys of `DemoState` a selector may depend on: every row table, every doc, `session`, `clock` and `loaded` (which heavy tables hold data). */
+export type StateKey = RowTableName | DocName | "session" | "clock" | "loaded";
 export const DOC_KEYS: readonly DocName[] = DOC_NAMES;
 
 /** True when a table (or doc) holds its base fixture data. */

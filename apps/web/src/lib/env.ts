@@ -164,6 +164,15 @@ export function serverEnv(): ServerEnv {
   return serverCache;
 }
 
+/** Demo mode (seeded data, persona picker, "Demo data" affordances). True unless `NEXT_PUBLIC_DEMO_MODE` turns it off; an invalid env reads as on. */
+export function isDemoMode(): boolean {
+  try {
+    return publicEnv().NEXT_PUBLIC_DEMO_MODE;
+  } catch {
+    return true;
+  }
+}
+
 /** Clears the parse caches. Tests only. */
 export function resetEnvCache(): void {
   publicCache = undefined;

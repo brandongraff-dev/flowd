@@ -278,7 +278,7 @@ export function toggleWellbeing(tx: Tx, input: { enabled: boolean }): { settings
 
 // ── rate card ──────────────────────────────────────────────────────────────────────────────────
 
-const NICHE_CATEGORY: Record<Niche, Category> = { ai_tools: "ai_photo", tech: "ai_assistant", fitness: "fitness", wellness: "sleep_mind", productivity: "productivity", study: "language", money: "finance", lifestyle: "lifestyle", beauty: "ai_photo", travel: "language", food: "lifestyle", parenting: "sleep_mind" };
+export const NICHE_CATEGORY: Record<Niche, Category> = { ai_tools: "ai_photo", tech: "ai_assistant", fitness: "fitness", wellness: "sleep_mind", productivity: "productivity", study: "language", money: "finance", lifestyle: "lifestyle", beauty: "ai_photo", travel: "language", food: "lifestyle", parenting: "sleep_mind" };
 
 /** The tier multiplier on a market price: experienced creators ask for more (1.0 Bronze to 2.1 Elite). */
 const TIER_PRICE_MULTIPLIER: Record<Creator["tier"], number> = { bronze: 1, silver: 1.3, gold: 1.55, platinum: 1.8, elite: 2.1 };

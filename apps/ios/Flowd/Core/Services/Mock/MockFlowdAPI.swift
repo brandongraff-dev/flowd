@@ -31,8 +31,13 @@ actor MockFlowdAPI: FlowdAPI {
     var meUserId: String
     var idCounters: [String: Int] = [:]
     var idempotencyIndex: [String: String] = [:]
-    /// Posts created by this API (their views grow with the demo clock; fixture posts are static).
+    /// Submissions created by this API since the last reset: the brand decides on them as the demo clock passes their decision time.
+    var simulatedSubmissionIds: Set<String> = []
+    /// Posts created by this API since the last reset (their views grow with the demo clock; fixture posts grow from where they are).
     var simulatedPostIds: Set<String> = []
+    /// Where each live post's views are heading over its 72-hour window (decided once per post, so growth is smooth and repeatable).
+    var postFinalViews: [String: Int] = [:]
+    /// The last instant the scheduled jobs have run to.
     var lastReconcile: Date? = nil
     var lastPayoutRun: Date? = nil
     var acceptedAgreement: String? = nil
@@ -259,26 +264,7 @@ actor MockFlowdAPI: FlowdAPI {
         guard let quiet = settings?.quietHours, quiet.enabled else {
             return false
         }
-        let zone: TimeZone = TimeZone(identifier: quiet.timezone) ?? TimeZone(identifier: "UTC") ?? TimeZone.current
-        let local: Date = Date(timeIntervalSince1970: date.timeIntervalSince1970 + TimeInterval(zone.secondsFromGMT(for: date)))
-        let c: (year: Int, month: Int, day: Int, hour: Int, minute: Int, second: Int) = FlowdCalendar.components(local)
-        let minutes: Int = c.hour * 60 + c.minute
-        func parse(_ text: String) -> Int {
-            let parts: [Substring] = text.split(separator: ":")
-            guard parts.count == 2, let h = Int(parts[0]), let m = Int(parts[1]) else {
-                return 0
-            }
-            return h * 60 + m
-        }
-        let start: Int = parse(quiet.start)
-        let end: Int = parse(quiet.end)
-        if start == end {
-            return false
-        }
-        if start < end {
-            return minutes >= start && minutes < end
-        }
-        return minutes >= start || minutes < end
+        return WellbeingClock.isWithin(start: quiet.start, end: quiet.end, timeZoneIdentifier: quiet.timezone, at: date)
     }
 
     /// Adds a notification for the signed-in creator. Non-cash notifications raised during quiet hours are batched (delivered later) and marked so.

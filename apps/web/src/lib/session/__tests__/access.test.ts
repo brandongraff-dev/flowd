@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import {
   accessFor,
+  gateDecision,
+  gateTargets,
   homeFor,
   loginUrl,
   normalizePath,
@@ -101,6 +103,29 @@ describe("loginUrl and redirects", () => {
     expect(postLoginTarget("admin", "https://evil.example")).toBe("/admin");
     expect(postLoginTarget("admin", "/pricing")).toBe("/pricing");
     expect(postLoginTarget("admin", "/login")).toBe("/admin");
+  });
+});
+
+describe("gateDecision", () => {
+  it("is pending until the session is read, unless the server already verified a role", () => {
+    expect(gateDecision({ status: "unknown", role: null, allow: "creator" })).toBe("pending");
+    expect(gateDecision({ status: "unknown", role: null, initialRole: "creator", allow: "creator" })).toBe("allow");
+    expect(gateDecision({ status: "unknown", role: null, initialRole: "admin", allow: "creator" })).toBe("wrong_role");
+    expect(gateDecision({ status: "unknown", role: null, initialRole: null, allow: "creator" })).toBe("signed_out");
+  });
+  it("trusts the browser once the session is ready, whatever the server said", () => {
+    expect(gateDecision({ status: "ready", role: "creator", initialRole: "admin", allow: "creator" })).toBe("allow");
+    expect(gateDecision({ status: "ready", role: null, initialRole: "creator", allow: "creator" })).toBe("signed_out");
+    expect(gateDecision({ status: "ready", role: "brand_member", allow: "creator" })).toBe("wrong_role");
+  });
+  it("accepts several allowed roles", () => {
+    expect(gateDecision({ status: "ready", role: "admin", allow: ["brand_member", "admin"] })).toBe("allow");
+    expect(gateDecision({ status: "ready", role: "creator", allow: ["brand_member", "admin"] })).toBe("wrong_role");
+  });
+  it("lists the personas that can open a gate in picker order", () => {
+    expect(gateTargets("creator")).toEqual(["creator"]);
+    expect(gateTargets(["admin", "brand_member"])).toEqual(["brand_member", "admin"]);
+    expect(gateTargets([])).toEqual([]);
   });
 });
 

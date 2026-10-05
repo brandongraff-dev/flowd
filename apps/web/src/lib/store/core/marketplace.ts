@@ -10,7 +10,6 @@ import type { Auction, Bid, Deliverables, FormatId, Spec, SpecLicense } from "@/
 import {
   CONSTANTS,
   addDays,
-  addHours,
   clockLabel,
   formatMoney,
   makeArtSeed,
@@ -25,13 +24,13 @@ import {
   type RightsCardOptions,
 } from "@/lib/engine";
 import { analyzeClip, type ClipInput } from "./analysis";
-import { availableWallet, ensureWalletCovers, heldForBids } from "./billing";
+import { availableWallet, ensureWalletCovers } from "./billing";
 import { createDirectBounty } from "./offers";
 import { requireBrand, requireCreator } from "./guards";
 import { notifyBrand, notifyCreator } from "./notify";
 import { defaultBrief } from "./bounty-draft";
 import { pad } from "../ids";
-import { ActionError, ensure, type Tx } from "./tx";
+import { ensure, type Tx } from "./tx";
 
 // ── auctions ───────────────────────────────────────────────────────────────────────────────────
 
@@ -90,7 +89,7 @@ export function placeBid(tx: Tx, input: { auction_id: string; amount_cents: numb
   ensure(Number.isInteger(input.amount_cents) && input.amount_cents >= a.reserve_cents, "bid_below_reserve", `The reserve is ${formatMoney(a.reserve_cents)}. Bid at least that.`, undefined, 422);
   const prev = a.bids.find((b) => b.brand_id === brand.id && b.status === "sealed");
   const needed = input.amount_cents - (prev?.escrow_hold_cents ?? 0);
-  if (needed > 0) ensureWalletCovers(tx, brand.id, needed + (heldForBids(tx, brand.id) > 0 ? 0 : 0));
+  if (needed > 0) ensureWalletCovers(tx, brand.id, needed);
   const bid: Bid = {
     id: tx.nextId("bid"),
     brand_id: brand.id,
@@ -151,13 +150,16 @@ export function resolveAuction(tx: Tx, auctionId: string): AuctionResolution {
   const creator = tx.must("creators", a.creator_id);
   const bountyIds: string[] = [];
   const won: string[] = [];
-  const updated: Bid[] = a.bids.map((b) => ({ ...b }));
+  // The auction is over: every sealed hold is released first, so a winner's own hold never counts against the wallet that now pays the clearing price.
+  const updated: Bid[] = a.bids.map((b) => (b.status === "sealed" ? { ...b, escrow_hold_cents: 0 } : { ...b }));
+  tx.patch("auctions", a.id, { bids: updated.map((b) => ({ ...b })), updated_at: tx.now });
   for (const w of winners) {
     const brand = tx.must("brands", w.brand_id);
     const app = tx.all("apps").find((x) => x.brand_id === brand.id && x.status === "connected") ?? tx.all("apps").find((x) => x.brand_id === brand.id);
     const need = price + mulRate(price, takeRateFor({ plan: brand.plan, type: "direct" }));
     const idx = updated.findIndex((b) => b.id === w.id);
-    if (!app || brand.wallet_balance_cents < need) {
+    // What the wallet can pay now: the balance less the sealed bids the brand still has open elsewhere.
+    if (!app || availableWallet(tx, brand.id) < need) {
       updated[idx] = { ...updated[idx], status: "lost", escrow_hold_cents: 0 };
       continue;
     }
@@ -259,7 +261,7 @@ export function uploadSpec(tx: Tx, input: UploadSpecInput): { spec: Spec; listed
 /** A brand licenses a spec: the creator's price plus the brand's take rate come from the wallet, the creator is paid, and the spec stays listed unless it was exclusive. */
 export function licenseSpec(tx: Tx, input: { spec_id: string; paid_ads_days?: number }): { spec: Spec; license: SpecLicense; brand_cost_cents: number } {
   const spec = tx.must("specs", input.spec_id, "Spec");
-  const { member, brand } = requireBrand(tx, null, "finance");
+  const { brand } = requireBrand(tx, null, "finance");
   ensure(spec.status === "listed" || spec.status === "first_refusal", "invalid_state", `This spec is ${spec.status.replace(/_/g, " ")}.`, undefined, 409);
   if (spec.status === "first_refusal") ensure(spec.source_brand_id === brand.id, "first_refusal", "The brand that approved this video has first refusal for seven days.", undefined, 403);
   ensure(!spec.licenses.some((l) => l.brand_id === brand.id), "already_licensed", "You already license this video.", undefined, 409);

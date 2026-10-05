@@ -2,13 +2,16 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   ALL_EVENTS,
   EVENT_GROUPS,
+  chooseAdapter,
   createConsoleAdapter,
   createMemoryAdapter,
   createPostHogAdapter,
+  getAnalyticsAdapter,
   getAnalyticsContext,
   groupOf,
   identify,
   initAnalytics,
+  initAnalyticsFromEnv,
   isEventName,
   isAnalyticsEnabled,
   noopAdapter,
@@ -253,5 +256,51 @@ describe("adapters", () => {
     const adapter = createConsoleAdapter(log);
     adapter.capture("feed_viewed", { a: 1 });
     expect(log).toHaveBeenCalledWith("[analytics]", "feed_viewed", { a: 1 });
+  });
+});
+
+describe("initAnalyticsFromEnv", () => {
+  beforeEach(() => resetAnalyticsForTests());
+  afterEach(() => resetAnalyticsForTests());
+
+  it("is the no-op adapter by default, and nothing is sent", () => {
+    const result = initAnalyticsFromEnv({ provider: "none", signals: {} });
+    expect(result.adapter).toBe(noopAdapter);
+    expect(result.reason).toBeUndefined();
+    expect(getAnalyticsAdapter()).toBe(noopAdapter);
+  });
+
+  it("mounts PostHog around the client it is given, and events reach it sanitised", () => {
+    const client: PostHogLike = { capture: vi.fn(), identify: vi.fn(), reset: vi.fn() };
+    const result = initAnalyticsFromEnv({ provider: "posthog", posthog: client, signals: {} });
+    expect(result.adapter.name).toBe("posthog");
+    // `track` only captures in a browser (or when told to); mount the same adapter with the server switch on to observe it.
+    initAnalytics({ adapter: result.adapter, captureOnServer: true });
+    track("bounty_viewed", { source: "feed" });
+    expect(client.capture).toHaveBeenCalledWith("bounty_viewed", expect.objectContaining({ source: "feed", demo: true }));
+  });
+
+  it("stays on the no-op adapter, with a warning, when PostHog is asked for and there is no client", () => {
+    const onWarn = vi.fn();
+    const result = initAnalyticsFromEnv({ provider: "posthog", signals: {}, onWarn });
+    expect(result).toEqual({ adapter: noopAdapter, reason: "no_client" });
+    expect(onWarn).toHaveBeenCalledWith(expect.stringContaining("no PostHog client"));
+  });
+
+  it("turns everything off under Do Not Track or Global Privacy Control, whatever the provider", () => {
+    const client: PostHogLike = { capture: vi.fn(), identify: vi.fn(), reset: vi.fn() };
+    initAnalyticsFromEnv({ provider: "posthog", posthog: client, signals: { doNotTrack: "1" } });
+    expect(isAnalyticsEnabled()).toBe(false);
+    initAnalyticsFromEnv({ provider: "posthog", posthog: client, signals: { globalPrivacyControl: true } });
+    expect(isAnalyticsEnabled()).toBe(false);
+    initAnalyticsFromEnv({ provider: "posthog", posthog: client, signals: {} });
+    expect(isAnalyticsEnabled()).toBe(true);
+  });
+
+  it("chooses adapters purely from the setting and the client", () => {
+    const client: PostHogLike = { capture: vi.fn(), identify: vi.fn(), reset: vi.fn() };
+    expect(chooseAdapter("none", client).adapter).toBe(noopAdapter);
+    expect(chooseAdapter("posthog", client).adapter.name).toBe("posthog");
+    expect(chooseAdapter("posthog", undefined).reason).toBe("no_client");
   });
 });

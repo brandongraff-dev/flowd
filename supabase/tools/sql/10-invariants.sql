@@ -533,6 +533,27 @@ begin
 end
 $$;
 
+-- 7d2. A promo code (an offer code shown on a creator's links) belongs to one creator within an app. The same creator may carry it on many links (one per
+--      post or bounty), so this is an owner rule, not a unique index. An expired link releases the code: pooled codes rotate (DOMAIN: not one code per
+--      creator forever). The fixtures reuse a creator's code across her links, which is why this is a guard and not a unique key.
+create or replace function private.promo_code_owner_check()
+returns trigger
+language plpgsql
+security definer
+set search_path = ''
+as $$
+begin
+  if new.promo_code is not null and new.status <> 'expired' and exists (
+    select 1 from public.attribution_links l
+    where l.app_id = new.app_id and l.promo_code = new.promo_code and l.creator_id <> new.creator_id and l.status <> 'expired' and l.id <> new.id
+  ) then
+    raise exception 'conflict' using errcode = 'FD016',
+      detail = format('promo code %s of app %s is already held by another creator', new.promo_code, new.app_id);
+  end if;
+  return new;
+end
+$$;
+
 -- 7e. A live workspace always has an active owner (checked at COMMIT so owners can be swapped, and so a new workspace can be created
 --     and given its owner in one transaction).
 create or replace function private.brand_owner_check()

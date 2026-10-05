@@ -36,6 +36,8 @@ export interface ActionFailure {
   message: string;
   hint?: string;
   status: number;
+  /** Where the refusal was thrown. Only filled while testing, to make a failing test say where. */
+  stack?: string;
 }
 
 /** What every action returns. Pages show `error.message` (and `error.hint`) in a toast or inline. */
@@ -51,17 +53,22 @@ export function ensure(condition: unknown, code: string, message: string, hint?:
 
 export class Tx {
   private s: DemoState;
+  private readonly origin: DemoState;
   /** Tables already copied since the last time the state was handed out. */
   private readonly cloned = new Set<string>();
   /** True once `state` was handed out: the next write starts a fresh copy so a handed-out snapshot never changes underneath its reader. */
   private published = false;
+  /** True once anything was written: an action that only read leaves the state (and every subscriber) untouched. */
+  private dirty = false;
 
   constructor(base: DemoState) {
+    this.origin = base;
     this.s = { ...base };
   }
 
   /** Makes the working state private again before a write (see `published`). */
   private touch(): void {
+    this.dirty = true;
     if (this.published) {
       this.s = { ...this.s };
       this.published = false;
@@ -221,7 +228,7 @@ export class Tx {
 
   commit(): DemoState {
     this.published = true;
-    return this.s;
+    return this.dirty ? this.s : this.origin;
   }
 }
 
@@ -235,8 +242,9 @@ export function runAction<I, T>(state: DemoState, fn: (tx: Tx, input: I) => T, i
     const data = fn(tx, input);
     return { state: tx.commit(), result: ok(data) };
   } catch (e) {
-    if (e instanceof ActionError) return { state, result: { ok: false, error: { code: e.code, message: e.message, hint: e.hint, status: e.status } } };
-    if (typeof process !== "undefined" && (process.env.NODE_ENV === "test" || process.env.VITEST !== undefined)) throw e;
+    const testing = typeof process !== "undefined" && (process.env.NODE_ENV === "test" || process.env.VITEST !== undefined);
+    if (e instanceof ActionError) return { state, result: { ok: false, error: { code: e.code, message: e.message, hint: e.hint, status: e.status, ...(testing ? { stack: e.stack } : {}) } } };
+    if (testing) throw e;
     if (typeof console !== "undefined") console.error("[flowd demo store] action failed", e);
     return { state, result: fail("internal_error", "Something went wrong in the demo. Your data is unchanged.", "Reset the demo from the account menu if this keeps happening.", 500) };
   }

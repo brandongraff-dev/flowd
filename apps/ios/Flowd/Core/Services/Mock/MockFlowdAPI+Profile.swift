@@ -480,26 +480,36 @@ extension MockFlowdAPI {
         }) {
             return open
         }
+        // A creator whose identity is already verified is never asked twice: the check is recorded as done.
+        let current: Creator = try meRow()
+        let alreadyVerified: Bool = kind == .identity && current.verificationStatus == .verified
         let row: Verification = Verification(
             id: nextId("ver", width: 3, existing: existing.map { (v: Verification) -> String in return v.id }),
             subjectKind: .creator,
             creatorId: meId,
             brandId: nil,
             kind: kind,
-            status: .pending,
+            status: alreadyVerified ? .verified : .pending,
             provider: "Verification partner (demo)",
             documents: [],
             submittedAt: now,
             slaDueAt: FlowdCalendar.addHours(now, 24),
-            decidedAt: nil,
+            decidedAt: alreadyVerified ? now : nil,
             decidedByUserId: nil,
             reason: nil,
             note: nil,
-            blocksPayout: kind == .identity || kind == .tax || kind == .payoutMethod
+            blocksPayout: !alreadyVerified && (kind == .identity || kind == .tax || kind == .payoutMethod)
         )
         try store.verifications.append(row)
         if kind == .age {
             _ = try await confirmAge()
+        }
+        if kind == .identity {
+            try store.creators.update(meId) { (c: inout Creator) in
+                if c.verificationStatus != .verified {
+                    c.verificationStatus = .pending
+                }
+            }
         }
         return row
     }

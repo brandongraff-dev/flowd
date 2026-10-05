@@ -2364,7 +2364,7 @@ create table public.rights_grants (
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   constraint rights_grants_pkey primary key (id),
-  constraint rights_grants_organic_chk check ((scope = 'organic') = (ends_at is null)),
+  constraint rights_grants_organic_chk check ((scope = 'organic') = (ends_at is null) or (status = 'pending_permission' and ends_at is null)),
   constraint rights_grants_ai_chk check (ai_likeness = false),
   constraint rights_grants_renewal_price_chk check (renewal_price_cents = ((base_fee_cents * (round(renewal_pct_per_30d * 10000))::bigint) + 5000) / 10000),
   constraint rights_grants_alerts_chk check (alerts_sent <@ array[30, 14, 7]),
@@ -3930,7 +3930,7 @@ create index conversions_bounty_idx on public.conversions (bounty_id, kind);
 create index conversions_pending_idx on public.conversions (first_at) where status = 'pending';
 create index conversions_creator_idx on public.conversions (creator_id, occurred_on desc);
 create unique index attribution_links_code_key on public.attribution_links (code);
-create unique index attribution_links_promo_key on public.attribution_links (app_id, promo_code) where promo_code is not null;
+create index attribution_links_promo_idx on public.attribution_links (app_id, promo_code) where promo_code is not null;
 create index attribution_links_creator_idx on public.attribution_links (creator_id, bounty_id);
 create index attribution_links_post_idx on public.attribution_links (post_id) where post_id is not null;
 create index attribution_links_bounty_id_fk_idx on public.attribution_links (bounty_id);
@@ -4710,6 +4710,27 @@ begin
 end
 $$;
 
+-- 7d2. A promo code (an offer code shown on a creator's links) belongs to one creator within an app. The same creator may carry it on many links (one per
+--      post or bounty), so this is an owner rule, not a unique index. An expired link releases the code: pooled codes rotate (DOMAIN: not one code per
+--      creator forever). The fixtures reuse a creator's code across her links, which is why this is a guard and not a unique key.
+create or replace function private.promo_code_owner_check()
+returns trigger
+language plpgsql
+security definer
+set search_path = ''
+as $$
+begin
+  if new.promo_code is not null and new.status <> 'expired' and exists (
+    select 1 from public.attribution_links l
+    where l.app_id = new.app_id and l.promo_code = new.promo_code and l.creator_id <> new.creator_id and l.status <> 'expired' and l.id <> new.id
+  ) then
+    raise exception 'conflict' using errcode = 'FD016',
+      detail = format('promo code %s of app %s is already held by another creator', new.promo_code, new.app_id);
+  end if;
+  return new;
+end
+$$;
+
 -- 7e. A live workspace always has an active owner (checked at COMMIT so owners can be swapped, and so a new workspace can be created
 --     and given its owner in one transaction).
 create or replace function private.brand_owner_check()
@@ -5013,6 +5034,11 @@ create constraint trigger offer_code_pool_cap
   after insert or update of status, sku, app_id on public.offer_code_pool
   deferrable initially deferred
   for each row execute function private.offer_code_cap_check();
+
+-- A promo code belongs to one creator within an app.
+create trigger attribution_links_promo_owner
+  before insert or update of promo_code, status, creator_id on public.attribution_links
+  for each row execute function private.promo_code_owner_check();
 
 -- Workspaces keep an owner.
 create constraint trigger brand_members_owner
