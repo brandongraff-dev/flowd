@@ -1,7 +1,7 @@
 {
   "$meta": {
     "name": "flowd design tokens",
-    "theme": "Flat Ink",
+    "theme": "Black Glass",
     "version": "1.0.0",
     "updated": "2026-10-03",
     "notes": [
@@ -127,27 +127,27 @@
     },
     "semantic": {
       "dark": {
-        "bg": "#030921",
-        "bg-elevated": "#08112A",
-        "bg-sunken": "#010419",
-        "surface": "#101A34",
-        "surface-raised": "#18233D",
-        "surface-field": "rgba(255, 255, 255, 0.06)",
+        "bg": "#000000",
+        "bg-elevated": "#0A0A0C",
+        "bg-sunken": "#000000",
+        "surface": "#141416",
+        "surface-raised": "#1C1C20",
+        "surface-field": "rgba(255, 255, 255, 0.07)",
         "surface-hover": "rgba(255, 255, 255, 0.06)",
         "surface-active": "rgba(255, 255, 255, 0.10)",
-        "surface-glass-1": "#101A34",
-        "surface-glass-2": "#18233D",
-        "surface-glass-3": "#18233D",
-        "scrim": "rgba(2, 5, 16, 0.62)",
-        "fg": "#F3F7FF",
-        "fg-muted": "#C0CAE0",
-        "fg-subtle": "#A3AFCB",
-        "fg-disabled": "#5F6B8A",
-        "fg-inverse": "#030921",
+        "surface-glass-1": "rgba(30, 30, 34, 0.62)",
+        "surface-glass-2": "rgba(30, 30, 34, 0.74)",
+        "surface-glass-3": "rgba(20, 20, 24, 0.82)",
+        "scrim": "rgba(0, 0, 0, 0.62)",
+        "fg": "#F5F5F7",
+        "fg-muted": "#C6C6CE",
+        "fg-subtle": "#ADADB7",
+        "fg-disabled": "#63636C",
+        "fg-inverse": "#000000",
         "on-accent": "#030921",
-        "rim": "rgba(255, 255, 255, 0.09)",
-        "rim-strong": "rgba(255, 255, 255, 0.28)",
-        "divider": "rgba(255, 255, 255, 0.08)",
+        "rim": "rgba(255, 255, 255, 0.16)",
+        "rim-strong": "rgba(255, 255, 255, 0.30)",
+        "divider": "rgba(255, 255, 255, 0.09)",
         "focus-ring": "#39F1AB",
         "accent-solid": "#18DF9B",
         "accent-bright": "#18DF9B",
@@ -339,7 +339,7 @@
   "aurora": {
     "note": "L0 background. Stops fall off linearly to transparent. x/y are the orb centre as % of the viewport; r is the radius in vmax. The contrast checker samples this field, so changing it re-validates every text colour.",
     "dark": {
-      "base": "#030921",
+      "base": "#000000",
       "orbs": [
         {
           "id": "violet",
@@ -566,8 +566,8 @@
       "L1": {
         "blur": 16,
         "saturate": 1.4,
-        "fill": "#101A34",
-        "fillOverMedia": "rgba(8, 14, 36, 0.78)",
+        "fill": "rgba(30, 30, 34, 0.62)",
+        "fillOverMedia": "rgba(24, 24, 28, 0.80)",
         "sheen": {
           "angle": 135,
           "from": "rgba(255, 255, 255, 0.09)",
@@ -583,13 +583,13 @@
         "lowlight": "rgba(0, 0, 0, 0.28)",
         "edge": "rgba(2, 5, 20, 0.45)",
         "elevation": 2,
-        "solid": "#101A34"
+        "solid": "#141416"
       },
       "L2": {
         "blur": 24,
         "saturate": 1.6,
-        "fill": "#18233D",
-        "fillOverMedia": "rgba(10, 17, 42, 0.78)",
+        "fill": "rgba(30, 30, 34, 0.74)",
+        "fillOverMedia": "rgba(32, 32, 38, 0.80)",
         "sheen": {
           "angle": 135,
           "from": "rgba(255, 255, 255, 0.12)",
@@ -605,13 +605,13 @@
         "lowlight": "rgba(0, 0, 0, 0.30)",
         "edge": "rgba(2, 5, 20, 0.50)",
         "elevation": 3,
-        "solid": "#18233D"
+        "solid": "#1C1C20"
       },
       "L3": {
         "blur": 40,
         "saturate": 1.5,
-        "fill": "#18233D",
-        "fillOverMedia": "rgba(7, 12, 32, 0.86)",
+        "fill": "rgba(20, 20, 24, 0.82)",
+        "fillOverMedia": "rgba(16, 16, 20, 0.88)",
         "sheen": {
           "angle": 135,
           "from": "rgba(255, 255, 255, 0.07)",
@@ -626,9 +626,9 @@
         "highlight": "rgba(255, 255, 255, 0.20)",
         "lowlight": "rgba(0, 0, 0, 0.35)",
         "edge": "rgba(2, 5, 20, 0.55)",
-        "scrim": "rgba(2, 5, 16, 0.62)",
+        "scrim": "rgba(0, 0, 0, 0.62)",
         "elevation": 4,
-        "solid": "#0C162F"
+        "solid": "#101012"
       },
       "pointerSheen": {
         "radius": 240,

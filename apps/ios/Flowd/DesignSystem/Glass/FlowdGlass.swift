@@ -133,15 +133,10 @@ struct FlowdGlassModifier<S: InsettableShape>: ViewModifier {
     }
 
     func body(content: Content) -> some View {
-        if appearance.reduceGlass || layer == FlowdGlassLayer.l1 {
-            // Flat Ink: content surfaces are solid fills with a hairline. Real glass only for L2/L3 chrome.
+        if appearance.reduceGlass {
             content
                 .background { solidFill }
                 .overlay { solidRim }
-        } else if layer == FlowdGlassLayer.l1 {
-            content
-                .background { materialFill }
-                .overlay { specularRim }
         } else {
             glassBody(content)
         }
@@ -163,7 +158,7 @@ struct FlowdGlassModifier<S: InsettableShape>: ViewModifier {
     @available(iOS 26.0, *)
     @ViewBuilder
     private func nativeBody(_ content: Content) -> some View {
-        if layer == FlowdGlassLayer.l3 {
+        if layer == FlowdGlassLayer.l3 || layer == FlowdGlassLayer.l1 {
             // Large glass carries content, so an ink scrim sits INSIDE the glass view, under the content, to hold AA.
             content
                 .background { shape.fill(layer.spec.fill.opacity(0.5)) }
@@ -221,7 +216,7 @@ struct FlowdGlassModifier<S: InsettableShape>: ViewModifier {
     /// Reduce Transparency / in-app Reduce glass: opaque solid surface, no blur, no sheen.
     private var solidFill: some View {
         ZStack {
-            if elevated && layer != FlowdGlassLayer.l1 {
+            if elevated {
                 FlowdShadowBacking(shape: shape, shadows: layer.spec.shadows)
             }
             shape.fill(layer.spec.solid)
