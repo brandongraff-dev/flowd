@@ -17,6 +17,17 @@ import SwiftUI
 //                     center: FlowdTabCenterAction(systemImage: "video.fill", label: "Make a take") { showStudio = true })
 //     }
 
+/// A small status dot on a tab, without a number ("Daily Drop is live", "Money cleared"). The label is read by VoiceOver.
+struct FlowdTabDot: Hashable {
+    let tone: FlowdTone
+    let label: String
+
+    init(tone: FlowdTone, label: String) {
+        self.tone = tone
+        self.label = label
+    }
+}
+
 /// One tab. `ID` is usually a `String` or a small enum.
 struct FlowdTabItem<ID: Hashable>: Identifiable {
     let id: ID
@@ -25,13 +36,16 @@ struct FlowdTabItem<ID: Hashable>: Identifiable {
     /// The symbol shown while selected (usually the `.fill` variant). Defaults to `systemImage`.
     let selectedSystemImage: String?
     let badge: Int?
+    /// A status dot at the leading top corner of the glyph (independent of the numeric badge).
+    let dot: FlowdTabDot?
 
-    init(id: ID, title: String, systemImage: String, selectedSystemImage: String? = nil, badge: Int? = nil) {
+    init(id: ID, title: String, systemImage: String, selectedSystemImage: String? = nil, badge: Int? = nil, dot: FlowdTabDot? = nil) {
         self.id = id
         self.title = title
         self.systemImage = systemImage
         self.selectedSystemImage = selectedSystemImage
         self.badge = badge
+        self.dot = dot
     }
 }
 
@@ -165,13 +179,27 @@ struct FlowdTabBar<ID: Hashable>: View {
                     .offset(x: 12, y: -6)
             }
         }
+        .overlay(alignment: .topLeading) {
+            if let dot = item.dot {
+                Circle()
+                    .fill(dot.tone.solid)
+                    .frame(width: 9, height: 9)
+                    .overlay { Circle().strokeBorder(FlowdColor.bg, lineWidth: 1.5) }
+                    .offset(x: -5, y: -3)
+                    .accessibilityHidden(true)
+            }
+        }
     }
 
     private func badgeValue(_ item: FlowdTabItem<ID>) -> String {
+        var parts: [String] = []
         if let badge = item.badge, badge > 0 {
-            return String(badge) + " new"
+            parts.append(String(badge) + " new")
         }
-        return ""
+        if let dot = item.dot {
+            parts.append(dot.label)
+        }
+        return parts.joined(separator: ", ")
     }
 
     // MARK: Centre action

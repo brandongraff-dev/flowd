@@ -32,18 +32,22 @@ struct FlowdScreen<Content: View>: View {
     }
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: spacing) {
-                content
+        ScrollViewReader { (proxy: ScrollViewProxy) in
+            ScrollView {
+                VStack(alignment: .leading, spacing: spacing) {
+                    content
+                }
+                .padding(.horizontal, FlowdLayout.gutter)
+                .padding(.top, FlowdSpacing.xs)
+                .padding(.bottom, FlowdSpacing.xl)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .id(FlowdScrollAnchor.top)
             }
-            .padding(.horizontal, FlowdLayout.gutter)
-            .padding(.top, FlowdSpacing.xs)
-            .padding(.bottom, FlowdSpacing.xl)
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .scrollIndicators(.hidden)
+            .flowdScrollEdgeEffect()
+            .flowdScrollChrome(proxy: proxy)
+            .flowdAurora(aurora)
         }
-        .scrollIndicators(.hidden)
-        .flowdScrollEdgeEffect()
-        .flowdAurora(aurora)
     }
 }
 

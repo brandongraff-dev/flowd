@@ -2,6 +2,8 @@
 
 One page. Read it, then read `docs/CONVENTIONS.md` section 5. There is **no Swift compiler on the Windows dev machines**: CI (`.github/workflows/ios.yml`, macOS runner) is the compiler of record, so write conservative Swift and re-read every file as the compiler would.
 
+**Feature agents, read in this order:** `Flowd/App/FEATURE_CONTRACT.md` (every screen: file, type, initialiser, the route that opens it, the shell API), `Flowd/Core/README.md` (the data layer: `FlowdAPI`, models, engines, drafts), `Flowd/DesignSystem/README.md` (components and rules). Screens currently exist as placeholder files with the exact names in the contract; overwrite them, keep the names.
+
 ## Canonical facts
 
 | | |

@@ -49,7 +49,7 @@ apps/ios/
 ├─ project.yml            XcodeGen spec: single source of truth for targets, plist keys, entitlements, schemes
 ├─ STRUCTURE.md           one-page guide for feature agents (where files go, rules, checklist)
 ├─ Flowd/
-│  ├─ App/                FlowdApp (@main), AppState (@Observable), RootView; Router / TabShell come with the shell
+│  ├─ App/                FlowdApp (@main), AppState (@Observable), RootView, Router + Route, TabShell, ScreenRegistry, LaunchOptions, FEATURE_CONTRACT.md
 │  ├─ DesignSystem/       Tokens.swift (generated), Theme, Typography, Motion, Haptics, Glass/, Components/, Charts/
 │  ├─ Core/               Models/ · Services/ (FlowdAPI, Mock, Live) · Persistence/ · Engine/ · Utilities/
 │  ├─ Features/<Area>/    Onboarding Home Bounties Studio Wallet Profile Leaderboard Crews Tournaments
