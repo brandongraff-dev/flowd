@@ -193,7 +193,7 @@ struct HomeView: View {
                     .clipShape(RoundedRectangle(cornerRadius: FlowdRadius.xl, style: .continuous))
                 VStack(alignment: .leading, spacing: 2) {
                     MoneyText(cents: item.expectedPay.medianCents, style: FlowdFont.figureMd, state: .neutral, showsCents: false, showsGlyph: false)
-                    Text(item.bounty.title).flowdBody(.footnote).flowdInk(.muted).lineLimit(1)
+                    Text(item.bounty.title).flowdCaption(.footnote).flowdInk(.muted).lineLimit(1)
                 }
                 .padding(FlowdSpacing.sm)
             }
